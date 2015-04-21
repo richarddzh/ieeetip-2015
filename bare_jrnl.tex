@@ -1,6 +1,5 @@
 \documentclass[journal]{IEEEtran}
 
-% Some very useful LaTeX packages include:
 %\usepackage{ifpdf}
 %\usepackage{cite}
 %\usepackage[pdftex]{graphicx}
@@ -10,96 +9,60 @@
 %\usepackage[caption=false,font=footnotesize]{subfig}
 %\usepackage{fixltx2e}
 %\usepackage{stfloats}
-% \usepackage{dblfloatfix}
+%\usepackage{dblfloatfix}
 %\usepackage{url}
-
-% correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
 
 \begin{document}
-%
-% paper title
-% Titles are generally capitalized except for words such as a, an, and, as,
-% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
-% not capitalized unless they are the first or last word of the title.
-% Linebreaks \\ can be used within to get better formatting as desired.
-% Do not put math or special symbols in the title.
-\title{Bare Demo of IEEEtran.cls for Journals}
-%
-%
-% author names and IEEE memberships
-% note positions of commas and nonbreaking spaces ( ~ ) LaTeX will not break
-% a structure at a ~ so this keeps an author's name from being broken across
-% two lines.
-% use \thanks{} to gain access to the first footnote area
-% a separate \thanks must be used for each paragraph as LaTeX2e's \thanks
-% was not built to handle multiple paragraphs
-%
-
-\author{Michael~Shell,~\IEEEmembership{Member,~IEEE,}
-        John~Doe,~\IEEEmembership{Fellow,~OSA,}
-        and~Jane~Doe,~\IEEEmembership{Life~Fellow,~IEEE}% <-this % stops a space
-\thanks{M. Shell is with the Department
-of Electrical and Computer Engineering, Georgia Institute of Technology, Atlanta,
-GA, 30332 USA e-mail: (see http://www.michaelshell.org/contact.html).}% <-this % stops a space
-\thanks{J. Doe and J. Doe are with Anonymous University.}% <-this % stops a space
-\thanks{Manuscript received April 19, 2005; revised September 17, 2014.}}
-
-% note the % following the last \IEEEmembership and also \thanks - 
-% these prevent an unwanted space from occurring between the last author name
-% and the end of the author line. i.e., if you had this:
-% 
-% \author{....lastname \thanks{...} \thanks{...} }
-%                     ^------------^------------^----Do not want these spaces!
-%
-% a space would be appended to the last name and could cause every name on that
-% line to be shifted left slightly. This is one of those "LaTeX things". For
-% instance, "\textbf{A} \textbf{B}" will typeset as "A B" not "AB". To get
-% "AB" then you have to do: "\textbf{A}\textbf{B}"
-% \thanks is no different in this regard, so shield the last } of each \thanks
-% that ends a line with a % and do not let a space in before the next \thanks.
-% Spaces after \IEEEmembership other than the last one are OK (and needed) as
-% you are supposed to have spaces between the names. For what it is worth,
-% this is a minor point as most people would not even notice if the said evil
-% space somehow managed to creep in.
-
-
+\title{Hypercolumn-array Based Image Representation and 
+Its Application to Shape-based Object Detection}
+\author{Hui~Wei\thanks{Hui~Wei is with Department of Computer Science, 
+Laboratory of Cognitive Model and Algorithm, 
+Brain Science Research Center, 
+Fudan University, Shanghai, China.
+Corresponding author's email: weihui@fudan.edu.cn.},
+Zheng~Dong\thanks{Qiang~Li and Zheng~Dong is with 
+Department of Computer Science, Laboratory of Cognitive Model and Algorithm, 
+Fudan University, Shanghai, China.},
+and~Qiang~Li}
 
 % The paper headers
-\markboth{Journal of \LaTeX\ Class Files,~Vol.~13, No.~9, September~2014}%
-{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
-% The only time the second header will appear is for the odd numbered pages
-% after the title page when using the twoside option.
-% 
-% *** Note that you probably will NOT want to include the author's ***
-% *** name in the headers of peer review papers.                   ***
-% You can use \ifCLASSOPTIONpeerreview for conditional compilation here if
-% you desire.
-
-
-
-
-% If you want to put a publisher's ID mark on the page you can do it like
-% this:
+%\markboth{Journal of \LaTeX\ Class Files,~Vol.~13, No.~9, September~2014}%
+%{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
 %\IEEEpubid{0000--0000/00\$00.00~\copyright~2014 IEEE}
 % Remember, if you use this you must call \IEEEpubidadjcol in the second
 % column for its text to clear the IEEEpubid mark.
 
-
-
-% use for special paper notices
-%\IEEEspecialpapernotice{(Invited Paper)}
-
-
-
-
 % make the title area
 \maketitle
 
-% As a general rule, do not put math, special symbols or citations
-% in the abstract or keywords.
 \begin{abstract}
-The abstract goes here.
+Machine learning is perhaps the most popular strategy currently employed in object recognition. 
+The strategy typically uses a high-dimensional vector to describe an image, 
+and applies some classification algorithm to isolate positive areas apart from negative areas. 
+While the advantage of this strategy is its architectural simplicity, 
+it simultaneously suffers from computational complexity, fragile representation, 
+unguaranteed generalization, black arts in optimization, and so on. 
+In comparison with low-order features, such as color or gradient, contour is more stable and persistent; 
+therefore, shape-based methods take account of a greater number of essential aspects for object recognition. 
+Biological and psychological evidence increasingly reveals that geometrical and topological features are the keys to object recognition. 
+Although these types of high-level features are not easily obtained, 
+their discriminating abilities greatly improve the efficiency of perception. 
+Attracted by the excellent performance of neural visual systems for shape processing, 
+we simulate the mechanism of hypercolumns in the V1 cortex of mammals that selectively responds to bar stimuli, 
+and design an orderly-arranged array to extract and represent all possible linear or near-linear stimuli in an image. 
+Each unit of this array can cover all orientation stimuli occurring over a certain small area. 
+These effective units together produce a type of low-dimensional vector to describe shape. 
+Based on the neighborhood of units in the array, 
+we construct a graph whose node represents a short line segment with a certain position and slope. 
+Therefore, any segment of contour, i.e., a curve, in an edge image might be a route in that graph. 
+The most significant thing here is that a graph converts an image, comprised of typically unstructured raw data, 
+into structured and semantic-enriched data. 
+We search along the routes in that graph and compare them with a shape template for object detection. 
+Organizing segments of contour into a graph greatly upgrades the level of image representation, 
+remarkably reduces the load of combinations, significantly improves the efficiency of object searching, 
+and facilitates the high-level knowledge intervening. 
+This work provides a systematic infrastructure for shape-based models.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
