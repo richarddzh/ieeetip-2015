@@ -76,13 +76,28 @@ orientation column, shape representation, object recognition, primary visual cor
 
 \IEEEPARstart{D}{etecting} 
 an object within a complex background is still one of the major challenges of pattern recognition and computer vision. 
-The difficulty lies in the conditions of image capture, where images are captured under different illumination conditions, from different distances, and, sometimes, with overlapping objects. 
-These variations make an object's appearance, either in size, in posture, or in color, endless changing. While machine learning is arguably the most popular strategy currently employed in object recognition, the uncertainties associated with an ever changing environment and limited training create numerous difficulties for machine learning methods to achieve efficient object recognition. As such, obtaining an efficient, stable, and convenient method of representing features becomes the key requirement of object recognition in the real-world. The most stable characteristic of an object is its contour. The shapes or contours of most rigid objects tend to remain invariant regardless of a changing environment. Therefore, an object's shape or contour represents the most promising feature for efficient object recognition.
+The difficulty lies in the conditions of image capture,
+where images are captured under different illumination conditions, 
+from different distances, and, sometimes, with overlapping objects.
+These variations make an object's appearance, either in size, in posture, or in color, endless changing. 
+While machine learning is arguably the most popular strategy currently employed in object recognition, 
+the uncertainties associated with an ever changing environment and limited training create numerous difficulties for machine learning methods to achieve efficient object recognition. 
+As such, obtaining an efficient, stable, and convenient method of representing features becomes the key requirement of object recognition in the real-world. 
+The most stable characteristic of an object is its contour. 
+The shapes or contours of most rigid objects tend to remain invariant regardless of a changing environment. 
+Therefore, an object's shape or contour represents the most promising feature for efficient object recognition.
 
-
-\hfill mds
- 
-\hfill September 17, 2014
+The primary visual cortex, which is also known as V1, locates in the striate cortex of mammals.
+It is the best-studied visual area in the brain.
+In this paper, we simulate the neural mechanism of V1 because this area contains many orderly-arranged hypercolumns that represent the orientation information of a visual stimulus.
+This biological infrastructure provides a feasible entity to record object contours. 
+We therefore design and train a self-organizing map (SOM) to extract the line information of an image. 
+Under this approach, any line, regardless of its position, length, or slope, 
+will activate one or more orientation-sensitive neurons, 
+so an edge-image will be re-described by a set of active neurons. 
+Based on this line-representing platform, 
+we propose a contour-matching algorithm that uses geometrical characteristics to recognize objects. 
+This provides good performance in environment adaptation and better generalization.
 
 \subsection{Subsection Heading Here}
 Subsection text here.
