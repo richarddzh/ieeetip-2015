@@ -61,54 +61,24 @@ into structured and semantic-enriched data.
 We search along the routes in that graph and compare them with a shape template for object detection. 
 Organizing segments of contour into a graph greatly upgrades the level of image representation, 
 remarkably reduces the load of combinations, significantly improves the efficiency of object searching, 
-and facilitates the high-level knowledge intervening. 
+and facilitates the intervening of high-level knowledge. 
 This work provides a systematic infrastructure for shape-based models.
 \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
 \begin{IEEEkeywords}
-IEEEtran, journal, \LaTeX, paper, template.
+orientation column, shape representation, object recognition, primary visual cortex.
 \end{IEEEkeywords}
 
-
-
-
-
-
-% For peer review papers, you can put extra information on the cover
-% page as needed:
-% \ifCLASSOPTIONpeerreview
-% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
-% \fi
-%
-% For peerreview papers, this IEEEtran command inserts a page break and
-% creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
 
-
-
 \section{Introduction}
-% The very first letter is a 2 line initial drop letter followed
-% by the rest of the first word in caps.
-% 
-% form to use if the first word consists of a single letter:
-% \IEEEPARstart{A}{demo} file is ....
-% 
-% form to use if you need the single drop letter followed by
-% normal text (unknown if ever used by IEEE):
-% \IEEEPARstart{A}{}demo file is ....
-% 
-% Some journals put the first two words in caps:
-% \IEEEPARstart{T}{his demo} file is ....
-% 
-% Here we have the typical use of a "T" for an initial drop letter
-% and "HIS" in caps to complete the first word.
-\IEEEPARstart{T}{his} demo file is intended to serve as a ``starter file''
-for IEEE journal papers produced under \LaTeX\ using
-IEEEtran.cls version 1.8a and later.
-% You must have at least 2 lines in the paragraph with the drop letter
-% (should never be an issue)
-I wish you the best of success.
+
+\IEEEPARstart{D}{etecting} 
+an object within a complex background is still one of the major challenges of pattern recognition and computer vision. 
+The difficulty lies in the conditions of image capture, where images are captured under different illumination conditions, from different distances, and, sometimes, with overlapping objects. 
+These variations make an object's appearance, either in size, in posture, or in color, endless changing. While machine learning is arguably the most popular strategy currently employed in object recognition, the uncertainties associated with an ever changing environment and limited training create numerous difficulties for machine learning methods to achieve efficient object recognition. As such, obtaining an efficient, stable, and convenient method of representing features becomes the key requirement of object recognition in the real-world. The most stable characteristic of an object is its contour. The shapes or contours of most rigid objects tend to remain invariant regardless of a changing environment. Therefore, an object's shape or contour represents the most promising feature for efficient object recognition.
+
 
 \hfill mds
  

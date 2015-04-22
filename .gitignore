@@ -3,5 +3,5 @@
 *.log
 *.blg
 bare_jrnl.pdf
-
+*.DS_Store
 
