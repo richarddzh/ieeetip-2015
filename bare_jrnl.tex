@@ -1,7 +1,7 @@
 \documentclass[journal]{IEEEtran}
 
 %\usepackage{ifpdf}
-%\usepackage{cite}
+\usepackage{cite}
 %\usepackage[pdftex]{graphicx}
 %\usepackage[cmex10]{amsmath}
 %\usepackage{algorithmic}
@@ -10,19 +10,18 @@
 %\usepackage{fixltx2e}
 %\usepackage{stfloats}
 %\usepackage{dblfloatfix}
-%\usepackage{url}
+\usepackage{url}
 \hyphenation{op-tical net-works semi-conduc-tor}
 
 \begin{document}
 \title{Hypercolumn-array Based Image Representation and 
 Its Application to Shape-based Object Detection}
-\author{Hui~Wei\thanks{Hui~Wei is with Department of Computer Science, 
-Laboratory of Cognitive Model and Algorithm, 
-Brain Science Research Center, 
-Fudan University, Shanghai, China.
+\author{Hui~Wei\thanks{Hui~Wei is with the School of Computer Science, 
+Laboratory of Cognitive Modeling and Algorithms, 
+Brain Science Research Center, Fudan University, Shanghai, China. 
 Corresponding author's email: weihui@fudan.edu.cn.},
-Zheng~Dong\thanks{Qiang~Li and Zheng~Dong is with 
-Department of Computer Science, Laboratory of Cognitive Model and Algorithm, 
+Zheng~Dong\thanks{Zheng~Dong and Qiang~Li are with the School of Computer Science, 
+Laboratory of Cognitive Modeling and Algorithms, 
 Fudan University, Shanghai, China.},
 and~Qiang~Li}
 
@@ -74,6 +73,9 @@ orientation column, shape representation, object recognition, primary visual cor
 
 \section{Introduction}
 
+% needed in second column of first page if using \IEEEpubid
+%\IEEEpubidadjcol
+
 \IEEEPARstart{D}{etecting} 
 an object within a complex background is still one of the major challenges of pattern recognition and computer vision. 
 The difficulty lies in the conditions of image capture,
@@ -87,6 +89,7 @@ The most stable characteristic of an object is its contour.
 The shapes or contours of most rigid objects tend to remain invariant regardless of a changing environment. 
 Therefore, an object's shape or contour represents the most promising feature for efficient object recognition.
 
+
 The primary visual cortex, which is also known as V1, locates in the striate cortex of mammals.
 It is the best-studied visual area in the brain.
 In this paper, we simulate the neural mechanism of V1 because this area contains many orderly-arranged hypercolumns that represent the orientation information of a visual stimulus.
@@ -99,15 +102,54 @@ Based on this line-representing platform,
 we propose a contour-matching algorithm that uses geometrical characteristics to recognize objects. 
 This provides good performance in environment adaptation and better generalization.
 
-\subsection{Subsection Heading Here}
-Subsection text here.
+The remainder of this paper has been organized as follows. 
+Section 2 reviews some related studies in shape-based object recognition and visual neurobiological mechanism simulation. 
+The advantages and disadvantages of the main features of each study are briefly discussed. 
+Section 3 presents the training process involving orientation columns, 
+and how an image is represented by an array of artificial orientation columns. 
+Section 4 describes how an edge image is converted into an undirected graph, 
+and how route searching is conducted for this graph. 
+Section 5 presents the method of similarity matching between routes and templates, 
+and how this method is applied to the recognition of objects in real images. 
+Experimental results are presented in Section 6, which is divided into two parts. 
+Part one analyzes the capability for image representation and reduction provided by the proposed array of artificial orientation columns. 
+Part two presents the recognition results obtained for some real image datasets. 
+The final section presents conclusions and future expectations.
 
-% needed in second column of first page if using \IEEEpubid
-%\IEEEpubidadjcol
+\section{Related Work}
 
-\subsubsection{Subsubsection Heading Here}
-Subsubsection text here.
+Here, we divide the discussion of related work into two components. 
+One component concerns the modeling of the V1 area, 
+whereas the other component is concerned with shape- or contour-based object recognition methods. 
 
+\subsection{V1 simulation research}
+
+A number of approaches to the computational modeling of the neural mechanism of the V1 area of mammals have been proposed. 
+The differences between these approaches lie in their points of focus, 
+where some approaches focus on pathway, some on mechanism, and some on computation. 
+Some studies have concentrated on the visual neural pathway 
+\cite{bickle1999,shariati2012,nakagama2004,harvey2008}. 
+For example, Bickle et al. \cite{bickle1999} proposed an artificial neural network with interactive activation and competition (IAC) mechanism by reference to the lateral geniculate nucleus (LGN), 
+which is the direct pathway from the primary visual cortex to the thalamus, 
+to implement several functions of the visual cortex. 
+Shariati et al. \cite{shariati2012} simulated the entire neural pathway from a photoreceptor in the retina to the second sub-layer of the primary visual cortex. 
+Some studies have concentrated on visual neurocomputing problems 
+\cite{curuklu2002,wang2011,li2005,mihalas2011,ramirez2013}. 
+For example, Curuklu \cite{curuklu2002} proposed a Bayesian confidence propagation neural network (BCPNN) to simulate a hypercolumn, which is the functional unit of the visual cortex. 
+Wang et al. \cite{wang2011} used sparse coding and a back-propagation (BP) neural network to model the primary visual cortex. 
+Finally, a number of studies have concentrated on the functional roles of variant neurons in the visual system \cite{okamoto2004,willmore2012,bednar2012,law2011,giacomantonio2010,zhao2010,yan2012,piech2013,song2013}. 
+Okamoto \cite{okamoto2004} designed a honeycomb-like model based on a mechanism of short-range horizontal connections to explain the topological characteristics of the V1 area. 
+Willmore \cite{willmore2012} successfully simulated the visual cortex based on Hebbian and anti-Hebbian rules. 
+Bednar et al. \cite{bednar2012,law2011} implemented a gain-controlled, adaptive, 
+and lateral-connected model that specialized the function of every neuron in the pathway, 
+and simulated the primary visual cortex more completely. 
+The above studies were able to realize some neural circuits and partial functions of the V1 area.
+However, they did not sufficiently account for real image representation, 
+which is the ultimate and most important function of the V1 area. 
+In fact, all subsequent processing, such as object recognition and scene understanding, 
+begins in the V1 area. 
+Above all, these studies lacked the crucial consideration of how the V1's output meets the demands of subsequent recognition tasks. 
+This constitutes one of the main goals of the present study.
 
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
@@ -270,7 +312,6 @@ The authors would like to thank...
 % http://www.michaelshell.org/tex/ieeetran/bibtex/
 \bibliographystyle{IEEEtran}
 % argument is your BibTeX string definitions and bibliography database(s)
-\nocite{*}
 \bibliography{ref}
 %
 % <OR> manually copy in the resultant .bbl file
