@@ -151,6 +151,42 @@ begins in the V1 area.
 Above all, these studies lacked the crucial consideration of how the V1's output meets the demands of subsequent recognition tasks. 
 This constitutes one of the main goals of the present study.
 
+\subsection{Shape- or contour-based object recognition}
+
+Shape- or contour-based object recognition research has a long history. 
+In the early stage, chamfer matching \cite{borgefors1988,shotton2005,thayananthan2003,opelt2006} 
+was a frequently-used method that converted an original image into a depth image, 
+and searched for the point with the best match. 
+This method demonstrated a certain adaptability. 
+As an additional aid, an image pyramid was designed to achieve scale invariance \cite{borgefors1988}. 
+However, this method usually exhibits high time complexity and has a low tolerance to background interference. 
+To address this problem, several new variants of the chamfer matching method have been proposed in recent years. 
+For example, Shotton \cite{shotton2005} designed an oriented chamfer matching model, 
+Thayananthan \cite{thayananthan2003} combined this method with a shape context descriptor, 
+and Opelt \cite{thayananthan2003} added AdaBoost. 
+These variants were observed to improve the efficiency and recognition rate.
+
+Another type of shape-based method is mainly based on contour segment matching between templates and real images. 
+This type of method firstly converts an image into edges, 
+and then fits curves or line segments to the edge pixels. 
+Subsequently, the set of curves or line segments are represented with some geometrical feature descriptors. Finally, the similarity between the set of segments and shape templates are obtained. 
+Once matching pairs between line segments and the template are established, 
+some guesses can be made to estimate the possible positions for the target object, 
+and then verify these possible positions one-by-one. 
+This type of method can be further divided into two categories. 
+One is the dominant-set method and the other is the partial-match method. 
+Pavan \cite{pavan2007} proposed the dominant-set method for finding the principle corresponding components in two sets. 
+Yang \cite{yang2012} used this method to form a scale invariant global shape similarity estimation to match between template contour parts and image edge fragments. 
+Partial-match methods \cite{ma2011,riemenschneider2010,liu2010} are similar to dominant-set methods. 
+Ma \cite{ma2011} obtained a similarity matrix based on the angles of edges in a contour and maximized the similarity between classes through Liu's cluster algorithm \cite{liu2010}. 
+Objects were then recognized by seeking the largest community. 
+Differing from the work of Ma \cite{ma2011}, 
+in the stage of evaluation, Riemenschneider \cite{riemenschneider2010} estimated the object position using the pyramid matching kernel (PMK) algorithm after conducting contour segment matching. 
+Methods proposed in \cite{zhu2008,srinivasan2010} introduced a shape context descriptor. 
+Zhu \cite{zhu2008} used linear programming to find a one-to-one mapping between the image and the template. 
+Srinivasan \cite{srinivasan2010} developed this method further by introducing a bottom-up process to optimize many-to-one mapping results. 
+In general all these methods exhibit high time complexity subject to exhaustive comparison between real-world images and templates.
+
 % An example of a floating figure using the graphicx package.
 % Note that \label must occur AFTER (or within) \caption.
 % For figures, \caption should occur after the \includegraphics.
