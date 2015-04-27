@@ -2,7 +2,7 @@
 
 %\usepackage{ifpdf}
 \usepackage{cite}
-%\usepackage[pdftex]{graphicx}
+\usepackage{graphicx}
 %\usepackage[cmex10]{amsmath}
 %\usepackage{algorithmic}
 %\usepackage{array}
@@ -187,28 +187,130 @@ Zhu \cite{zhu2008} used linear programming to find a one-to-one mapping between 
 Srinivasan \cite{srinivasan2010} developed this method further by introducing a bottom-up process to optimize many-to-one mapping results. 
 In general all these methods exhibit high time complexity subject to exhaustive comparison between real-world images and templates.
 
-% An example of a floating figure using the graphicx package.
-% Note that \label must occur AFTER (or within) \caption.
-% For figures, \caption should occur after the \includegraphics.
-% Note that IEEEtran v1.7 and later has special internal code that
-% is designed to preserve the operation of \label within \caption
-% even when the captionsoff option is in effect. However, because
-% of issues like this, it may be the safest practice to put all your
-% \label just after \caption rather than within \caption{}.
-%
-% Reminder: the "draftcls" or "draftclsnofoot", not "draft", class
-% option should be used if it is desired that the figures are to be
-% displayed while in draft mode.
-%
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=2.5in]{myfigure}
-% where an .eps filename suffix will be assumed under latex, 
-% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-% via \DeclareGraphicsExtensions.
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure}
+Other shape-based recognition methods have been proposed, 
+such as the constellation model \cite{fergus2004} and spectral model \cite{leordeanu2007}.
+These methods use the relative location of points in a contour, 
+where the established spatial relationships are regarded as constraints. 
+The spatial relationships of an edge point to its surroundings are calculated in order to 
+determine whether the surrounding pixels belong to the target object or to the background. 
+A sparse representation is thus derived from these spatial relationships, 
+and a probabilistic inference is used to estimate the position of a target object. 
+The main disadvantage of this type of method is that the recognition result can be greatly affected 
+when the foreground and the background are mixed or objects overlap. 
+Leordeanu \cite{leordeanu2007} proposed a spectral model to calculate the geometrical relationships of pairwise points, 
+and to analyze where pairwise points were densely located in a contour. 
+The drawback of this model is that it requires a great many training samples.
+
+In addition, some shape-based recognition methods are a mixture of several existing approaches. 
+Fergus \cite{fergus2004} counted the occurrences of foreground features, 
+and consulted with contour matching to obtain the probabilities of foreground to background, 
+and, finally, to estimate the position of a target object. 
+Gupta \cite{gupta2009} designed a contour descriptor by reference to the concept of torsion in physics. 
+This descriptor performs well for changing scales. 
+However, the method performs poorly when the contour is somewhat missing because it is concerned with global contours. 
+Schlecht \cite{schlecht2011} described the marked features of an object by a codebook of angles, 
+and combined Hough voting for object detection. 
+Ferrari \cite{ferrari2006} proposed gradual contour searching to recognize objects in a real-world image.
+
+In general, shape-based object recognition methods are not covered by the mainstream technology. 
+The reasons for this are as follows. 
+(a) This type of method always requires good preprocessing to reduce noise or to obtain some basic geometrical units such as line segments; however the preprocessing results are affected by numerous factors. 
+(b) A target object’s background, position, size, and posture are changing constantly, 
+which is a substantial challenge for template matching. 
+(c) Template matching is essentially a combinational optimization problem that requires searching for a globally optimum solution, 
+which is a severe challenge for any searching algorithm. 
+(d) The template matching method involves many process steps such as template acquisition, 
+template formal representation, search-friendly image re-organization and re-representation after preprocessing, 
+definition of geometrical features, searching and combining geometrical features, 
+definition of geometrical constraints, and generating and verifying assumptions. 
+All these requirements increase the complexity of a complete shape-based system.
+
+\section{Hypercolumn-array Based Image Representation}
+
+\subsection{The structure of a hypercolumn-inspired array}
+
+In \cite{wei2014,wei2014b,wei2000}, 
+a multi-layer neural computational model that simulated hypercolumns in the primary visual cortex was proposed. 
+The output layer of this model can be used to represent the orientation information of a contour image.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.85\linewidth]{images/fig1.png}
+\caption{The structure of a hypercolumn-array, which is used for contour representation. 
+Each small hexagon represents an orientation chip that corresponds to a simple cell. 
+Each simple cell in the V1 area is sensitive to a bar of light with a particular orientation (slope). 
+We evenly divide the overall orientation interval from 0 to $\pi$ into nineteen sub-intervals. 
+Nineteen orientation chips, each of which responds to one, and only one, sub-interval, 
+are combined as a hypercolumn, and nineteen small hexagons happen to form a large hexagon. 
+All the chips in the same hypercolumn share the same receptive field.}
+\label{fig:1}
+\end{figure}
+
+As shown in \figurename~\ref{fig:1},
+this layer is comprised of a number of large, hexagonal hypercolumns, 
+and two of these in the upper-right corner of the figure are marked by two black frames. 
+Each hypercolumn consists of nineteen orientation chips (small hexagons). 
+Each chip can selectively respond to an orientation-specific segment of contour existing in its receptive field. 
+\figurename~\ref{fig:2} shows the scope and the distribution of the receptive fields of several neighboring hypercolumns, and how they share these receptive fields. 
+All nineteen chips in a single column can completely cover the range of slope from 0 to $\pi$. 
+All these columns assemble into an array, 
+which plays the roles of extraction and representation of the orientation features of contour in an image. 
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\linewidth]{images/fig2.png}
+\caption{Seven neighboring hypercolumns and their receptive fields in a visual field. 
+(a) A segment of contour in a visual field. 
+(b) The purple rounded region is covered by seven square receptive fields, 
+and they overlap with each other to some extent. 
+(c) Seven colored neighboring hypercolumns whose corresponding receptive fields with the same colors 
+are shown in (b).}
+\label{fig:2}
+\end{figure}
+
+\subsection{Representing images by a hypercolumn-inspired array}
+
+One of the most important discoveries in neurobiology is that a hypercolumn in the primary cortex can respond to a series of stimuli with continuously changing orientations. 
+As the discoverers, Hubel and Wiesel won the Nobel Prize in 1982. 
+We were therefore inspired to use this mechanism to obtain and represent segments of contour in an image. 
+After uploading an edge image to the aforementioned hypercolumn array, 
+in a certain receptive field, 
+some linearly-distributed pixels will activate a certain orientation chip of a hypercolumn. 
+This indicates that we can represent all contour information in an image by a set of active units (i.e. orientation chips). In mathematics, each unit represents a line vector. Therefore, the output of a hypercolumn array is no longer a group of discrete, isolated, and pixel-wise points, 
+but some preliminarily-integrated short line segments that contain a wealth of geometrical information such as position, length, and angle. 
+Thus, the hypercolumn array not only upgrades the representation level of an edge image, 
+but also reserves the original characteristic of pixel distribution in an edge image. 
+\figurename~\ref{fig:3} to \figurename~\ref{fig:5} shows several examples of such representation.
+A simple triangle, an onion shape, and a contour of a car were uploaded to the hypercolumn array,
+which generated a set of activated orientation chips.
+This is very similar to using sparse coding to represent an image.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.7\linewidth]{images/fig3.png}
+\caption{Some orientation chips (black points in (b)) are activated by a simple triangle in (a), 
+where, in (b), the topological feature of the triangle is preserved by the set of active orientation chips.}
+\label{fig:3}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.7\linewidth]{images/fig4.png}
+\caption{The partial contour at the bottom-right of an onion (in (a)) from the MPEG7 dataset 
+passes through three neighboring and overlapping receptive fields, 
+which activates three orientation chips in the three hypercolumns respectively (in (b)), 
+and these chips correctly reflect the geometrical information in this contour segment.}
+\label{fig:4}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.75\linewidth]{images/fig5.png}
+\caption{A contour of a car is represented by an array with 452 hypercolumns. 
+The extent to which the details of the car that are preserved increases 
+with an increasing number of activated orientation chips.}
+\label{fig:5}
+\end{figure}
 
 % Note that IEEE typically puts floats only at the top, even when this
 % results in a large percentage of a column being occupied by floats.
