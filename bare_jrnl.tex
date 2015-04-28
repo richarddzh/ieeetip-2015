@@ -6,7 +6,7 @@
 %\usepackage[cmex10]{amsmath}
 %\usepackage{algorithmic}
 %\usepackage{array}
-%\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage[caption=false,font=footnotesize]{subfig}
 %\usepackage{fixltx2e}
 %\usepackage{stfloats}
 %\usepackage{dblfloatfix}
@@ -235,7 +235,7 @@ The output layer of this model can be used to represent the orientation informat
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.85\linewidth]{images/fig1.png}
+\includegraphics[width=0.85\linewidth]{images/fig1.jpg}
 \caption{The structure of a hypercolumn-array, which is used for contour representation. 
 Each small hexagon represents an orientation chip that corresponds to a simple cell. 
 Each simple cell in the V1 area is sensitive to a bar of light with a particular orientation (slope). 
@@ -258,7 +258,7 @@ which plays the roles of extraction and representation of the orientation featur
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\linewidth]{images/fig2.png}
+\includegraphics[width=\linewidth]{images/fig2.pdf}
 \caption{Seven neighboring hypercolumns and their receptive fields in a visual field. 
 (a) A segment of contour in a visual field. 
 (b) The purple rounded region is covered by seven square receptive fields, 
@@ -287,7 +287,7 @@ This is very similar to using sparse coding to represent an image.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.7\linewidth]{images/fig3.png}
+\includegraphics[width=0.55\linewidth]{images/fig3.pdf}
 \caption{Some orientation chips (black points in (b)) are activated by a simple triangle in (a), 
 where, in (b), the topological feature of the triangle is preserved by the set of active orientation chips.}
 \label{fig:3}
@@ -295,7 +295,7 @@ where, in (b), the topological feature of the triangle is preserved by the set o
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.7\linewidth]{images/fig4.png}
+\includegraphics[width=0.55\linewidth]{images/fig4.pdf}
 \caption{The partial contour at the bottom-right of an onion (in (a)) from the MPEG7 dataset 
 passes through three neighboring and overlapping receptive fields, 
 which activates three orientation chips in the three hypercolumns respectively (in (b)), 
@@ -305,43 +305,57 @@ and these chips correctly reflect the geometrical information in this contour se
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.75\linewidth]{images/fig5.png}
+\includegraphics[width=0.55\linewidth]{images/fig5.pdf}
 \caption{A contour of a car is represented by an array with 452 hypercolumns. 
 The extent to which the details of the car that are preserved increases 
 with an increasing number of activated orientation chips.}
 \label{fig:5}
 \end{figure}
 
-% Note that IEEE typically puts floats only at the top, even when this
-% results in a large percentage of a column being occupied by floats.
+The foregoing examples indicate that an edge image can be easily represented with activated orientation chips in a hypercolumn array. 
+Each activated chip represents a vector reflecting the position, length, and angle of a short line segment. 
+In addition, the chip's activation level can also indicate the level of similarity between a real stimulus and the chip's built-in preference. 
+This is equivalent to a comparison between an input and a template. 
+For example, the stimulus in a receptive field might sometimes be a curve or a dotted line rather than a perfect straight line. 
+Therefore, the output of hypercolumns is an approximation to the original edge image, 
+as shown in \figurename~\ref{fig:6}. 
+This approximation can reflect the distribution of pixels in a receptive field, which offers a certain degree of flexibility and error tolerance.
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.75\linewidth]{images/fig6.pdf}
+\caption{Orientation chips can approximately represent stimulus. 
+(a) A real stimulus in a receptive field might be a small curve. 
+(b) An orientation chip with the closest built-in orientation preference is activated. 
+(c) The final output is an approximation of the original stimulus.}
+\label{fig:6}
+\end{figure}
 
-% An example of a double column floating figure using two subfigures.
-% (The subfig.sty package must be loaded for this to work.)
-% The subfigure \label commands are set within each subfloat command,
-% and the \label for the overall figure must come after \caption.
-% \hfil is used as a separator to get equal spacing.
-% Watch out that the combined width of all the subfigures on a 
-% line do not exceed the text width or a line break will occur.
-%
-%\begin{figure*}[!t]
-%\centering
-%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
-%\label{fig_first_case}}
-%\hfil
-%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
-%\label{fig_second_case}}
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure*}
-%
-% Note that often IEEE papers with subfigures do not employ subfigure
-% captions (using the optional argument to \subfloat[]), but instead will
-% reference/describe all of them (a), (b), etc., within the main caption.
-% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
-% labels, the optional argument to \subfloat must be present. If a
-% subcaption is not desired, just leave its contents blank,
-% e.g., \subfloat[].
+\subsection{Image reconstruction from an activated array}
+
+However, the scale of a hypercolumn-array, given as the number of hypercolumns in it, 
+and the number of orientation chips in a hypercolumn, is limited. 
+Thus, using a finite resource to represent infinite stimuli must inevitably result in approximation, 
+and the degree of approximation must be evaluated after converting an original image to some activated orientation chips. 
+To verify that the hypercolumn array can represent the original stimulus with sufficient fidelity, 
+we rebuild an image by redrawing lines in the receptive fields of the activated orientation chips, 
+and then compare the original image to the rebuilt one. 
+As shown in \figurename~\ref{fig:7}, 
+the contour information of an original image can be effectively recorded, 
+and the rebuilt version is nearly identical to the original. 
+Further experimental verification of the image reconstruction ability of a hypercolumn-array will be presented in Section 6.
+
+\begin{figure}[!t]
+\centering
+\subfloat[Original image]{\includegraphics[width=0.25\linewidth]{images/fig7a.jpg}%
+\label{fig:7a}}
+\hfil
+\subfloat[Rebuilt image]{\includegraphics[width=0.25\linewidth]{images/fig7b.jpg}%
+\label{fig:7b}}
+\caption{The result of image reconstruction. (a) An original image from the MPEG7 dataset. (b) A rebuilt image based on the orientation chips activated by (a). Here, (a) and (b) are nearly identical.}
+\label{fig:7}
+\end{figure}
+
 
 
 % An example of a floating table. Note that, for IEEE style tables, the
