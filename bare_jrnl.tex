@@ -356,6 +356,23 @@ Further experimental verification of the image reconstruction ability of a hyper
 \label{fig:7}
 \end{figure}
 
+\section{Processing From A Hypercolumn Array To A Graph}
+
+After the preprocessing of the hypercolumn array discussed in the previous section, 
+an ordinary edge image has been converted to a group of active units, 
+each of which represents a short line segment with a certain position, length, and slope, 
+given as a quad vector: $x$-coordinate of the center point, 
+$y$-coordinate of the center point, length, and slope. 
+This representation by a group of units is more compact and information-rich. 
+Compared with a complete contour, the line segment represented by an active unit is somewhat fine, 
+and the information obtained from active units must be aggregated in some way to facilitate the subsequent recognition operation. 
+The use of sets is a simple aggregation approach, 
+but this approach is not sufficiently powerful to describe the topology of active units distributed in an array. 
+The use of graphs is a more effective approach to describe the relations between adjacent or connected active units. 
+Moreover, the layout characteristics of chips arranged in a hypercolumn as well as hypercolumns arranged in an array coincide with the functionality of graphs, 
+where nodes and links are two basic elements for constructing a network. 
+The analogy between a hypercolumn-array and a graph is quite a natural association. 
+This suggests the application of graphs to describe the topological distribution of activated orientation chips.
 
 
 % An example of a floating table. Note that, for IEEE style tables, the
