@@ -323,7 +323,7 @@ This approximation can reflect the distribution of pixels in a receptive field, 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.75\linewidth]{images/fig6.pdf}
+\includegraphics[width=0.6\linewidth]{images/fig6.pdf}
 \caption{Orientation chips can approximately represent stimulus. 
 (a) A real stimulus in a receptive field might be a small curve. 
 (b) An orientation chip with the closest built-in orientation preference is activated. 
@@ -398,6 +398,35 @@ We can generate an undirected graph (at right), of which the nodes are these act
 \label{fig:8}
 \end{figure}
 
+\subsection{Graph searching and route-parsing}
+
+The most significant value provided by the graph of chip nodes is 
+(a) it effectively organizes raw image data, which is converted into an ordered structure, 
+and (b) it facilitates the process of searching object contours. 
+As indicated by the previous discussion, 
+representing a continous contour requires the coordination of multiple chips, 
+which correspond to multiple connected nodes in our graph.
+From the point of view of a graph, the sequence of these connected nodes forms a route.
+\figurename~\ref{fig:9} shows an example of a route. 
+The key to shape-based object recognition involves locating one or several such routes
+that represent the contour or partial contour of the object to be discriminated.
+Therefore, a route-searching algorithm is required.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.65\linewidth]{images/fig9.pdf}
+\caption{A segment of an object's contour might be a route of a chip graph. 
+The top is a sequence of chips linked together by a route; 
+the middle is the original stimulus that activated the above route; 
+and the bottom is the approximate curve rebuilt from that route. }
+\label{fig:9}
+\end{figure}
+
+Route-searching seeks to combine the neighboring nodes of a graph. 
+However, some difficulties are encountered in this process because the contour of an object can vary, 
+such as a giraffe might stretch or bend its neck, 
+or a contour might suffer from interference with its background and be mixed with noise or be broken into several shorter segments. 
+  
 % An example of a floating table. Note that, for IEEE style tables, the
 % \caption command should come BEFORE the table and, given that table
 % captions serve much like titles, are usually capitalized except for words
