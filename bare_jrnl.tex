@@ -276,7 +276,7 @@ We were therefore inspired to use this mechanism to obtain and represent segment
 After uploading an edge image to the aforementioned hypercolumn array, 
 in a certain receptive field, 
 some linearly-distributed pixels will activate a certain orientation chip of a hypercolumn. 
-This indicates that we can represent all contour information in an image by a set of active units (i.e. orientation chips). In mathematics, each unit represents a line vector. Therefore, the output of a hypercolumn array is no longer a group of discrete, isolated, and pixel-wise points, 
+This indicates that we can represent all contour information in an image by a set of active units (i.e., orientation chips). In mathematics, each unit represents a line vector. Therefore, the output of a hypercolumn array is no longer a group of discrete, isolated, and pixel-wise points, 
 but some preliminarily-integrated short line segments that contain a wealth of geometrical information such as position, length, and angle. 
 Thus, the hypercolumn array not only upgrades the representation level of an edge image, 
 but also reserves the original characteristic of pixel distribution in an edge image. 
@@ -374,6 +374,29 @@ where nodes and links are two basic elements for constructing a network.
 The analogy between a hypercolumn-array and a graph is quite a natural association. 
 This suggests the application of graphs to describe the topological distribution of activated orientation chips.
 
+\subsection{The generation of a graph}
+
+We hope to represent a continuous contour by coordinating the information derived from multiple chips through the implementation of a graph. 
+Therefore, the best manner of defining a graph for a hypercolumn-array is to set the chips as the nodes of the graph, 
+and establish the links between those nodes (i.e., chips) that might be successively joined together to represent a slightly longer line or curve. 
+Because all 19 chips in a given hypercolumn share a completely coincident receptive field, 
+and multiple lines are unlikely to exist concurrently in this fairly small area, 
+these chips are usually not activated simultaneously.
+Therefore, no links can be established between these independent nodes. 
+Only those chips with neighboring or partially overlapping receptive fields might be coordinated to represent a contour that passes through multiple receptive fields. 
+Links are assigned between these possibly coordinated nodes that usually belong to separate but adjacent hypercolumns. 
+The present description defines a basic network of chip nodes, i.e., an orientation chip graph. 
+Once an edge image has been uploaded, 
+some nodes of this graph will be activated. 
+Most importantly, the chip graph provides a structural data form for subsequent geometrical or topological analysis, as illustrated in \figurename~\ref{fig:8}.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.85\linewidth]{images/fig8.jpg}
+\caption{An edge image from the ETHZ dataset (at left) has activated some orientation chips. 
+We can generate an undirected graph (at right), of which the nodes are these activated chips.}
+\label{fig:8}
+\end{figure}
 
 % An example of a floating table. Note that, for IEEE style tables, the
 % \caption command should come BEFORE the table and, given that table
