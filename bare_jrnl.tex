@@ -370,7 +370,7 @@ The use of sets is a simple aggregation approach,
 but this approach is not sufficiently powerful to describe the topology of active units distributed in an array. 
 The use of graphs is a more effective approach to describe the relations between adjacent or connected active units. 
 Moreover, the layout characteristics of chips arranged in a hypercolumn as well as hypercolumns arranged in an array coincide with the functionality of graphs, 
-where nodes and links are two basic elements for constructing a network. 
+where nodes and edges are two basic elements for constructing a graph. 
 The analogy between a hypercolumn-array and a graph is quite a natural association. 
 This suggests the application of graphs to describe the topological distribution of activated orientation chips.
 
@@ -378,17 +378,17 @@ This suggests the application of graphs to describe the topological distribution
 
 We hope to represent a continuous contour by coordinating the information derived from multiple chips through the implementation of a graph. 
 Therefore, the best manner of defining a graph for a hypercolumn-array is to set the chips as the nodes of the graph, 
-and establish the links between those nodes (i.e., chips) that might be successively joined together to represent a slightly longer line or curve. 
+and establish the edges between those nodes (i.e., chips) that might be successively joined together to represent a slightly longer line or curve. 
 Because all 19 chips in a given hypercolumn share a completely coincident receptive field, 
 and multiple lines are unlikely to exist concurrently in this fairly small area, 
 these chips are usually not activated simultaneously.
-Therefore, no links can be established between these independent nodes. 
+Therefore, no edges can be established between these independent nodes. 
 Only those chips with neighboring or partially overlapping receptive fields might be coordinated to represent a contour that passes through multiple receptive fields. 
 Links are assigned between these possibly coordinated nodes that usually belong to separate but adjacent hypercolumns. 
-The present description defines a basic network of chip nodes, i.e., an orientation chip graph. 
-Once an edge image has been uploaded, 
+The present description defines a basic graph of chip nodes, i.e., an orientation chip graph. 
+Once an image has been uploaded, 
 some nodes of this graph will be activated. 
-Most importantly, the chip graph provides a structural data form for subsequent geometrical or topological analysis, as illustrated in \figurename~\ref{fig:8}.
+Most importantly, the orientation chip graph provides a structural data form for subsequent geometrical or topological analysis, as illustrated in \figurename~\ref{fig:8}.
 
 \begin{figure}[!t]
 \centering
@@ -404,7 +404,7 @@ The most significant value provided by the graph of chip nodes is
 (a) it effectively organizes raw image data, which is converted into an ordered structure, 
 and (b) it facilitates the process of searching object contours. 
 As indicated by the previous discussion, 
-representing a continous contour requires the coordination of multiple chips, 
+representing a continuous contour requires the coordination of multiple chips, 
 which correspond to multiple connected nodes in our graph.
 From the point of view of a graph, the sequence of these connected nodes forms a route.
 \figurename~\ref{fig:9} shows an example of a route. 
@@ -422,10 +422,31 @@ and the bottom is the approximate curve rebuilt from that route. }
 \label{fig:9}
 \end{figure}
 
-Route-searching seeks to combine the neighboring nodes of a graph. 
-However, some difficulties are encountered in this process because the contour of an object can vary, 
-such as a giraffe might stretch or bend its neck, 
-or a contour might suffer from interference with its background and be mixed with noise or be broken into several shorter segments. 
+Route-searching seeks to combine the neighboring nodes of a graph into routes that represent contour segments. 
+However, some difficulties are encountered in this process because the contour of an object might suffer from interference with its background and be mixed with noise or be broken into several shorter segments.
+As is shown in \figurename~\ref{fig:8}, 
+the connectivity of a graph constructed from activated orientation chips can be high.
+A randomly chosen long route might go through both an object and its background.
+Ideally, a route should be either part of the object's contour or from the background,
+and also it should convey enough information for us to determine whether it is part of the object's contour.
+Therefore the searching process must be carefully guided to yield a reasonable result.
+Natural contours tend to be smooth and continuous, which provides a good hint.
+We assign weights to edges to measure the smoothness and continuity between chip nodes.
+Given two adjacent nodes $u$ and $v$ in the chip graph,
+the weight $w$ of the edge $(u,v)$ is defined as follows.
+\begin{equation}
+w(u,v) = e^{-\max\{dist(l(u), l(v)),\lambda\cdot|\alpha(u)-\alpha(v)|\}}.
+\end{equation}
+In this equation, $l(\cdot)$ is the short line segment represented by the corresponding orientation chip
+and $\alpha(\cdot)$ is the orientation of that chip.
+The function $dist(\cdot,\cdot)$ calculates the minimal distance between the endpoints of two line segments.
+It measures the continuity between the two chips.
+The difference of orientation is multiplied by a factor $\lambda$ to measure the smoothness.
+In this paper, the orientation is measured in degree and $\lambda$ takes $0.15$.
+The edge weights range from $0$ to $1$.
+Larger weights indicate stronger collinearity between chip nodes.
+In the following algorithm, the route searching process is guided by edge weights.
+
   
 % An example of a floating table. Note that, for IEEE style tables, the
 % \caption command should come BEFORE the table and, given that table
