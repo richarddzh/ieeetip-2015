@@ -3,8 +3,8 @@
 %\usepackage{ifpdf}
 \usepackage{cite}
 \usepackage{graphicx}
-%\usepackage[cmex10]{amsmath}
-%\usepackage{algorithmic}
+\usepackage[cmex10]{amsmath}
+\usepackage{algorithmic}
 %\usepackage{array}
 \usepackage[caption=false,font=footnotesize]{subfig}
 %\usepackage{fixltx2e}
@@ -12,6 +12,13 @@
 %\usepackage{dblfloatfix}
 \usepackage{url}
 \hyphenation{op-tical net-works semi-conduc-tor}
+
+%% wrap algorithm in a figure environment without caption and number.
+%% #1 is the title of the algorithm.
+\newenvironment{myalgorithm}[1]%
+{\begin{figure}[!h]\small\noindent\rule{\linewidth}{1pt}\\#1\vspace{-0.5em}\\%
+\rule{\linewidth}{0.5pt}\\\vspace{-1.5em}}%
+{\vspace{-0.5em}\rule{\linewidth}{1pt}\end{figure}}
 
 \begin{document}
 \title{Hypercolumn-array Based Image Representation and 
@@ -468,9 +475,61 @@ A larger value indicates a tighter or more collinear connection.
 \label{fig:10}
 \end{figure}
 
+In the following Algorithm 4.1, the route searching process is guided by edge weights.
+A threshold $\varpi$ for edge weight is used to control the collinearity of the routes.
+In this paper, $\varpi$ takes $0.04$.
+This threshold ensures that the distance between line segments represented by adjacent chips in a route are within 3 pixels and the orientation difference is less than $20^\circ$.
 
-In the following algorithm, the route searching process is guided by edge weights.
+\begin{myalgorithm}{Algorithm 4.1 Route-Generation($G,\varpi$)}
+\begin{algorithmic}[1]
+\REQUIRE $G(V,E)$ is an orientation chip graph, where $V$ is the node set and $E$ is the edge set.
+$\varpi$ is a threshold controlling the collinearity of routes.
+\ENSURE $R$ is a set of routes found by this algorithm.
+\FOR{$v\in V$}
+  \STATE let $r$ be an empty route
+  \WHILE{$v\neq$ nil and $v$ is not visited}
+    \STATE append chip $v$ to route $r$
+    \STATE mark $v$ visited
+    \STATE let $v\leftarrow\arg\max_{u\in\{u|(u,v)\in E\textrm{ and }w(u,v)\ge\varpi\}}{w(u,v)}$
+  \ENDWHILE
+  \STATE add $r$ to $R$ if $r$ is not empty
+\ENDFOR
+\end{algorithmic}
+\end{myalgorithm}
 
+Algorithm 4.1 roughly provides some basic routes out of a graph that can be rebuilt to obtain some continuous and smooth segments of contour. 
+However, there are some additional opportunities for those short basic routes to join together because 
+the searching process may start from the middle of a longer route, which is broken into two segments. 
+Here, we use Algorithm 4.2 to link these broken routes.
+
+\begin{myalgorithm}{Algorithm 4.2 Route-Fusion($R,\varpi$)}
+\begin{algorithmic}[1]
+\REQUIRE $R$ is a set of basic routes.
+$\varpi$ is a threshold controlling the collinearity of routes.
+\ENSURE $R$ is updated so that short routes are joined together.
+\FOR{$r_1,r_2\in R$}
+  \FOR{each end node $v$ of $r_1$ and $u$ of $r_2$}
+    \IF{$w(u,v)\le\varpi$}
+      \STATE remove $r_1,r_2$ from $R$
+      \STATE join $r_1,r_2$ and add joined route to $R$
+    \ENDIF
+  \ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{myalgorithm}
+
+Because the number of basic routes is much less than the number of nodes, 
+Algorithm 4.2 usually requires less time than Algorithm 4.1. 
+After the fusion process, some longer routes are obtained. 
+\figurename~\ref{fig:11} presents an example. 
+From this example, we can understand that the process of long-route formation can provide further integration of the edge information of an image. 
+These long routes are usually lines or smooth curves. 
+These routes have geometrical significance because they are no longer discrete pixels, 
+and may include all or a part of the contour of an object. 
+Therefore, object recognition can be realized by matching long routes with a template. 
+In this phase of the process, the number of long routes is greatly reduced.
+The succeeding object recognition process is thus an operation involving a small set of curves,
+which is inevitably more efficient than an operation involving a large set of pixels.
   
 % An example of a floating table. Note that, for IEEE style tables, the
 % \caption command should come BEFORE the table and, given that table
