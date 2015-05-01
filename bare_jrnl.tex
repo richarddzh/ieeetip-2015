@@ -445,6 +445,30 @@ The difference of orientation is multiplied by a factor $\lambda$ to measure the
 In this paper, the orientation is measured in degree and $\lambda$ takes $0.15$.
 The edge weights range from $0$ to $1$.
 Larger weights indicate stronger collinearity between chip nodes.
+\figurename~\ref{fig:10} illustrates weight setting in different cases.
+
+\begin{figure}[!t]
+\centering
+\subfloat[$w=e^{-\max\{0,0\}}=1$]{\includegraphics[width=0.45\linewidth]{images/fig10a.pdf}%
+\label{fig:10a}}
+\hfil
+\subfloat[$w=e^{-\max\{0,15\lambda\}}=0.11$]{\includegraphics[width=0.45\linewidth]{images/fig10b.pdf}%
+\label{fig:10b}}\\
+\subfloat[$w=e^{-\max\{3,0\}}=0.05$]{\includegraphics[width=0.45\linewidth]{images/fig10c.pdf}%
+\label{fig:10c}}
+\hfil
+\subfloat[$w=e^{-\max\{0,35\lambda\}}=0.01$]{\includegraphics[width=0.45\linewidth]{images/fig10d.pdf}%
+\label{fig:10d}}
+\caption{Setting the edge weight between two orientation chips. 
+A larger value indicates a tighter or more collinear connection.
+(a) If two chips represent a longer line cooperatively, then the weight between them equals 1.
+(b) If two chips represent a smooth curve, then the weight is relatively large.
+(c) If two chips represent discontinuous short line segments, then the weight is small.
+¨K: If two chips represent a sharp turn, then the weight is small.}
+\label{fig:10}
+\end{figure}
+
+
 In the following algorithm, the route searching process is guided by edge weights.
 
   
