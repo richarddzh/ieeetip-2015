@@ -488,11 +488,14 @@ $\varpi$ is a threshold controlling the collinearity of routes.
 \FOR{$v\in V$}
   \STATE let $r$ be an empty route
   \WHILE{$v\neq$ nil and $v$ is not visited}
-    \STATE append chip $v$ to route $r$
-    \STATE mark $v$ visited
-    \STATE let $v\leftarrow\arg\max_{u\in\{u|(u,v)\in E\textrm{ and }w(u,v)\ge\varpi\}}{w(u,v)}$
+    \STATE append chip $v$ to route $r$, and mark $v$ visited
+    \STATE let $\hat{u}\leftarrow$ nil
+    \FOR{$u\in\{u|(u,v)\in E\textrm{ and }w(u,v)\ge\varpi\}$}
+      \STATE \textbf{if} $\hat{u}$ is nil or $w(u,v)<w(\hat{u},v)$ \textbf{then} let $\hat{u}\leftarrow u$
+    \ENDFOR
+    \STATE let $v\leftarrow\hat{u}$
   \ENDWHILE
-  \STATE add $r$ to $R$ if $r$ is not empty
+  \STATE \textbf{if} $r$ is not empty \textbf{then} add $r$ to $R$
 \ENDFOR
 \end{algorithmic}
 \end{myalgorithm}
@@ -511,7 +514,7 @@ $\varpi$ is a threshold controlling the collinearity of routes.
   \FOR{each end node $v$ of $r_1$ and $u$ of $r_2$}
     \IF{$w(u,v)\le\varpi$}
       \STATE remove $r_1,r_2$ from $R$
-      \STATE join $r_1,r_2$ and add joined route to $R$
+      \STATE join $r_1,r_2$, and add joined route to $R$
     \ENDIF
   \ENDFOR
 \ENDFOR
@@ -538,6 +541,38 @@ which is inevitably more efficient than an operation involving a large set of pi
 the contour of an object (at left) can be denoted by several routes (at right).}
 \label{fig:11}
 \end{figure}
+
+\section{Route-based Shape Matching}
+
+With the algorithms described in the previous section,
+a set of routes are extracted from the orientation chip graph.
+These routes consist of sequence of orientation chips representing continuous and smooth contour segments.
+We can evaluate the similarity between these routes and the shape template. 
+If a sub-graph contains many routes of high similarity to the shape template,
+then it is highly possible that an object of that shape is located in the corresponding sub-region of the image which the graph represents. 
+Object detection based on this idea requires two steps: 
+the comparison of the similarity between a route and a segment of the template, 
+and the assessment of the overall similarity between a sub-graph and the whole template.
+
+\subsection{Measurement of similarity between a route and a template segment}
+
+A number of algorithms exist at present for conducting curve similarity comparison. 
+In [39], a curve representation method was proposed based on a sequence of tangent angles, 
+but this method is not invariant under either translation or rotation. 
+In [40], a type of turning function was proposed to represent polygons and to measure their shapes, 
+but this method is very sensitive to small zigzag or burr noise, 
+and, worse yet, representation errors in the front part [ACCDON55]will accumulate and propagate to the tail part. 
+In addition, the algorithm requires normalization in the scope of the entire polygon[ACCDON56], 
+which consolidates the relative length proportions of all edges. 
+This is not suitable for those curves suffering from a degree of mixing with the background or those that lack some portion of a normal contour. 
+In [41], a discrete curve evolution algorithm, which uses polygons to approximate curves, was proposed. 
+However, this method introduces a fitting error while initializing the number of polygon edges, 
+and, moreover, requires computation in addition to calculations for evaluation of polygon similarity[ACCDON57]. 
+Matlab also provides a function call for calculation of curvature, 
+but its return value is seriously affected by local noise. 
+B-spline can be effectively used to fit a curve in advance, 
+but this requires an accurate sequence of sampling sites. 
+This sequence cannot be guaranteed on a new image, and manual appointment of a sequence is not possible. 
 
 % An example of a floating table. Note that, for IEEE style tables, the
 % \caption command should come BEFORE the table and, given that table
