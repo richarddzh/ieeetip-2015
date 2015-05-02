@@ -557,22 +557,30 @@ and the assessment of the overall similarity between a sub-graph and the whole t
 \subsection{Measurement of similarity between a route and a template segment}
 
 A number of algorithms exist at present for conducting curve similarity comparison. 
-In [39], a curve representation method was proposed based on a sequence of tangent angles, 
-but this method is not invariant under either translation or rotation. 
-In [40], a type of turning function was proposed to represent polygons and to measure their shapes, 
-but this method is very sensitive to small zigzag or burr noise, 
-and, worse yet, representation errors in the front part [ACCDON55]will accumulate and propagate to the tail part. 
-In addition, the algorithm requires normalization in the scope of the entire polygon[ACCDON56], 
-which consolidates the relative length proportions of all edges. 
-This is not suitable for those curves suffering from a degree of mixing with the background or those that lack some portion of a normal contour. 
-In [41], a discrete curve evolution algorithm, which uses polygons to approximate curves, was proposed. 
-However, this method introduces a fitting error while initializing the number of polygon edges, 
-and, moreover, requires computation in addition to calculations for evaluation of polygon similarity[ACCDON57]. 
-Matlab also provides a function call for calculation of curvature, 
-but its return value is seriously affected by local noise. 
-B-spline can be effectively used to fit a curve in advance, 
-but this requires an accurate sequence of sampling sites. 
-This sequence cannot be guaranteed on a new image, and manual appointment of a sequence is not possible. 
+In \cite{schindler2008}, a curve representation method has been proposed based on a sequence of tangent angles,
+but this method is not appropriate for measuring similarity between a partial contour segment and a complete shape template.
+In \cite{arkin1991}, a type of turning function has been proposed to represent polygons and to measure their shapes, 
+but this method is very sensitive to small zigzag or burr noise.
+It is not suitable for incomplete contours or contours mixed with the background. 
+
+Intuitively, the most direct method of comparing two curves is to evaluate the degree to which they are mutually overlapping, 
+which is similar to solving an optimization problem, i.e., 
+finding the best-matched interval for two curves. 
+This is perhaps the most thorough method because it matches curves based upon their overall geometrical tendencies rather than local numerical features. 
+Furthermore, this method can flexibly adapt to curve variances of length, position, and posture. 
+We therefore designed a curve similarity measurement algorithm based on evaluating the degree of overlap between two curves. 
+
+Here, we are concerned with two classes of curves. 
+The first class, denoted as TempClass, derives from the shape template of an object category. 
+The second class of curve, denoted as RouteClass, derives from routes. 
+Our task is to determine whether any RouteClass curve or any part of one coincides with a TempClass curve. 
+The degree of coincidence represents their similarity. 
+A partial match should be allowed because a RouteClass curve might include not only an object contour, 
+but also a noise curve in the background. 
+Therefore, the interval that maximizes the similarity is the object of optimization. 
+Furthermore, rotation and scale transformations are other factors that can alter an object's contour. 
+All these factors therefore make the process of seeking the best match between a template curve and a route curve an optimization process. 
+\figurename~\ref{fig:12} illustrates our idea, and the matching algorithm is given as follows.
 
 % An example of a floating table. Note that, for IEEE style tables, the
 % \caption command should come BEFORE the table and, given that table
