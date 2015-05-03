@@ -573,7 +573,7 @@ We therefore designed a curve similarity measurement algorithm based on evaluati
 Here, we are concerned with two classes of curves. 
 The first class, denoted as TempClass, derives from the shape template of an object category. 
 The second class of curve, denoted as RouteClass, derives from routes. 
-Our task is to determine whether any RouteClass curve or any part of one coincides with a TempClass curve. 
+Our task is to determine whether any RouteClass curve coincides with a TempClass curve. 
 The degree of coincidence represents their similarity. 
 A partial match should be allowed because a RouteClass curve might include not only an object contour, 
 but also a noise curve in the background. 
@@ -582,85 +582,410 @@ Furthermore, rotation and scale transformations are other factors that can alter
 All these factors therefore make the process of seeking the best match between a template curve and a route curve an optimization process. 
 \figurename~\ref{fig:12} illustrates our idea, and the matching algorithm is given as follows.
 
-% An example of a floating table. Note that, for IEEE style tables, the
-% \caption command should come BEFORE the table and, given that table
-% captions serve much like titles, are usually capitalized except for words
-% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
-% and up, which are usually not capitalized unless they are the first or
-% last word of the caption. Table text will default to \footnotesize as
-% IEEE normally uses this smaller font for tables.
-% The \label must come after \caption as always.
-%
-%\begin{table}[!t]
-%% increase table row spacing, adjust to taste
-%\renewcommand{\arraystretch}{1.3}
-% if using array.sty, it might be a good idea to tweak the value of
-% \extrarowheight as needed to properly center the text within the cells
-%\caption{An Example of a Table}
-%\label{table_example}
-%\centering
-%% Some packages, such as MDW tools, offer better commands for making tables
-%% than the plain LaTeX2e tabular which is used here.
-%\begin{tabular}{|c||c|}
-%\hline
-%One & Two\\
-%\hline
-%Three & Four\\
-%\hline
-%\end{tabular}
-%\end{table}
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.8\linewidth]{images/fig12.pdf}
+\caption{An example of a similarity measurement of two curves.}
+\label{fig:12}
+\end{figure}
 
+\begin{myalgorithm}{Algorithm 5.1 Route-Similarity($r,t$)}
+\begin{algorithmic}[1]
+\REQUIRE $r$ is RouteClass curve and $t$ is TempClass curve.
+\end{algorithmic}
+\end{myalgorithm}
 
-% Note that the IEEE does not put floats in the very first column
-% - or typically anywhere on the first page for that matter. Also,
-% in-text middle ("here") positioning is typically not used, but it
-% is allowed and encouraged for Computer Society conferences (but
-% not Computer Society journals). Most IEEE journals/conferences use
-% top floats exclusively. 
-% Note that, LaTeX2e, unlike IEEE journals/conferences, places
-% footnotes above bottom floats. This can be corrected via the
-% \fnbelowfloat command of the stfloats package.
+At the beginning of this algorithm, we rotate a curve and make its most extended direction coincide with the positive $x$-axis. 
+The purpose of this step is to accommodate the posture diversity of curves. 
+Interpolation is used to adjust the scale of a curve, to accommodate the scale diversity of curves. 
+\figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
+in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
+A subjective evaluation of the figure indicates that $B$ and $A$ are more alike than $C$ and $A$. 
+Although $B$ has noise, its overall shape is more similar to $A$. 
+The output of the similarity comparison algorithm exactly reflects this observation. 
+The basic principle underlying our algorithm is that the holistic tendency in a curve is more significant for similarity measurements. 
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.65\linewidth]{images/fig13.pdf}
+\caption{An example of a curve comparison based on a holistic strategy.}
+\label{fig:13}
+\end{figure}
 
+\subsection{Evidence accumulation}
 
+Based on the similarity measurement method described in the previous sub-section, 
+we can enumerate the long routes determined from the chip graph one by one. 
+In most cases, they will contain some discriminative segment of an object contour, 
+and we can compare them with a template and label them according to their similarity values. 
+This is right an evidence collecting process, 
+if we see object recognition as an inference process. 
+If more than a single evidence assembling at some local area of an image is observed, 
+then we have reason to believe that this area deserves further searching.
+
+A graph generated as discussed in sub-section 4.1, 
+describes neighborhood relations between short line segments, 
+but the number of nodes in this graph is usually great. 
+According to sub-section 4.2, a graph can be decomposed into some routes, each of which represents a curve. 
+This middle-level integration can greatly improve the compactness of image representation, 
+and, simultaneously, create a smaller searching space. 
+For instance, as shown in \figurename~\ref{fig:14}, based on 40 apple images in the ETHZ dataset, 
+we respectively count the number of pixels in their edge images, the number of short line segments after hypercolumn array representation, and the number of routes after graph decomposition. 
+We can see that the degree of image compactness is steadily improved, and the searching space defined by routes has been greatly reduced.
+
+If we assign a route as a node, and assign the neighborhood between the ends of two routes as a link, 
+then we can generate a new type of graph with its grain-size enlarged. 
+If the hypercolumn array based graph is denoted as a Line-graph, then this new graph is denoted as a Route-graph. 
+For all nodes in the Route-graph, we define a distance matrix to measure the similarity between any pair of route curves and template curves. 
+\figurename~\ref{fig:15} illustrates the formation process of this matrix. 
+From each row, we can choose one or several routes with small values as evidence by which the hypothesis of a template curve occurring is supported. 
+If the assemblage of evidence, i.e., those matched routes, distributes in a sufficiently narrow area, 
+or if the routes are well-joined, then a goal object can be expected to occur in this area.
+
+A single factor of evidence is not sufficient for sound discrimination because this matched curve might be a part of the background. 
+The co-relationships of a group of curves are more important than any single curve's similarity. 
+For example, several curves that are very similar to some segments of an object's contour may be scattered over an image, but their relative spatial relations might not satisfy the structural constrains of that object. 
+In this paper, we adopt two sets of independent contour partition strategies for the same template. This guarantees that the contour segments can overlap with each other to some extent. The advantage of ensuring some measure of overlap is that the joining of two adjacent segments in one set can be established by a continuous segment in another set.
+We can use one set for template matching, and the other set for cross validation. 
+\figurename~\ref{fig:16} illustrates this idea.
+¡¡Based on the Route-graph, the following Algorithm 5.2 realizes a searching-companied matching. 
+Its basic flow is as follows. 
+(a) Based on the similarity between a route and template, 
+a sub-graph that contains dense evidence features is detected, 
+which corresponds to a likely occurrence of a goal object. 
+(b) This sub-graph¡¯s route is joined with its neighboring route, 
+and, if this new route exhibits an improved similarity with the template, 
+then the sub-graph is updated by including the neighboring route. 
+(c) A leaf node is deleted from a route, 
+and, if this improves the similarity with the template, 
+then the sub-graph is updated by deleting that node. 
+(d) If any two neighboring routes in the sub-graph have two corresponding curves in the template, 
+validate whether these two segments are adjacent or not. 
+If this topological constraint of connectivity is violated, 
+then update the sub-graph by deleting the shorter route. 
+(e) Carry out cross-validation by altering another set of contour partition strategy.
+
+\begin{myalgorithm}{Algorithm 5.2 Route-Based-Object-Detection()}
+\begin{algorithmic}[1]
+\STATE empty
+\end{algorithmic}
+\end{myalgorithm}
+
+\section{Evolution Of A Two-dimensional Template}
+
+In previous sections, we addressed the method of object recognition using a shape template. 
+However, the posture of an object is continuously changing in a natural environment, 
+and all possible object postures cannot be matched to a unique template. 
+This reveals a problem regarding multiple prototypes. 
+The key limitation of the template method is the stiffness of the template. 
+For example, a giraffe's contour outline is affected by two factors, 
+the angle of view, and the status of joints. 
+An ideal situation is to have images of a standard giraffe under all angles of view, 
+and with all possible physical orientations, 
+or we can have a three-dimensional (3D) digital model of a giraffe that defines all physical rotation functions, 
+but the burden of obtaining such a model is far too great. 
+We would hope to derive a new template according to a limited number of ready-made two-dimensional (2D) templates that would be adaptable to variations in the viewing angle or the giraffe's posture.
+
+\subsection{Variation of viewing angles}
+
+A 2D template is the image of a 3D object projected onto a 2D plane. 
+Based on computer graphic theory, we build a coordinate system in \figurename~\ref{fig:17}, 
+where $E(0,0,e_z)$ is the viewpoint, $O$ is the origin, $XOY$ is the imaging plane, 
+and a giraffe is found in the direction of the negative $y$-axis.
+If $P(x_i,y_i,z_i)$ is a point on that giraffe, 
+then its projective point on the imaging plane is
+\begin{equation}
+x_i^{pre}=\frac{e_z x_i}{-z_i+e_z}, y_i^{pre}=\frac{e_z y_i}{-z_i+e_z}, z_i^{pre}=0.
+\label{eqn:2}
+\end{equation}
+We use the subscript `pre' to denote the projective points of the original template before any transformations.
+The subscript `post' denotes the projective points of the transformed template.
+
+To obtain a transformed template viewed from a different angle,
+we rotate the 2D template of giraffe about the $y$-axis.
+If the giraffe rotates $\theta$ degree, which is equivalent to a change in viewing angle, 
+then the new coordinate of $P$ is given as follows. 
+\begin{eqnarray}
+x_i^{rotated}&=&x_i \cos\theta+z_i \sin\theta, \nonumber\\
+y_i^{rotated}&=&y_i, \nonumber\\
+z_i^{rotated}&=&-x_i \sin\theta+z_i \cos\theta. 
+\end{eqnarray}
+
+Then, the projective point of the rotated $P(x_i^{rotated},y_i^{rotated},z_i^{rotated})$ on the imaging plane is as follows.
+\begin{eqnarray}
+x_i^{post}&=&\frac{e_z(x_i \cos\theta+z_i \sin\theta)}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber\\
+y_i^{post}&=&\frac{e_z y_i}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber\\
+z_i^{post}&=&0.
+\label{eqn:4}
+\end{eqnarray}
+
+The projective points of the rotated template form the second 2D template.
+From (\ref{eqn:2}) and (\ref{eqn:4}), we obtain the following.
+\begin{eqnarray}
+\frac{x_i^{post}}{x_i^{pre}}&=&\frac{x_i \cos\theta+z_i \sin\theta}{x_i \sin\theta-z_i \cos\theta+e_z}
+\cdot\frac{-z_i+e_z}{x_i} \nonumber\\
+\frac{y_i^{post}}{y_i^{pre}}&=&\frac{-z_i+e_z}{x_i \sin\theta-z_i \cos\theta+e_z} \nonumber\\
+\frac{x_i^{post}}{y_i^{post}}
+&=&\left(\cos\theta+\frac{z_i}{x_i}\sin\theta\right)\cdot\frac{x_i^{pre}}{y_i^{pre}}.
+\label{eqn:5}
+\end{eqnarray}
+
+At present, 
+we have a 2D image of the giraffe from which we cannot know the accurate parameters of the perspective projection. 
+We must therefore derive another 2D image based upon the known image. 
+From (\ref{eqn:5}), we can see that it is not necessary to know these parameters when we derive a new image based on an old angle of view by shifting to a new angle of view. 
+In (\ref{eqn:5}), $\frac{y_i^{post}}{y_i^{pre}}$ is known,
+and $\frac{z_i}{x_i}$ is determined by the original posture of the object to be detected. 
+$\frac{z_i}{x_i}$ is nearly the cotangent value of one-half of the observer's horizontal visual angle. 
+In human beings, this is usually implemented by a physiological mechanism occurring in the posterior parietal cortex for calculating the gazing angle and converging angle. 
+Herein, we approximate this by a series of cotangent values of small angles, 
+and, simultaneously, $\theta$ can also be assessed by the observer. 
+If an empirical formula for assessing these values can be obtained, 
+the value of $\frac{x_i^{post}}{y_i^{post}}$ can be estimated. 
+In consideration for the object rotating about the $y$-axis, we have $y_i^{post}=y_i^{pre}$, 
+and, finally, we can obtain $x_i^{post}$. 
+This process realizes the derivation of a new 2D appearance of an object from its current 2D status without knowing the explicit perspective parameters. 
+Of course, this is subject to the experiential knowledge of an observer on assessing the cotangent value of one-half of the horizontal visual angle and the variation of the visual angle.
+
+\subsection{Variation of postures}
+
+Another frequent factor that can change the contour of a giraffe's 2D projection is the variation of its physical posture. 
+A posture rotation can be expressed by some points of a contour rotating $\theta$ degree about a line $L$, 
+where $L$ is defined by a point $Q$ and a unit vector $\mathbf{u}=(u_1,u_2,u_3)$. 
+In computer graphic theory, this transform is performed by a matrix $Rot(\mathbf{u},\theta)=$
+\begin{equation}
+\left(
+\begin{array}{ccc}
+ c+\bar{c}u_1^2 
+& \bar{c}u_1 u_2+u_3 s 
+& \bar{c}u_1 u_3-u_2 s \\
+ \bar{c}u_1 u_2-u_3 s 
+& c+\bar{c}u_2^2 
+& \bar{c}u_2 u_3+u_1 s \\
+ \bar{c}u_1 u_3+u_2 s 
+& \bar{c}u_2 u_3-u_1 s 
+& c+\bar{c}u_3^2
+\end{array}\right),
+\label{eqn:6}
+\end{equation} 
+where $s=\sin\theta$,$c=\cos\theta$, and $\bar{c}=1-\cos\theta$.
+
+As an example, we suppose that a giraffe's neck has a rotational axis parallel to the $z$-axis; 
+thus, $\mathbf{u} = (0,0,1)$. 
+This rotation will change the coordinates of the giraffe's head and neck as follows.
+\begin{equation}
+(x_i^{neck},y_i^{neck},z_i^{neck},1)=(x_i,y_i,z_i,1)\cdot Rot((0,0,1),\theta).
+\label{eqn:7}
+\end{equation}
+
+From equation (\ref{eqn:6}) and (\ref{eqn:7}), we get
+\begin{eqnarray}
+x_i^{neck}&=&x_i\cos\theta-y_i\sin\theta\nonumber\\
+y_i^{neck}&=&x_i\sin\theta+y_i\cos\theta\nonumber\\
+z_i^{neck}&=&z_i.
+\end{eqnarray}
+
+The projective point of the bended neck is as follows.
+\begin{eqnarray}
+x_i^{post}&=&\frac{e_z(x_i\cos\theta-y_i\sin\theta)}{-z_i+e_z}, \nonumber\\
+y_i^{post}&=&\frac{e_z(x_i\sin\theta+y_i\cos\theta)}{-z_i+e_z}, \nonumber\\
+z_i^{post}&=&0.
+\label{eqn:9}
+\end{eqnarray}
+
+Comparing (\ref{eqn:9}) with the projective points of the original template in (\ref{eqn:2}),
+we obtain the following.
+\begin{eqnarray}
+\frac{x_i^{post}}{x_i^{pre}}&=&\cos\theta-\frac{y_i}{x_i}\sin\theta \nonumber\\
+\frac{y_i^{post}}{y_i^{pre}}&=&\cos\theta+\frac{x_i}{y_i}\sin\theta
+\label{eqn:10}
+\end{eqnarray}
+
+In (\ref{eqn:10}), $\theta$ is assessed by the observer, 
+and $\frac{y_i}{x_i}$ is obtained from the original posture of the object. 
+The right-hand side of (\ref{eqn:10}) is actually the product of the tangent of one-half of the horizontal visual angle and the cotangent of one-half of the vertical visual angle. 
+These are determined by the aforementioned physiological mechanism in the posterior parietal cortex, 
+and these are right our visual experiences. 
+Because $x_i^{pre}$ and $y_i^{pre}$ are known, $x_i^{post}$ and $y_i^{post}$ can be estimated. 
+In a similar fashion, we can derive the local changes of the 2D image caused by other posture rotations. 
+A complex posture rotation will be decomposed into several simple rotations about various axes.
+
+From the proposed method based on the 2D appearance of an object, 
+the knowledge of its 3D structure, and the perspective projection formulas, 
+a new 2D appearance can be derived. 
+This method will be used to derive a new 2D template of an object based on an existing 2D template. 
+A prototype database is used to store these templates, 
+which improve the generalization ability of the proposed shape-based object recognition method.
+
+\section{Experimental Results}
+
+\subsection{Image representation test}
+
+Our first experiment seeks to determine whether the hypercolumn-based array is able to preserve the major contours in an original image. 
+For this test, we selected the well-known contour testing dataset, MPEG-7, consisting of 1400 images. 
+Similar to the method proposed in \cite{russ1995}, 
+we also define the differences between the benchmark and the hypercolumn array's output as noise, 
+and the signal-to-noise ratio (SNR) as $SNR[dB]=10\cdot\log_10(\frac{\sigma_{image}}{\sigma_{noise}})$.
+
+The statistical curves shown in \figurename~\ref{fig:18}, 
+where the red points are our SNR values and the blue points are the SNR values obtained from the gPb algorithm 
+\cite{maire2008}, indicate that our SNR results are better than those of the gPb algorithm.
+\figurename~\ref{fig:19} demonstrates three reconstruction examples,
+in which column (a) includes original images from the ETHZ dataset, 
+column (b) includes corresponding edge images, 
+and column (c) includes re-descriptions of the edge images using routes.
+\figurename~\ref{fig:20} is an example of the process of adding routes one-by-one, 
+from which we observe that an image has been reduced to a small number of routes, and the route becomes the basic unit being manipulated.
+
+\subsection{Object detection test}
+
+The most common method of evaluating object detection performance is through the use of the DR-FPPI curve, 
+where DR represents the detection rate, and FPPI is the false positives per image. 
+Generally, a small FPPI value can better reflect the performance of an algorithm because the DR can attain a high value provided the FPPI is loosened. 
+Therefore, we prefer a smaller FPPI value such as 0.3 or 0.4. 
+\tablename~\ref{tab:1} lists a comparison of DR values obtained by our method and several state-of-the-art methods 
+\cite{ferrari2010,ferrari2008} for FPPI values of 0.2 and 0.4 with images obtained from the ETHZ dataset. 
+\tablename~\ref{tab:1} indicates that the performance of our method is either the best or very nearly the best for all images and FPPR values considered.
+ 
+\begin{table}[!t]
+\renewcommand{\arraystretch}{1.3}
+\caption{Comparison of the detection rate for FPPI 0.2/0.4}
+\label{tab:1}
+\centering
+\scriptsize
+\begin{tabular}{l|lllll}
+\hline
+& Apple & Bottle & Giraffe & Mug & Swan \\
+\hline
+Our method
+& 0.80/0.83
+& 0.78/0.91
+& 0.77/0.80
+& 0.75/0.88
+& 0.75/0.81\\
+$\text{Hough only}_\text{(Pascal)}$
+& 0.18/0.29
+& 0.48/0.56
+& 0.16/0.35
+& 0.20/0.36
+& 0.29/0.46\\
+$\text{Full system}_\text{(Pascal)}$
+& 0.74/0.84
+& 0.69/0.82
+& 0.34/0.45
+& 0.66/0.79
+& 0.53/0.70\\
+$\text{Full system}_\text{(20\% IoU)}$
+& -/-
+& 0.72/0.83
+& 0.47/0.59
+& 0.72/0.84
+& 0.63/0.75\\
+$\text{Ferrari08}_\text{(Pascal)}$
+& 0.38/0.60
+& 0.84/0.94
+& 0.43/0.51
+& 0.65/0.78
+& 0.41/0.54\\
+$\text{Ferrari08}_\text{(20\% IoU)}$
+& 0.55/0.85
+& 0.82/0.90
+& 0.73/0.79
+& 0.78/0.81
+& 0.47/0.64\\
+\hline
+\end{tabular}
+\end{table}
+
+The Weizzman dataset of horse images is another popular dataset for object detection testing. 
+\figurename~\ref{fig:xx} presents our testing results on this dataset. 
+The three green arrowed curves represent the template segments, 
+the blue curves are the successfully matched contours, and the red boxes indicate the positions of horses.
+
+\subsection{Efficiency comparison}
+
+The proposed shape-based object detection method requires no expensive training and no high-dimensional feature vectors. We therefore expect our method to exhibit a relatively high efficiency. 
+To this end, we compared the time consumed for our method relative to that of a similar state-of-the-art method. 
+Ma et al. \cite{ma2011} proposed a shape-based object detection method that, 
+like the proposed method, utilizes contour segments as the feature of interest. 
+Based again on the ETHZ dataset, we collected the time costs of the two methods.
+\figurename~\ref{fig:21} shows the time comparisons for each category, 
+i.e., giraffe, apple logo, swan, bottle, and mug. 
+We can see that our method is much less time consuming than the other method, 
+which requires exhaustive searching.
+
+\subsection{Active processing}
+
+The proposed method has a pronounced potential for employing high-level knowledge downwards to actively search an image and collect specific or anticipated geometrical or topological evidence, 
+a process denoted as active processing, or active image analysis. 
+For example, due to some less than ideal preprocessing parameters, 
+a contour segment of an object might be missed at the early phase of analysis, 
+or a crucial contour might be broken into several discontinuous parts, 
+or a contour misjoined with an edge from the background. 
+All these errors can hide valuable evidence and prevent objects from being resolved from the background. 
+However, our method has the capability of correcting these early errors at a later stage through active analysis. 
+Based on a partial match between a template and some real curves, 
+our method can formulate a hypothesis and anticipate what should be the next evidence and where it most likely occurs. 
+Subsequently, a series of intensive operations confined to this designated and limited area are conducted, 
+such as adjusting parameters, executing a new round of preprocessing, 
+and facilitating the emergence of new evidence or reorganizing old evidence and searching within them. 
+This type of processing, under a clear top-down instruction, is active. 
+The most significant advantage of this functionality is that it enables bidirectional, data-driven, 
+and concept-driven processing, and merges them together seamlessly. 
+This functionality greatly improves self-adaptability.
+  
+\figurename~\ref{fig:22} demonstrates how active processing is achieved. 
+In \figurename~\ref{fig:22a}, a suspected route is selected as the beginning of the search because it matches a part of the template well. 
+This segment is re-represented by a route, i.e., a sequence of nodes. 
+We define a state evaluation function for the search process, 
+which is the aforementioned distance value between the current curve and the template. 
+This value, as heuristic information, can be used to guide the search. 
+The present distance value is 20. 
+In \figurename~\ref{fig:22b}, through loosening the threshold defining neighboring nodes, 
+one end node of the red route, 14, has two succeeding nodes, 15 and 19. 
+A tentative, depth-first exploration can return a value of the state evaluation function. 
+The movement towards 15 brings a value of 17.98, and that towards 19 brings a value of 15.54, 
+making the second candidate the better choice, which leads us to \figurename~\ref{fig:22c}. 
+From \figurename~\ref{fig:22d}~to~\ref{fig:22e} the remaining nodes can be evaluated in the same manner, 
+where only the node with the smallest heuristic value can be extended. 
+In particular, \figurename~\ref{fig:22e} indicates that a region-limited preprocessing is executed again under a new canny-detector parameter because the active processing attempts to find a permanently lost edge that bridges the gap between two routes. 
+Finally, as shown in \figurename~\ref{fig:22f}, an almost perfect contour of a bottle is fully detected.
+
+In principle, active processing can be realized under any kind of image representation. 
+However, in practice, an overly fine representation is harmful for efficiency, 
+and an overly abstract representation is harmful for flexibility. 
+The Line-graph and Route-graph mechanism is able to not only integrate discrete pixels to a compound degree, 
+but also preserve sufficient details for intensive analysis. 
+This mechanism not only facilitates searching, 
+but also significantly eases the burden associated with the searching process.
 
 \section{Conclusion}
-The conclusion goes here.
+
+\figurename~\ref{fig:23} briefly summaries the overall architecture of the proposed system. 
+The system has four representation levels: 
+(1) an edge image; (2) a hypercolumn-array representing the contour information of the edge image; 
+(3) a graph of neighboring short line segments; 
+and (4) the salient routes of the graph that are candidates for shape matching. 
+The most significant aspect of this process is that the route of a graph provides the proper granularity for the operations of shape-construction and shape-destruction, i.e., the route is sufficiently flexible and concise to be manipulated for the purpose of contour combination.
+
+Therefore, the present work provides the following four conclusions.
+
+(a) Perception always is real-time processing, so its efficiency is crucial for an algorithm's rationality evaluation. In this paper, we achieve the same performance using a relatively simple method, but our method is much more time-saving.
+
+(b) A biological visual system, especially that of a mammal, has been evolved by nature to be a highly optimized system. Feature-integration theory has been deeply studied in cognitive psychology. Physiological inspirations are indispensable for designing a practical vision system.
+
+(c) Task-specific methods, for their diversities, are weak to mature vision theory. A necessary symbol for this theory is it has a unique architecture, whether in representation or in processing. For this sake, choosing geometrical structure and topological relation to represent and choosing shape match to achieve recognition are perhaps on the right track.
+
+(d) The training set and appearance-based machine learning strategy for object detection under a natural environment can never exhaust all possible negative cases. Therefore, this strategy is really too expensive for its limited gain in generalization. The strategy of evidence accumulation and inference can avoid these costs.
 
 
+%\appendices
+%\section{Proof of the First Zonklar Equation}
+%Appendix one text goes here.
 
-
-
-% if have a single appendix:
-%\appendix[Proof of the Zonklar Equations]
-% or
-%\appendix  % for no appendix heading
-% do not use \section anymore after \appendix, only \section*
-% is possibly needed
-
-% use appendices with more than one appendix
-% then use \section to start each appendix
-% you must declare a \section before using any
-% \subsection or using \label (\appendices by itself
-% starts a section numbered zero.)
-%
-
-
-\appendices
-\section{Proof of the First Zonklar Equation}
-Appendix one text goes here.
-
-% you can choose not to have a title for an appendix
-% if you want by leaving the argument blank
-\section{}
-Appendix two text goes here.
-
-
-% use section* for acknowledgment
 \section*{Acknowledgment}
 
-
-The authors would like to thank...
+This work was supported by the 973 Program (Project No. 2010CB327900), NSFC project (Project Nos. 61375122 and 30990260). We also thank the anonymous referees for their helpful comments.
 
 
 % Can use something like this to put references on a page
