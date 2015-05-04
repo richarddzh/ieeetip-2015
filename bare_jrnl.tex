@@ -764,6 +764,13 @@ We would hope to derive a new template according to a limited number of ready-ma
 
 \subsection{Variation of viewing angles}
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.7\linewidth]{images/fig17.pdf}
+\caption{A coordinate system where a 3D object is projected upon a 2D plane.}
+\label{fig:17}
+\end{figure}
+
 A 2D template is the image of a 3D object projected onto a 2D plane. 
 Based on computer graphic theory, we build a coordinate system in \figurename~\ref{fig:17}, 
 where $E(0,0,e_z)$ is the viewpoint, $O$ is the origin, $XOY$ is the imaging plane, 
@@ -903,6 +910,13 @@ Similar to the method proposed in \cite{russ1995},
 we also define the differences between the benchmark and the hypercolumn array's output as noise, 
 and the signal-to-noise ratio (SNR) as $SNR[dB]=10\cdot\log_10(\frac{\sigma_{image}}{\sigma_{noise}})$.
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.95\linewidth]{images/fig18.jpg}
+\caption{SNR result for the proposed method applied on the MPEG-7 dataset.}
+\label{fig:18}
+\end{figure}
+
 The statistical curves shown in \figurename~\ref{fig:18}, 
 where the red points are our SNR values and the blue points are the SNR values obtained from the gPb algorithm 
 \cite{maire2008}, indicate that our SNR results are better than those of the gPb algorithm.
@@ -912,6 +926,20 @@ column (b) includes corresponding edge images,
 and column (c) includes re-descriptions of the edge images using routes.
 \figurename~\ref{fig:20} is an example of the process of adding routes one-by-one, 
 from which we observe that an image has been reduced to a small number of routes, and the route becomes the basic unit being manipulated.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.9\linewidth]{images/fig19.jpg}
+\caption{Representing images in the ETHZ dataset by routes.}
+\label{fig:19}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.95\linewidth]{images/fig20.jpg}
+\caption{A sequence of routes that have been added successively.}
+\label{fig:20}
+\end{figure}
 
 \subsection{Object detection test}
 
@@ -934,11 +962,11 @@ Therefore, we prefer a smaller FPPI value such as 0.3 or 0.4.
 & Apple & Bottle & Giraffe & Mug & Swan \\
 \hline
 Our method
-& 0.80/0.83
+& \textbf{0.80}/0.83
 & 0.78/0.91
-& 0.77/0.80
-& 0.75/0.88
-& 0.75/0.81\\
+& \textbf{0.77/0.80}
+& 0.75/\textbf{0.88}
+& \textbf{0.75/0.81}\\
 $\text{Hough only}_\text{(Pascal)}$
 & 0.18/0.29
 & 0.48/0.56
@@ -946,7 +974,7 @@ $\text{Hough only}_\text{(Pascal)}$
 & 0.20/0.36
 & 0.29/0.46\\
 $\text{Full system}_\text{(Pascal)}$
-& 0.74/0.84
+& 0.74/\textbf{0.84}
 & 0.69/0.82
 & 0.34/0.45
 & 0.66/0.79
@@ -959,7 +987,7 @@ $\text{Full system}_\text{(20\% IoU)}$
 & 0.63/0.75\\
 $\text{Ferrari08}_\text{(Pascal)}$
 & 0.38/0.60
-& 0.84/0.94
+& \textbf{0.84/0.94}
 & 0.43/0.51
 & 0.65/0.78
 & 0.41/0.54\\
@@ -967,16 +995,23 @@ $\text{Ferrari08}_\text{(20\% IoU)}$
 & 0.55/0.85
 & 0.82/0.90
 & 0.73/0.79
-& 0.78/0.81
+& \textbf{0.78}/0.81
 & 0.47/0.64\\
 \hline
 \end{tabular}
 \end{table}
 
 The Weizzman dataset of horse images is another popular dataset for object detection testing. 
-\figurename~\ref{fig:xx} presents our testing results on this dataset. 
+\figurename~\ref{fig:21} presents our testing results on this dataset. 
 The three green arrowed curves represent the template segments, 
 the blue curves are the successfully matched contours, and the red boxes indicate the positions of horses.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.95\linewidth]{images/fig21.jpg}
+\caption{Detection testing for the Weizzman horse dataset.}
+\label{fig:21}
+\end{figure}
 
 \subsection{Efficiency comparison}
 
@@ -985,10 +1020,21 @@ To this end, we compared the time consumed for our method relative to that of a 
 Ma et al. \cite{ma2011} proposed a shape-based object detection method that, 
 like the proposed method, utilizes contour segments as the feature of interest. 
 Based again on the ETHZ dataset, we collected the time costs of the two methods.
-\figurename~\ref{fig:21} shows the time comparisons for each category, 
+\figurename~\ref{fig:22} shows the time comparisons for each category, 
 i.e., giraffe, apple logo, swan, bottle, and mug. 
 We can see that our method is much less time consuming than the other method, 
 which requires exhaustive searching.
+
+\begin{figure*}[!t]
+\centering
+\subfloat[Giraffes in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22a.jpg}}\hfil%
+\subfloat[Apple logos in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22b.jpg}}\hfil%
+\subfloat[Swans in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22c.jpg}}\\%
+\subfloat[Bottles in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22d.jpg}}\hfil%
+\subfloat[Mugs in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22e.jpg}}%
+\caption{Time-cost comparison between our method and \cite{ma2011}}
+\label{fig:22}
+\end{figure*}
 
 \subsection{Active processing}
 
@@ -1010,22 +1056,22 @@ The most significant advantage of this functionality is that it enables bidirect
 and concept-driven processing, and merges them together seamlessly. 
 This functionality greatly improves self-adaptability.
   
-\figurename~\ref{fig:22} demonstrates how active processing is achieved. 
-In \figurename~\ref{fig:22a}, a suspected route is selected as the beginning of the search because it matches a part of the template well. 
+\figurename~\ref{fig:23} demonstrates how active processing is achieved. 
+In \figurename~\ref{fig:23a}, a suspected route is selected as the beginning of the search because it matches a part of the template well. 
 This segment is re-represented by a route, i.e., a sequence of nodes. 
 We define a state evaluation function for the search process, 
 which is the aforementioned distance value between the current curve and the template. 
 This value, as heuristic information, can be used to guide the search. 
 The present distance value is 20. 
-In \figurename~\ref{fig:22b}, through loosening the threshold defining neighboring nodes, 
+In \figurename~\ref{fig:23b}, through loosening the threshold defining neighboring nodes, 
 one end node of the red route, 14, has two succeeding nodes, 15 and 19. 
 A tentative, depth-first exploration can return a value of the state evaluation function. 
 The movement towards 15 brings a value of 17.98, and that towards 19 brings a value of 15.54, 
-making the second candidate the better choice, which leads us to \figurename~\ref{fig:22c}. 
-From \figurename~\ref{fig:22d}~to~\ref{fig:22e} the remaining nodes can be evaluated in the same manner, 
+making the second candidate the better choice, which leads us to \figurename~\ref{fig:23c}. 
+From \figurename~\ref{fig:23d}~to~\ref{fig:23e} the remaining nodes can be evaluated in the same manner, 
 where only the node with the smallest heuristic value can be extended. 
-In particular, \figurename~\ref{fig:22e} indicates that a region-limited preprocessing is executed again under a new canny-detector parameter because the active processing attempts to find a permanently lost edge that bridges the gap between two routes. 
-Finally, as shown in \figurename~\ref{fig:22f}, an almost perfect contour of a bottle is fully detected.
+In particular, \figurename~\ref{fig:23e} indicates that a region-limited preprocessing is executed again under a new canny-detector parameter because the active processing attempts to find a permanently lost edge that bridges the gap between two routes. 
+Finally, as shown in \figurename~\ref{fig:23f}, an almost perfect contour of a bottle is fully detected.
 
 In principle, active processing can be realized under any kind of image representation. 
 However, in practice, an overly fine representation is harmful for efficiency, 
@@ -1037,7 +1083,15 @@ but also significantly eases the burden associated with the searching process.
 
 \section{Conclusion}
 
-\figurename~\ref{fig:23} briefly summaries the overall architecture of the proposed system. 
+\figurename~\ref{fig:24} briefly summaries the overall architecture of the proposed system.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.95\linewidth]{images/fig24.jpg}
+\caption{The overall architecture of the proposed system.}
+\label{fig:24}
+\end{figure}
+
 The system has four representation levels: 
 (1) an edge image; (2) a hypercolumn-array representing the contour information of the edge image; 
 (3) a graph of neighboring short line segments; 
