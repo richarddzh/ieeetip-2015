@@ -580,7 +580,10 @@ but also a noise curve in the background.
 Therefore, the interval that maximizes the similarity is the object of optimization. 
 Furthermore, rotation and scale transformations are other factors that can alter an object's contour. 
 All these factors therefore make the process of seeking the best match between a template curve and a route curve an optimization process. 
-\figurename~\ref{fig:12} illustrates our idea, and the matching algorithm is given as follows.
+\figurename~\ref{fig:12} illustrates our idea, and the algorithm is given as follows.
+Algorithm 5.1 finds the optimized interval of partial match between two curves.
+It is a genetic algorithm that minimizes the dissimilarity (or distance) 
+between part of the RouteClass curve and the TempClass curve.
 
 \begin{figure}[!t]
 \centering
@@ -589,15 +592,32 @@ All these factors therefore make the process of seeking the best match between a
 \label{fig:12}
 \end{figure}
 
-\begin{myalgorithm}{Algorithm 5.1 Route-Similarity($r,t$)}
+\begin{myalgorithm}{Algorithm 5.1 Route-Distance($r,t$)}
 \begin{algorithmic}[1]
 \REQUIRE $r$ is RouteClass curve and $t$ is TempClass curve.
+\STATE rotate $r$ and $t$ so that their most extended direction is along the $x$-axis
+\STATE sample $t$ uniformly to $N$ points $P_t=\{(x_i,y_i)|i=1,\cdots,N\}$
+\STATE randomly initialize $M$ subintervals of $[0,length(r)]$
+\REPEAT
+  \FOR{each subinterval $[p,q]$}
+    \STATE sample $r$ in $[p,q]$ to $N$ points $P_r=\{(x'_i,y'_i)\}$
+    \STATE calculate dissimilarity $d(P_t,P_r)$ by solving least-squares
+  \ENDFOR
+  \STATE remove 2 subintervals with maximal dissimilarity
+  \STATE add 2 subintervals by shrinking and extending the one with minimal dissimilarity
+\UNTIL{the minimal dissimilarity is steady}
+\RETURN the minimal dissimilarity
 \end{algorithmic}
 \end{myalgorithm}
 
 At the beginning of this algorithm, we rotate a curve and make its most extended direction coincide with the positive $x$-axis. 
 The purpose of this step is to accommodate the posture diversity of curves. 
 Interpolation is used to adjust the scale of a curve, to accommodate the scale diversity of curves. 
+The dissimilarity measure $d$ is calculated by solving a least-squares problem between two point sequences,
+\begin{equation}
+d(P_t,P_r)=\min_{\Delta x,\Delta y,k}\sum_{i=1}^{N}(kx_i+\Delta x-x'_i)^2+(ky_i+\Delta y-y'_i)^2,
+\end{equation}
+where $P_t,P_r$ is the sequences of sampling points on the template curve and route curve respectively.
 \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
 in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
 A subjective evaluation of the figure indicates that $B$ and $A$ are more alike than $C$ and $A$. 
@@ -633,6 +653,13 @@ For instance, as shown in \figurename~\ref{fig:14}, based on 40 apple images in 
 we respectively count the number of pixels in their edge images, the number of short line segments after hypercolumn array representation, and the number of routes after graph decomposition. 
 We can see that the degree of image compactness is steadily improved, and the searching space defined by routes has been greatly reduced.
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.7\linewidth]{images/fig14.jpg}
+\caption{The Route-graph significantly reduces the searching space.}
+\label{fig:14}
+\end{figure}
+
 If we assign a route as a node, and assign the neighborhood between the ends of two routes as a link, 
 then we can generate a new type of graph with its grain-size enlarged. 
 If the hypercolumn array based graph is denoted as a Line-graph, then this new graph is denoted as a Route-graph. 
@@ -642,18 +669,33 @@ From each row, we can choose one or several routes with small values as evidence
 If the assemblage of evidence, i.e., those matched routes, distributes in a sufficiently narrow area, 
 or if the routes are well-joined, then a goal object can be expected to occur in this area.
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.98\linewidth]{images/fig15.jpg}
+\caption{The distribution of evidence features among a Route-graph.}
+\label{fig:15}
+\end{figure}
+
 A single factor of evidence is not sufficient for sound discrimination because this matched curve might be a part of the background. 
 The co-relationships of a group of curves are more important than any single curve's similarity. 
 For example, several curves that are very similar to some segments of an object's contour may be scattered over an image, but their relative spatial relations might not satisfy the structural constrains of that object. 
 In this paper, we adopt two sets of independent contour partition strategies for the same template. This guarantees that the contour segments can overlap with each other to some extent. The advantage of ensuring some measure of overlap is that the joining of two adjacent segments in one set can be established by a continuous segment in another set.
 We can use one set for template matching, and the other set for cross validation. 
 \figurename~\ref{fig:16} illustrates this idea.
-¡¡Based on the Route-graph, the following Algorithm 5.2 realizes a searching-companied matching. 
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.8\linewidth]{images/fig16.pdf}
+\caption{Two independent template partitions provide cross-verification.}
+\label{fig:16}
+\end{figure}
+
+Based on the Route-graph, the following Algorithm 5.2 realizes a searching-companied matching. 
 Its basic flow is as follows. 
 (a) Based on the similarity between a route and template, 
 a sub-graph that contains dense evidence features is detected, 
 which corresponds to a likely occurrence of a goal object. 
-(b) This sub-graph¡¯s route is joined with its neighboring route, 
+(b) This sub-graph's route is joined with its neighboring route, 
 and, if this new route exhibits an improved similarity with the template, 
 then the sub-graph is updated by including the neighboring route. 
 (c) A leaf node is deleted from a route, 
@@ -665,9 +707,43 @@ If this topological constraint of connectivity is violated,
 then update the sub-graph by deleting the shorter route. 
 (e) Carry out cross-validation by altering another set of contour partition strategy.
 
-\begin{myalgorithm}{Algorithm 5.2 Route-Based-Object-Detection()}
+\begin{myalgorithm}{Algorithm 5.2 Route-Graph-Object-Detection($R,T$)}
 \begin{algorithmic}[1]
-\STATE empty
+\REQUIRE $R$ is a set of routes. $T$ is a set of $P$ template partitions
+$\{T_1,\cdots,T_P\}$. Each partition is a set of template segments.
+\ENSURE the algorithm finds a subset of $R$, which corresponds to the object to be detected.
+\STATE initialize a graph $G_R$ whose nodes are routes in $R$
+\FOR {each $(r_1,r_2)\in R$} 
+  \STATE \textbf{if} $r_1,r_2$ are adjacent \textbf{then} add edge $(r_1,r_2)$ to $E_R$
+\ENDFOR
+\FOR {each $T_p\in T$}
+  \FOR {each $r\in R$ and $t\in T_p$}
+    \STATE let $D[r][t]\leftarrow\text{Route-Distance}(r,t)$
+  \ENDFOR
+  \FOR {each $r\in R$}
+    \STATE let $D[r]\leftarrow\min_t D[r][t]$
+    \STATE let $t[r]\leftarrow\arg\min_t D[r][t]$
+  \ENDFOR
+  \FOR {each $t\in T_p$}
+    \STATE initialize a subgraph of mere node $(\arg\min_r D[r][t])$
+  \ENDFOR
+  \REPEAT
+    \FOR {each subgraph $G_S$}
+      \STATE let $R_{adj}$ be the set of adjacent routes
+      \IF {$R_{adj}\neq\emptyset$}
+        \STATE add $(\arg\min_{r\in R_{adj}}D[r])$ to $G_S$
+      \ENDIF
+      \IF {exists $r_1,r_2\in G_S$ and $t[r_1]=t[r_2]$}
+        \STATE remove the shorter of $r_1$ and $r_2$ from $G_S$
+      \ENDIF
+      \IF {routes in $G_S$ are more than segments in $T_p$}
+        \STATE remove $(\arg\max_{r\in G_S}D[r])$ from $G_S$
+      \ENDIF
+    \ENDFOR
+    \STATE remove duplicated subgraph
+  \UNTIL {subgraphs do not change}
+\ENDFOR
+\RETURN the subgraph with minimal average distance
 \end{algorithmic}
 \end{myalgorithm}
 
