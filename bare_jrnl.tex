@@ -1057,21 +1057,28 @@ and concept-driven processing, and merges them together seamlessly.
 This functionality greatly improves self-adaptability.
   
 \figurename~\ref{fig:23} demonstrates how active processing is achieved. 
-In \figurename~\ref{fig:23a}, a suspected route is selected as the beginning of the search because it matches a part of the template well. 
+In \figurename~\ref{fig:23}a, a suspected route is selected as the beginning of the search because it matches a part of the template well. 
 This segment is re-represented by a route, i.e., a sequence of nodes. 
 We define a state evaluation function for the search process, 
 which is the aforementioned distance value between the current curve and the template. 
 This value, as heuristic information, can be used to guide the search. 
 The present distance value is 20. 
-In \figurename~\ref{fig:23b}, through loosening the threshold defining neighboring nodes, 
+In \figurename~\ref{fig:23}b, through loosening the threshold defining neighboring nodes, 
 one end node of the red route, 14, has two succeeding nodes, 15 and 19. 
 A tentative, depth-first exploration can return a value of the state evaluation function. 
 The movement towards 15 brings a value of 17.98, and that towards 19 brings a value of 15.54, 
-making the second candidate the better choice, which leads us to \figurename~\ref{fig:23c}. 
-From \figurename~\ref{fig:23d}~to~\ref{fig:23e} the remaining nodes can be evaluated in the same manner, 
+making the second candidate the better choice, which leads us to \figurename~\ref{fig:23}c. 
+From \figurename~\ref{fig:23}d~to~\ref{fig:23}e the remaining nodes can be evaluated in the same manner, 
 where only the node with the smallest heuristic value can be extended. 
-In particular, \figurename~\ref{fig:23e} indicates that a region-limited preprocessing is executed again under a new canny-detector parameter because the active processing attempts to find a permanently lost edge that bridges the gap between two routes. 
-Finally, as shown in \figurename~\ref{fig:23f}, an almost perfect contour of a bottle is fully detected.
+In particular, \figurename~\ref{fig:23}e indicates that a region-limited preprocessing is executed again under a new canny-detector parameter because the active processing attempts to find a permanently lost edge that bridges the gap between two routes. 
+Finally, as shown in \figurename~\ref{fig:23}f, an almost perfect contour of a bottle is fully detected.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.98\linewidth]{images/fig23.jpg}
+\caption{An illustration of active-processing.}
+\label{fig:23}
+\end{figure}
 
 In principle, active processing can be realized under any kind of image representation. 
 However, in practice, an overly fine representation is harmful for efficiency, 
@@ -1157,46 +1164,9 @@ This work was supported by the 973 Program (Project No. 2010CB327900), NSFC proj
 %\end{thebibliography}
 
 % biography section
-% 
-% If you have an EPS/PDF photo (graphicx package needed) extra braces are
-% needed around the contents of the optional argument to biography to prevent
-% the LaTeX parser from getting confused when it sees the complicated
-% \includegraphics command within an optional argument. (You could create
-% your own custom macro containing the \includegraphics command to make things
-% simpler here.)
-%\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{mshell}}]{Michael Shell}
-% or if you just want to reserve a space for a photo:
 
-\begin{IEEEbiography}{Michael Shell}
-Biography text here.
-\end{IEEEbiography}
-
-% if you will not have a photo at all:
-\begin{IEEEbiographynophoto}{John Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
-
-% insert where needed to balance the two columns on the last page with
-% biographies
-%\newpage
-
-\begin{IEEEbiographynophoto}{Jane Doe}
-Biography text here.
-\end{IEEEbiographynophoto}
-
-% You can push biographies down or up by placing
-% a \vfill before or after them. The appropriate
-% use of \vfill depends on what kind of text is
-% on the last page and whether or not the columns
-% are being equalized.
 
 %\vfill
-
-% Can be used to pull up biographies so that the bottom of the last one
-% is flush with the other column.
-%\enlargethispage{-5in}
-
-
 
 % that's all folks
 \end{document}
