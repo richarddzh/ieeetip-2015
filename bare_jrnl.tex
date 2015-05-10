@@ -241,7 +241,7 @@ The output layer of this model can be used to represent the orientation informat
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.85\linewidth]{images/fig1.jpg}
+\includegraphics[width=0.8\linewidth]{images/fig1.jpg}
 \caption{The structure of a hypercolumn-array, which is used for contour representation. 
 Each small hexagon represents an orientation chip that corresponds to a simple cell. 
 Each simple cell in the V1 area is sensitive to a bar of light with a particular orientation (slope). 
@@ -264,7 +264,7 @@ which plays the roles of extraction and representation of the orientation featur
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\linewidth]{images/fig2.pdf}
+\includegraphics[width=0.8\linewidth]{images/fig2.pdf}
 \caption{Seven neighboring hypercolumns and their receptive fields in a visual field. 
 (a) A segment of contour in a visual field. 
 (b) The purple rounded region is covered by seven square receptive fields, 
@@ -286,37 +286,28 @@ This indicates that we can represent all contour information in an image by a se
 but some preliminarily-integrated short line segments that contain a wealth of geometrical information such as position, length, and angle. 
 Thus, the hypercolumn array not only upgrades the representation level of an edge image, 
 but also reserves the original characteristic of pixel distribution in an edge image. 
-\figurename~\ref{fig:3} to \figurename~\ref{fig:5} shows several examples of such representation.
+\figurename~\ref{fig:3to5} shows several examples of such representation.
 A simple triangle, an onion shape, and a contour of a car were uploaded to the hypercolumn array,
 which generated a set of activated orientation chips.
 This is very similar to using sparse coding to represent an image.
 
-\begin{figure}[!t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=0.55\linewidth]{images/fig3.pdf}
-\caption{Some orientation chips (black points in (b)) are activated by a simple triangle in (a), 
-where, in (b), the topological feature of the triangle is preserved by the set of active orientation chips.}
-\label{fig:3}
-\end{figure}
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.55\linewidth]{images/fig4.pdf}
-\caption{The partial contour at the bottom-right of an onion (in (a)) from the MPEG7 dataset 
+\includegraphics[width=0.25\linewidth]{images/fig3.pdf}\hfil%
+\includegraphics[width=0.25\linewidth]{images/fig4.pdf}\hfil%
+\includegraphics[width=0.25\linewidth]{images/fig5.pdf}
+\caption{Examples of hypercolumn-array representation.
+(a) Some orientation chips (black points at the right) are activated by a simple triangle.
+The topological feature of the triangle is preserved by the set of active orientation chips.
+(b) The partial contour at the bottom-right of an onion from the MPEG7 dataset 
 passes through three neighboring and overlapping receptive fields, 
-which activates three orientation chips in the three hypercolumns respectively (in (b)), 
-and these chips correctly reflect the geometrical information in this contour segment.}
-\label{fig:4}
-\end{figure}
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.55\linewidth]{images/fig5.pdf}
-\caption{A contour of a car is represented by an array with 452 hypercolumns. 
+which activates three orientation chips in the three hypercolumns respectively, 
+and these chips correctly reflect the geometrical information in this contour segment.
+(c) A contour of a car is represented by an array with 452 hypercolumns. 
 The extent to which the details of the car that are preserved increases 
 with an increasing number of activated orientation chips.}
-\label{fig:5}
-\end{figure}
+\label{fig:3to5}
+\end{figure*}
 
 The foregoing examples indicate that an edge image can be easily represented with activated orientation chips in a hypercolumn array. 
 Each activated chip represents a vector reflecting the position, length, and angle of a short line segment. 
@@ -329,7 +320,7 @@ This approximation can reflect the distribution of pixels in a receptive field, 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.6\linewidth]{images/fig6.pdf}
+\includegraphics[width=0.45\linewidth]{images/fig6.pdf}
 \caption{Orientation chips can approximately represent stimulus. 
 (a) A real stimulus in a receptive field might be a small curve. 
 (b) An orientation chip with the closest built-in orientation preference is activated. 
@@ -535,7 +526,7 @@ which is inevitably more efficient than an operation involving a large set of pi
   
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.45\linewidth]{images/fig11.pdf}
+\includegraphics[width=0.4\linewidth]{images/fig11.pdf}
 \caption{After conducting Algorithms 4.1 and 4.2, 
 the contour of an object (at left) can be denoted by several routes (at right).}
 \label{fig:11}
@@ -586,7 +577,7 @@ between part of the RouteClass curve and the TempClass curve.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.8\linewidth]{images/fig12.pdf}
+\includegraphics[width=0.7\linewidth]{images/fig12.pdf}
 \caption{An example of a similarity measurement of two curves.}
 \label{fig:12}
 \end{figure}
@@ -626,7 +617,7 @@ The basic principle underlying our algorithm is that the holistic tendency in a 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.65\linewidth]{images/fig13.pdf}
+\includegraphics[width=0.6\linewidth]{images/fig13.pdf}
 \caption{An example of a curve comparison based on a holistic strategy.}
 \label{fig:13}
 \end{figure}
@@ -654,7 +645,7 @@ We can see that the degree of image compactness is steadily improved, and the se
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.7\linewidth]{images/fig14.jpg}
+\includegraphics[width=0.6\linewidth]{images/fig14.jpg}
 \caption{The Route-graph significantly reduces the searching space.}
 \label{fig:14}
 \end{figure}
@@ -670,7 +661,7 @@ or if the routes are well-joined, then a goal object can be expected to occur in
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.98\linewidth]{images/fig15.jpg}
+\includegraphics[width=0.9\linewidth]{images/fig15.jpg}
 \caption{The distribution of evidence features among a Route-graph.}
 \label{fig:15}
 \end{figure}
@@ -684,7 +675,7 @@ We can use one set for template matching, and the other set for cross validation
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.8\linewidth]{images/fig16.pdf}
+\includegraphics[width=0.7\linewidth]{images/fig16.pdf}
 \caption{Two independent template partitions provide cross-verification.}
 \label{fig:16}
 \end{figure}
@@ -720,8 +711,7 @@ $\{T_1,\cdots,T_P\}$. Each partition is a set of template segments.
     \STATE let $D[r][t]\leftarrow\text{Route-Distance}(r,t)$
   \ENDFOR
   \FOR {each $r\in R$}
-    \STATE let $D[r]\leftarrow\min_t D[r][t]$
-    \STATE let $t[r]\leftarrow\arg\min_t D[r][t]$
+    \STATE let $D[r]\leftarrow\min_t D[r][t]$ and $t[r]\leftarrow\arg\min_t D[r][t]$
   \ENDFOR
   \FOR {each $t\in T_p$}
     \STATE initialize a subgraph of mere node $(\arg\min_r D[r][t])$
@@ -765,7 +755,7 @@ We would hope to derive a new template according to a limited number of ready-ma
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.7\linewidth]{images/fig17.pdf}
+\includegraphics[width=0.6\linewidth]{images/fig17.pdf}
 \caption{A coordinate system where a 3D object is projected upon a 2D plane.}
 \label{fig:17}
 \end{figure}
@@ -787,13 +777,11 @@ To obtain a transformed template viewed from a different angle,
 we rotate the 2D template of giraffe about the $y$-axis.
 If the giraffe rotates $\theta$ degree, which is equivalent to a change in viewing angle, 
 then the new coordinate of $P$ is given as follows. 
-\begin{eqnarray}
-x_i^{rotated}&=&x_i \cos\theta+z_i \sin\theta, \nonumber\\
-y_i^{rotated}&=&y_i, \nonumber\\
-z_i^{rotated}&=&-x_i \sin\theta+z_i \cos\theta. 
-\end{eqnarray}
+\begin{equation}
+P^{rotated}=(x_i \cos\theta+z_i \sin\theta,y_i,-x_i \sin\theta+z_i \cos\theta). 
+\end{equation}
 
-Then, the projective point of the rotated $P(x_i^{rotated},y_i^{rotated},z_i^{rotated})$ on the imaging plane is as follows.
+Then, the projective point of $P^{rotated}$ on the imaging plane is as follows.
 \begin{eqnarray}
 x_i^{post}&=&\frac{e_z(x_i \cos\theta+z_i \sin\theta)}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber\\
 y_i^{post}&=&\frac{e_z y_i}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber\\
@@ -877,11 +865,11 @@ z_i^{post}&=&0.
 
 Comparing (\ref{eqn:9}) with the projective points of the original template in (\ref{eqn:2}),
 we obtain the following.
-\begin{eqnarray}
-\frac{x_i^{post}}{x_i^{pre}}&=&\cos\theta-\frac{y_i}{x_i}\sin\theta \nonumber\\
-\frac{y_i^{post}}{y_i^{pre}}&=&\cos\theta+\frac{x_i}{y_i}\sin\theta
+\begin{equation}
+\frac{x_i^{post}}{x_i^{pre}}=\cos\theta-\frac{y_i}{x_i}\sin\theta,
+\frac{y_i^{post}}{y_i^{pre}}=\cos\theta+\frac{x_i}{y_i}\sin\theta
 \label{eqn:10}
-\end{eqnarray}
+\end{equation}
 
 In (\ref{eqn:10}), $\theta$ is assessed by the observer, 
 and $\frac{y_i}{x_i}$ is obtained from the original posture of the object. 
@@ -911,7 +899,7 @@ and the signal-to-noise ratio (SNR) as $SNR[dB]=10\cdot\log_10(\frac{\sigma_{ima
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\linewidth]{images/fig18.jpg}
+\includegraphics[width=0.7\linewidth]{images/fig18.jpg}
 \caption{SNR result for the proposed method applied on the MPEG-7 dataset.}
 \label{fig:18}
 \end{figure}
@@ -928,14 +916,14 @@ from which we observe that an image has been reduced to a small number of routes
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.9\linewidth]{images/fig19.jpg}
+\includegraphics[width=0.7\linewidth]{images/fig19.jpg}
 \caption{Representing images in the ETHZ dataset by routes.}
 \label{fig:19}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\linewidth]{images/fig20.jpg}
+\includegraphics[width=0.8\linewidth]{images/fig20.jpg}
 \caption{A sequence of routes that have been added successively.}
 \label{fig:20}
 \end{figure}
@@ -1074,7 +1062,7 @@ Finally, as shown in \figurename~\ref{fig:23}f, an almost perfect contour of a b
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.98\linewidth]{images/fig23.jpg}
+\includegraphics[width=0.8\linewidth]{images/fig23.jpg}
 \caption{An illustration of active-processing.}
 \label{fig:23}
 \end{figure}
@@ -1093,7 +1081,7 @@ but also significantly eases the burden associated with the searching process.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\linewidth]{images/fig24.jpg}
+\includegraphics[width=0.6\linewidth]{images/fig24.jpg}
 \caption{The overall architecture of the proposed system.}
 \label{fig:24}
 \end{figure}
