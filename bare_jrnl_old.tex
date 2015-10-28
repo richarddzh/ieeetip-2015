@@ -157,26 +157,11 @@ begins in the V1 area.
 Above all, these studies lacked the crucial consideration of how the V1's output meets the demands of subsequent recognition tasks. 
 This constitutes one of the main goals of the present study.
 
-One of the fundamental functions of V1 area is extracting features about edges and orientations from the visual stimuli.
-The function is carried out by the orientation columns in V1, 
-which is simulated with the hypercolumn array in the proposed model. 
-Many computational methods in image processing also achieve similar edge detection function
-\cite{canny1986,arbelaez2011,moreno2014}.
-Canny detector \cite{canny1986} and the globalPb \cite{arbelaez2011} generate edge maps,
-which represent edges in the level of pixels. 
-The tensor voting \cite{moreno2014} and the LSD method \cite{von2008} detect line segments in images. 
-These representations provide discrete information about pixels and edges, 
-which is not sufficient for shape detection or object recognition. 
-Moreover, these methods usually involve complicated computation, 
-which is difficult to be implemented with neural circuits for real-time computer vision tasks. 
-The proposed hypercolumn-array follows the structure of the neural system, 
-which is efficient and works seamlessly with the succeeding component for shape-based object recognition.
-
 \subsection{Shape- or contour-based object recognition}
 
 Shape- or contour-based object recognition research has a long history. 
 In the early stage, chamfer matching \cite{borgefors1988,shotton2005,thayananthan2003,opelt2006} 
-was a frequently-used method that transformed an original image into a distance map, 
+was a frequently-used method that converted an original image into a depth image, 
 and searched for the point with the best match. 
 This method demonstrated a certain adaptability. 
 As an additional aid, an image pyramid was designed to achieve scale invariance \cite{borgefors1988}. 
@@ -294,7 +279,7 @@ are shown in (b).}
 One of the most important discoveries in neurobiology is that a hypercolumn in the primary cortex can respond to a series of stimuli with continuously changing orientations. 
 As the discoverers, Hubel and Wiesel won the Nobel Prize in 1982. 
 We were therefore inspired to use this mechanism to obtain and represent segments of contour in an image. 
-When an edge image is presented to the aforementioned hypercolumn array, 
+After uploading an edge image to the aforementioned hypercolumn array, 
 in a certain receptive field, 
 some linearly-distributed pixels will activate a certain orientation chip of a hypercolumn. 
 This indicates that we can represent all contour information in an image by a set of active units (i.e., orientation chips). In mathematics, each unit represents a line vector. Therefore, the output of a hypercolumn array is no longer a group of discrete, isolated, and pixel-wise points, 
@@ -302,7 +287,7 @@ but some preliminarily-integrated short line segments that contain a wealth of g
 Thus, the hypercolumn array not only upgrades the representation level of an edge image, 
 but also reserves the original characteristic of pixel distribution in an edge image. 
 \figurename~\ref{fig:3to5} shows several examples of such representation.
-A simple triangle, an onion shape, and a contour of a car were presented to the hypercolumn array,
+A simple triangle, an onion shape, and a contour of a car were uploaded to the hypercolumn array,
 which generated a set of activated orientation chips.
 This is very similar to using sparse coding to represent an image.
 
@@ -388,7 +373,7 @@ This suggests the application of graphs to describe the topological distribution
 
 \subsection{The generation of a graph}
 
-We wish to represent a continuous contour by coordinating the information derived from multiple chips through the implementation of a graph. 
+We hope to represent a continuous contour by coordinating the information derived from multiple chips through the implementation of a graph. 
 Therefore, the best manner of defining a graph for a hypercolumn-array is to set the chips as the nodes of the graph, 
 and establish the edges between those nodes (i.e., chips) that might be successively joined together to represent a slightly longer line or curve. 
 Because all 19 chips in a given hypercolumn share a completely coincident receptive field, 
@@ -398,7 +383,8 @@ Therefore, no edges can be established between these independent nodes.
 Only those chips with neighboring or partially overlapping receptive fields might be coordinated to represent a contour that passes through multiple receptive fields. 
 Links are assigned between these possibly coordinated nodes that usually belong to separate but adjacent hypercolumns. 
 The present description defines a basic graph of chip nodes, i.e., an orientation chip graph. 
-Some nodes of this graph will be activated when an image is presented to the hypercolumn array. 
+Once an image has been uploaded, 
+some nodes of this graph will be activated. 
 Most importantly, the orientation chip graph provides a structural data form for subsequent geometrical or topological analysis, as illustrated in \figurename~\ref{fig:8}.
 
 \begin{figure}[!t]
@@ -567,19 +553,61 @@ In \cite{arkin1991}, a type of turning function has been proposed to represent p
 but this method is very sensitive to small zigzag or burr noise.
 It is not suitable for incomplete contours or contours mixed with the background. 
 
-In this paper, the curve similarity is measured with a machine learning approach based on 
-the extreme learning machine (ELM) \cite{huang2006}.
-The extreme learning machine is a kind of feed-forward neural network for classification or regression
-with a single layer of hidden nodes.
-It is different from the traditional back-propagation network in that 
-the ELM is learned with least-squares fitting method, which is fast and produces good generalization performance.
-In this paper, we use ELM to measure the similarity of a route compared with certain templates.
-We represent routes in high dimensional vectors.
-To cope with high dimensional data, we propose a novel ELM model based on the non-linear embedding technique
-for dimensionality reduction, which is referred to as non-linear embedding ELM (NLE-ELM).
+Intuitively, the most direct method of comparing two curves is to evaluate the degree to which they are mutually overlapping, 
+which is similar to solving an optimization problem, i.e., 
+finding the best-matched interval for two curves. 
+This is perhaps the most thorough method because it matches curves based upon their overall geometrical tendencies rather than local numerical features. 
+Furthermore, this method can flexibly adapt to curve variances of length, position, and posture. 
+We therefore designed a curve similarity measurement algorithm based on evaluating the degree of overlap between two curves. 
 
+Here, we are concerned with two classes of curves. 
+The first class, denoted as TempClass, derives from the shape template of an object category. 
+The second class of curve, denoted as RouteClass, derives from routes. 
+Our task is to determine whether any RouteClass curve coincides with a TempClass curve. 
+The degree of coincidence represents their similarity. 
+A partial match should be allowed because a RouteClass curve might include not only an object contour, 
+but also a noise curve in the background. 
+Therefore, the interval that maximizes the similarity is the object of optimization. 
+Furthermore, rotation and scale transformations are other factors that can alter an object's contour. 
+All these factors therefore make the process of seeking the best match between a template curve and a route curve an optimization process. 
+\figurename~\ref{fig:12} illustrates our idea, and the algorithm is given as follows.
+Algorithm 5.1 finds the optimized interval of partial match between two curves.
+It is a genetic algorithm that minimizes the dissimilarity (or distance) 
+between part of the RouteClass curve and the TempClass curve.
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.7\linewidth]{images/fig12.pdf}
+\caption{An example of a similarity measurement of two curves.}
+\label{fig:12}
+\end{figure}
 
+\begin{myalgorithm}{Algorithm 5.1 Route-Distance($r,t$)}
+\begin{algorithmic}[1]
+\REQUIRE $r$ is RouteClass curve and $t$ is TempClass curve.
+\STATE rotate $r$ and $t$ so that their most extended direction is along the $x$-axis
+\STATE sample $t$ uniformly to $N$ points $P_t=\{(x_i,y_i)|i=1,\cdots,N\}$
+\STATE randomly initialize $M$ subintervals of $[0,length(r)]$
+\REPEAT
+  \FOR{each subinterval $[p,q]$}
+    \STATE sample $r$ in $[p,q]$ to $N$ points $P_r=\{(x'_i,y'_i)\}$
+    \STATE calculate dissimilarity $d(P_t,P_r)$ by solving least-squares
+  \ENDFOR
+  \STATE remove 2 subintervals with maximal dissimilarity
+  \STATE add 2 subintervals by shrinking and extending the one with minimal dissimilarity
+\UNTIL{the minimal dissimilarity is steady}
+\RETURN the minimal dissimilarity
+\end{algorithmic}
+\end{myalgorithm}
+
+At the beginning of this algorithm, we rotate a curve and make its most extended direction coincide with the positive $x$-axis. 
+The purpose of this step is to accommodate the posture diversity of curves. 
+Interpolation is used to adjust the scale of a curve, to accommodate the scale diversity of curves. 
+The dissimilarity measure $d$ is calculated by solving a least-squares problem between two point sequences,
+\begin{equation}
+d(P_t,P_r)=\min_{\Delta x,\Delta y,k}\sum_{i=1}^{N}(kx_i+\Delta x-x'_i)^2+(ky_i+\Delta y-y'_i)^2,
+\end{equation}
+where $P_t,P_r$ is the sequences of sampling points on the template curve and route curve respectively.
 \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
 in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
 A subjective evaluation of the figure indicates that $B$ and $A$ are more alike than $C$ and $A$. 
