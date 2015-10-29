@@ -578,7 +578,49 @@ We represent routes in high dimensional vectors.
 To cope with high dimensional data, we propose a novel ELM model based on the non-linear embedding technique
 for dimensionality reduction, which is referred to as non-linear embedding ELM (NLE-ELM).
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.9\linewidth]{images/fig12.jpg}
+\caption{Representing routes with vectors.
+The routes in the images are transformed into vectors plotted below the images.}
+\label{fig:12}
+\end{figure}
 
+The routes are represented with vectors which are provided as input to the NLE-ELM algorithm.
+By definition, a route is intrinsically a sequence of activated orientation chips.
+Therefore, it is straight-forward to represent a route with a vector $\boldsymbol{v}=(v_1,v_2,\cdots,v_n)^T$.
+Each element of $\boldsymbol{v}$ is the orientation of an activated chip in the route.
+Examples of the vectors are shown in \figurename~\ref{fig:12}.
+In each image, two routes around the contour of the apple logo are chosen to be represented into vectors of orientation.
+
+We train the NLE-ELM model to recognize routes from a number $M$ of object categories.
+The input of the ELM is route vectors.
+For each route vector, the desired output is a binary indicator vector, $\boldsymbol{t}=(t_1,t_2,\cdots,t_M)^T$,
+where $t_i=1$ indicates the route belongs to the $i$-th object category.  
+For each object category, positive routes are chosen from the training samples within the ground-truth bounding boxes,
+and negative ones are chosen from the background.
+The training data is generated from these routes.
+The ELM is a single-hidden-layer feedforward neural network and the output function is defined in the following equation.
+\begin{equation}
+f(\boldsymbol{v})=\sum_{i=1}^L \beta_i h_i(\boldsymbol{v})=\boldsymbol{h}(\boldsymbol{v})\boldsymbol{\beta},
+\end{equation}
+where $\boldsymbol{h}(\boldsymbol{v})=\left[h_1(\boldsymbol{v}),h_2(\boldsymbol{v}),\cdots,h_L(\boldsymbol{v})\right]$
+is the output of $L$ units in the hidden layer,
+and $\boldsymbol\beta=(\beta_1,\beta_2,\cdots,\beta_L)^T$ is the connection weight between the output layer and the $L$ units of the hidden layer.
+The connection weight between the input layer and the hidden layer consists of random values.
+The NLE-ELM algorithm optimizes $\boldsymbol\beta$ by minimizing the training error, the norm of the weight, and a non-linear regularization term,
+\begin{equation}
+\begin{split}
+\min_{\boldsymbol\beta}\left\{\frac{1}{2}\sum_{i=1}^n||\boldsymbol{h}(v)\boldsymbol\beta-\boldsymbol{t}||^2+\frac{1}{2}||\boldsymbol\beta||^2\right.\\
+\left.+\frac{\mu}{2}\left(||\boldsymbol{H'\beta'-T}||^2+\gamma_g\mathrm{tr}(\boldsymbol{\beta'^T\beta'})\right)\right\},
+\end{split}
+\end{equation}
+where $n$ is the number of training samples, 
+$\mu$ and $\gamma_g$ are regularization parameters,
+and $\boldsymbol{H}$ and $\boldsymbol{T}$ are the input and output in the matrix form.
+$\boldsymbol{H'\beta'}$ denotes that original data is firstly mapped into ELM high-dimensional feature space using activation functions, 
+then transformed into the low-dimensional representation of data from high-dimensional feature space.
+This is where the non-linear dimensionality reduction is achieved.
 
 \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
 in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
@@ -707,157 +749,6 @@ $\{T_1,\cdots,T_P\}$. Each partition is a set of template segments.
 \RETURN the subgraph with minimal average distance
 \end{algorithmic}
 \end{myalgorithm}
-
-\section{Evolution Of A Two-dimensional Template}
-
-In previous sections, we addressed the method of object recognition using a shape template. 
-However, the posture of an object is continuously changing in a natural environment, 
-and all possible object postures cannot be matched to a unique template. 
-This reveals a problem regarding multiple prototypes. 
-The key limitation of the template method is the stiffness of the template. 
-For example, a giraffe's contour outline is affected by two factors, 
-the angle of view, and the status of joints. 
-An ideal situation is to have images of a standard giraffe under all angles of view, 
-and with all possible physical orientations, 
-or we can have a three-dimensional (3D) digital model of a giraffe that defines all physical rotation functions, 
-but the burden of obtaining such a model is far too great. 
-We would hope to derive a new template according to a limited number of ready-made two-dimensional (2D) templates that would be adaptable to variations in the viewing angle or the giraffe's posture.
-
-\subsection{Variation of viewing angles}
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.6\linewidth]{images/fig17.pdf}
-\caption{A coordinate system where a 3D object is projected upon a 2D plane.}
-\label{fig:17}
-\end{figure}
-
-A 2D template is the image of a 3D object projected onto a 2D plane. 
-Based on computer graphic theory, we build a coordinate system in \figurename~\ref{fig:17}, 
-where $E(0,0,e_z)$ is the viewpoint, $O$ is the origin, $XOY$ is the imaging plane, 
-and a giraffe is found in the direction of the negative $y$-axis.
-If $P(x_i,y_i,z_i)$ is a point on that giraffe, 
-then its projective point on the imaging plane is
-\begin{equation}
-x_i^{pre}=\frac{e_z x_i}{-z_i+e_z}, y_i^{pre}=\frac{e_z y_i}{-z_i+e_z}, z_i^{pre}=0.
-\label{eqn:2}
-\end{equation}
-We use the subscript `pre' to denote the projective points of the original template before any transformations.
-The subscript `post' denotes the projective points of the transformed template.
-
-To obtain a transformed template viewed from a different angle,
-we rotate the 2D template of giraffe about the $y$-axis.
-If the giraffe rotates $\theta$ degree, which is equivalent to a change in viewing angle, 
-then the new coordinate of $P$ is given as follows. 
-\begin{equation}
-P^{rotated}=(x_i \cos\theta+z_i \sin\theta,y_i,-x_i \sin\theta+z_i \cos\theta). 
-\end{equation}
-
-Then, the projective point of $P^{rotated}$ on the imaging plane is as follows.
-\begin{eqnarray}
-x_i^{post}&=&\frac{e_z(x_i \cos\theta+z_i \sin\theta)}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber\\
-y_i^{post}&=&\frac{e_z y_i}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber\\
-z_i^{post}&=&0.
-\label{eqn:4}
-\end{eqnarray}
-
-The projective points of the rotated template form the second 2D template.
-From (\ref{eqn:2}) and (\ref{eqn:4}), we obtain the following.
-\begin{eqnarray}
-\frac{x_i^{post}}{x_i^{pre}}&=&\frac{x_i \cos\theta+z_i \sin\theta}{x_i \sin\theta-z_i \cos\theta+e_z}
-\cdot\frac{-z_i+e_z}{x_i} \nonumber\\
-\frac{y_i^{post}}{y_i^{pre}}&=&\frac{-z_i+e_z}{x_i \sin\theta-z_i \cos\theta+e_z} \nonumber\\
-\frac{x_i^{post}}{y_i^{post}}
-&=&\left(\cos\theta+\frac{z_i}{x_i}\sin\theta\right)\cdot\frac{x_i^{pre}}{y_i^{pre}}.
-\label{eqn:5}
-\end{eqnarray}
-
-At present, 
-we have a 2D image of the giraffe from which we cannot know the accurate parameters of the perspective projection. 
-We must therefore derive another 2D image based upon the known image. 
-From (\ref{eqn:5}), we can see that it is not necessary to know these parameters when we derive a new image based on an old angle of view by shifting to a new angle of view. 
-In (\ref{eqn:5}), $\frac{y_i^{post}}{y_i^{pre}}$ is known,
-and $\frac{z_i}{x_i}$ is determined by the original posture of the object to be detected. 
-$\frac{z_i}{x_i}$ is nearly the cotangent value of one-half of the observer's horizontal visual angle. 
-In human beings, this is usually implemented by a physiological mechanism occurring in the posterior parietal cortex for calculating the gazing angle and converging angle. 
-Herein, we approximate this by a series of cotangent values of small angles, 
-and, simultaneously, $\theta$ can also be assessed by the observer. 
-If an empirical formula for assessing these values can be obtained, 
-the value of $\frac{x_i^{post}}{y_i^{post}}$ can be estimated. 
-In consideration for the object rotating about the $y$-axis, we have $y_i^{post}=y_i^{pre}$, 
-and, finally, we can obtain $x_i^{post}$. 
-This process realizes the derivation of a new 2D appearance of an object from its current 2D status without knowing the explicit perspective parameters. 
-Of course, this is subject to the experiential knowledge of an observer on assessing the cotangent value of one-half of the horizontal visual angle and the variation of the visual angle.
-
-\subsection{Variation of postures}
-
-Another frequent factor that can change the contour of a giraffe's 2D projection is the variation of its physical posture. 
-A posture rotation can be expressed by some points of a contour rotating $\theta$ degree about a line $L$, 
-where $L$ is defined by a point $Q$ and a unit vector $\mathbf{u}=(u_1,u_2,u_3)$. 
-In computer graphic theory, this transform is performed by a matrix $Rot(\mathbf{u},\theta)=$
-\begin{equation}
-\left(
-\begin{array}{ccc}
- c+\bar{c}u_1^2 
-& \bar{c}u_1 u_2+u_3 s 
-& \bar{c}u_1 u_3-u_2 s \\
- \bar{c}u_1 u_2-u_3 s 
-& c+\bar{c}u_2^2 
-& \bar{c}u_2 u_3+u_1 s \\
- \bar{c}u_1 u_3+u_2 s 
-& \bar{c}u_2 u_3-u_1 s 
-& c+\bar{c}u_3^2
-\end{array}\right),
-\label{eqn:6}
-\end{equation} 
-where $s=\sin\theta$,$c=\cos\theta$, and $\bar{c}=1-\cos\theta$.
-
-As an example, we suppose that a giraffe's neck has a rotational axis parallel to the $z$-axis; 
-thus, $\mathbf{u} = (0,0,1)$. 
-This rotation will change the coordinates of the giraffe's head and neck as follows.
-\begin{equation}
-(x_i^{neck},y_i^{neck},z_i^{neck},1)=(x_i,y_i,z_i,1)\cdot Rot((0,0,1),\theta).
-\label{eqn:7}
-\end{equation}
-
-From equation (\ref{eqn:6}) and (\ref{eqn:7}), we get
-\begin{eqnarray}
-x_i^{neck}&=&x_i\cos\theta-y_i\sin\theta\nonumber\\
-y_i^{neck}&=&x_i\sin\theta+y_i\cos\theta\nonumber\\
-z_i^{neck}&=&z_i.
-\end{eqnarray}
-
-The projective point of the bended neck is as follows.
-\begin{eqnarray}
-x_i^{post}&=&\frac{e_z(x_i\cos\theta-y_i\sin\theta)}{-z_i+e_z}, \nonumber\\
-y_i^{post}&=&\frac{e_z(x_i\sin\theta+y_i\cos\theta)}{-z_i+e_z}, \nonumber\\
-z_i^{post}&=&0.
-\label{eqn:9}
-\end{eqnarray}
-
-Comparing (\ref{eqn:9}) with the projective points of the original template in (\ref{eqn:2}),
-we obtain the following.
-\begin{equation}
-\frac{x_i^{post}}{x_i^{pre}}=\cos\theta-\frac{y_i}{x_i}\sin\theta,
-\frac{y_i^{post}}{y_i^{pre}}=\cos\theta+\frac{x_i}{y_i}\sin\theta
-\label{eqn:10}
-\end{equation}
-
-In (\ref{eqn:10}), $\theta$ is assessed by the observer, 
-and $\frac{y_i}{x_i}$ is obtained from the original posture of the object. 
-The right-hand side of (\ref{eqn:10}) is actually the product of the tangent of one-half of the horizontal visual angle and the cotangent of one-half of the vertical visual angle. 
-These are determined by the aforementioned physiological mechanism in the posterior parietal cortex, 
-and these are right our visual experiences. 
-Because $x_i^{pre}$ and $y_i^{pre}$ are known, $x_i^{post}$ and $y_i^{post}$ can be estimated. 
-In a similar fashion, we can derive the local changes of the 2D image caused by other posture rotations. 
-A complex posture rotation will be decomposed into several simple rotations about various axes.
-
-From the proposed method based on the 2D appearance of an object, 
-the knowledge of its 3D structure, and the perspective projection formulas, 
-a new 2D appearance can be derived. 
-This method will be used to derive a new 2D template of an object based on an existing 2D template. 
-A prototype database is used to store these templates, 
-which improve the generalization ability of the proposed shape-based object recognition method.
 
 \section{Experimental Results}
 
