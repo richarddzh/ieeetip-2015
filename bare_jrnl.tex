@@ -600,7 +600,7 @@ where $t_i=1$ indicates the route belongs to the $i$-th object category.
 For each object category, positive routes are chosen from the training samples within the ground-truth bounding boxes,
 and negative ones are chosen from the background.
 The training data is generated from these routes.
-The ELM is a single-hidden-layer feedforward neural network and the output function is defined in the following equation.
+The ELM is a single-hidden-layer feedforward neural network and the output function is defined in the following equation\cite{miche2010,huang2006}.
 \begin{equation}
 f(\boldsymbol{v})=\sum_{i=1}^L \beta_i h_i(\boldsymbol{v})=\boldsymbol{h}(\boldsymbol{v})\boldsymbol{\beta},
 \end{equation}
@@ -610,6 +610,7 @@ and $\boldsymbol\beta=(\beta_1,\beta_2,\cdots,\beta_L)^T$ is the connection weig
 The connection weight between the input layer and the hidden layer consists of random values.
 The NLE-ELM algorithm optimizes $\boldsymbol\beta$ by minimizing the training error, the norm of the weight, and a non-linear regularization term,
 \begin{equation}
+\label{equ:elm}
 \begin{split}
 \min_{\boldsymbol\beta}\left\{\frac{1}{2}\sum_{i=1}^n||\boldsymbol{h}(v)\boldsymbol\beta-\boldsymbol{t}||^2+\frac{1}{2}||\boldsymbol\beta||^2\right.\\
 \left.+\frac{\mu}{2}\left(||\boldsymbol{H'\beta'-T}||^2+\gamma_g\mathrm{tr}(\boldsymbol{\beta'^T\beta'})\right)\right\},
@@ -621,6 +622,26 @@ and $\boldsymbol{H}$ and $\boldsymbol{T}$ are the input and output in the matrix
 $\boldsymbol{H'\beta'}$ denotes that original data is firstly mapped into ELM high-dimensional feature space using activation functions, 
 then transformed into the low-dimensional representation of data from high-dimensional feature space.
 This is where the non-linear dimensionality reduction is achieved.
+The optimization problem in (\ref{equ:elm}) has the following solution.
+\begin{equation}
+\boldsymbol\beta^{*}=\boldsymbol{H}^T\left(\boldsymbol{I}_n+\boldsymbol{HH^T}+\mu\boldsymbol{HH^T L_H}\right)^{-1}\boldsymbol{T},
+\end{equation}
+where $\boldsymbol{L_H}=\boldsymbol{I}_n-\boldsymbol{H'H'^T}(\gamma_g\boldsymbol{I}_n+\boldsymbol{H'H'^T})^{-1}$.
+
+Given the aforementioned route representation and NLE-ELM model,
+we can measure the similarity between a route from the test image and a route from a template.
+The algorithm is listed in Algorithm 5.1.
+
+\begin{myalgorithm}{Algorithm 5.1 Route-Distance($r,t$)}
+\begin{algorithmic}[1]
+\REQUIRE $r$ and $t$ are two routes.
+\STATE $\boldsymbol{v_r,v_t}\leftarrow$ vector representation of the routes
+\STATE Let $f$ denote the output function of the NLE-ELM model
+\STATE $f(\boldsymbol{v_r})=\boldsymbol{h}(\boldsymbol{v_r})\boldsymbol\beta^{*}$
+\STATE $f(\boldsymbol{v_t})=\boldsymbol{h}(\boldsymbol{v_t})\boldsymbol\beta^{*}$
+\RETURN $||f(\boldsymbol{v_r})-f(\boldsymbol{v_t})||$
+\end{algorithmic}
+\end{myalgorithm}
 
 \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
 in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
@@ -655,7 +676,9 @@ This middle-level integration can greatly improve the compactness of image repre
 and, simultaneously, create a smaller searching space. 
 For instance, as shown in \figurename~\ref{fig:14}, based on 40 apple images in the ETHZ dataset, 
 we respectively count the number of pixels in their edge images, the number of short line segments after hypercolumn array representation, and the number of routes after graph decomposition. 
-We can see that the degree of image compactness is steadily improved, and the searching space defined by routes has been greatly reduced.
+The number of routes is exponentially less than the number of line segments and edge pixels.
+We can see that the degree of image compactness is steadily improved, 
+and the searching space defined by routes has been greatly reduced. 
 
 \begin{figure}[!t]
 \centering
@@ -793,63 +816,48 @@ from which we observe that an image has been reduced to a small number of routes
 
 \subsection{Object detection test}
 
-The most common method of evaluating object detection performance is through the use of the DR-FPPI curve, 
-where DR represents the detection rate, and FPPI is the false positives per image. 
-Generally, a small FPPI value can better reflect the performance of an algorithm because the DR can attain a high value provided the FPPI is loosened. 
-Therefore, we prefer a smaller FPPI value such as 0.3 or 0.4. 
-\tablename~\ref{tab:1} lists a comparison of DR values obtained by our method and several state-of-the-art methods 
-\cite{ferrari2010,ferrari2008} for FPPI values of 0.2 and 0.4 with images obtained from the ETHZ dataset. 
-\tablename~\ref{tab:1} indicates that the performance of our method is either the best or very nearly the best for all images and FPPR values considered.
+We test the proposed method on the ETHZ dataset and the Weizzman horse dataset for validation.
+PASCAL criteria are used for the purpose of detection evaluation, 
+i.e., if the detected bounding-box and the ground truth bounding-box intersect over 50\%{} of the union of them, 
+a detection is counted as correct.
+The proposed model is tested on the state-of-the-art methods 
+\cite{lu2009,felzenszwalb2007,maji2009,srinivasan2010,wang2012,lin2012},
+we plot the precision-recall (PR) curves in \figurename~\ref{fig:17} 
+and report the average precision (AP) in \tablename~\ref{tab:1}.
+\tablename~\ref{tab:1} indicates that the performance of our method is either the best or very nearly the best for all image categories.
  
 \begin{table}[!t]
 \renewcommand{\arraystretch}{1.3}
-\caption{Comparison of the detection rate for FPPI 0.2/0.4}
+\caption{Comparison of average precision (AP) on ETHZ Shape classes}
 \label{tab:1}
 \centering
 \scriptsize
-\begin{tabular}{l|lllll}
+\begin{tabular}{l|llllll}
 \hline
-& Apple & Bottle & Giraffe & Mug & Swan \\
+& Apple & Bottle & Giraffe & Mug & Swan & Average \\
 \hline
-Our method
-& \textbf{0.80}/0.83
-& 0.78/0.91
-& \textbf{0.77/0.80}
-& 0.75/\textbf{0.88}
-& \textbf{0.75/0.81}\\
-$\text{Hough only}_\text{(Pascal)}$
-& 0.18/0.29
-& 0.48/0.56
-& 0.16/0.35
-& 0.20/0.36
-& 0.29/0.46\\
-$\text{Full system}_\text{(Pascal)}$
-& 0.74/\textbf{0.84}
-& 0.69/0.82
-& 0.34/0.45
-& 0.66/0.79
-& 0.53/0.70\\
-$\text{Full system}_\text{(20\% IoU)}$
-& -/-
-& 0.72/0.83
-& 0.47/0.59
-& 0.72/0.84
-& 0.63/0.75\\
-$\text{Ferrari08}_\text{(Pascal)}$
-& 0.38/0.60
-& \textbf{0.84/0.94}
-& 0.43/0.51
-& 0.65/0.78
-& 0.41/0.54\\
-$\text{Ferrari08}_\text{(20\% IoU)}$
-& 0.55/0.85
-& 0.82/0.90
-& 0.73/0.79
-& \textbf{0.78}/0.81
-& 0.47/0.64\\
+Our method  & 0.875 & 0.963 & 0.859 & 0.906 & 0.972 & 0.915 \\
+Lu et al.\cite{lu2009}  & 0.844     & 0.641 & 0.617 & 0.643 & 0.798 & 0.709 \\
+Felz et al.\cite{felzenszwalb2007} & 0.891   & 0.950 & 0.608 & 0.721 & 0.391 & 0.712 \\
+Maji et al.\cite{maji2009}  & 0.869   & 0.724 & 0.742 & 0.806 & 0.716 & 0.771 \\
+Srinivasan et al.\cite{srinivasan2010}  & 0.845     & 0.916 & 0.787 & 0.888 & 0.922 & 0.872 \\
+Wang et al.\cite{wang2012} & 0.866   & 0.975 & 0.832 & 0.843 & 0.828 & 0.869 \\
+Lin et al.\cite{lin2012}  & 0.909   & 0.898 & 0.811 & 0.893 & 0.964 & 0.895 \\
 \hline
 \end{tabular}
 \end{table}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.5\linewidth]{images/fig17a.png}\hfil
+\includegraphics[width=0.5\linewidth]{images/fig17b.png}\\
+\includegraphics[width=0.5\linewidth]{images/fig17c.png}\hfil
+\includegraphics[width=0.5\linewidth]{images/fig17d.png}\\
+\includegraphics[width=0.5\linewidth]{images/fig17e.png}\hfil
+\includegraphics[width=0.4\linewidth]{images/fig17f.png}
+\caption{Precision/Recall curves of our method and compared methods on the ETHZ database.}
+\label{fig:17}
+\end{figure}
 
 The Weizzman dataset of horse images is another popular dataset for object detection testing. 
 \figurename~\ref{fig:21} presents our testing results on this dataset. 
@@ -957,11 +965,23 @@ The most significant aspect of this process is that the route of a graph provide
 
 Therefore, the present work provides the following four conclusions.
 
-(a) Perception always is real-time processing, so its efficiency is crucial for an algorithm's rationality evaluation. In this paper, we achieve the same performance using a relatively simple method, but our method is much more time-saving.
+(a) Perception always is real-time processing, so its efficiency is crucial for an algorithm's rationality evaluation. In this paper, we achieve the same performance using a relatively simple method, 
+but our method is much more time-saving. 
+From the engineering point of view,
+the hypercolumn array is a biologically inspired model which helps the design of bionic chips, 
+which allows fine-grained parallel computing with neural circuits and real-time processing could be possible.
 
-(b) A biological visual system, especially that of a mammal, has been evolved by nature to be a highly optimized system. Feature-integration theory has been deeply studied in cognitive psychology. Physiological inspirations are indispensable for designing a practical vision system.
+(b) A biological visual system, especially that of a mammal, has been evolved by nature to be a highly optimized system.
+Feature-integration theory has been deeply studied in cognitive psychology. 
+Physiological inspirations are indispensable for designing a practical vision system.
+The hypercolumn array is different from traditional representations such as edge map.
+It utilizes a limited number of units, or computation resources, 
+to achieve a balance between the complexity of the model and the accuracy of the representation. 
+This optimized design is imitating the result of natural evolution.
 
-(c) Task-specific methods, for their diversities, are weak to mature vision theory. A necessary symbol for this theory is it has a unique architecture, whether in representation or in processing. For this sake, choosing geometrical structure and topological relation to represent and choosing shape match to achieve recognition are perhaps on the right track.
+(c) Task-specific methods, for their diversities, are weak to mature vision theory. 
+A necessary symbol for this theory is it has a unique architecture, whether in representation or in processing. 
+For this sake, choosing geometrical structure and topological relation to represent and choosing shape match to achieve recognition are perhaps on the right track.
 
 (d) The training set and appearance-based machine learning strategy for object detection under a natural environment can never exhaust all possible negative cases. Therefore, this strategy is really too expensive for its limited gain in generalization. The strategy of evidence accumulation and inference can avoid these costs.
 
