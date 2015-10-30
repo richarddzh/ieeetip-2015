@@ -1,4 +1,7 @@
 \documentclass[journal]{IEEEtran}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL bare_jrnl_old.tex   Fri Oct 30 16:56:42 2015
+%DIF ADD bare_jrnl.tex       Fri Oct 30 16:56:22 2015
 
 %\usepackage{ifpdf}
 \usepackage{cite}
@@ -19,6 +22,25 @@
 {\begin{figure}[!h]\small\noindent\rule{\linewidth}{1pt}\\#1\vspace{-0.5em}\\%
 \rule{\linewidth}{0.5pt}\\\vspace{-1.5em}}%
 {\vspace{-0.5em}\rule{\linewidth}{1pt}\end{figure}}
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
 
 \begin{document}
 \title{Hypercolumn-array Based Image Representation and 
@@ -157,11 +179,42 @@ begins in the V1 area.
 Above all, these studies lacked the crucial consideration of how the V1's output meets the demands of subsequent recognition tasks. 
 This constitutes one of the main goals of the present study.
 
-\subsection{Shape- or contour-based object recognition}
+\DIFaddbegin \DIFadd{One of the fundamental functions of V1 area is extracting features about edges and orientations from the visual stimuli.
+The function is carried out by the orientation columns in V1, 
+which is simulated with the hypercolumn array in the proposed model. 
+Many computational methods in image processing also achieve similar edge detection function
+\mbox{%DIFAUXCMD
+\cite{canny1986,arbelaez2011,moreno2014}
+}%DIFAUXCMD
+.
+Canny detector \mbox{%DIFAUXCMD
+\cite{canny1986}
+}%DIFAUXCMD
+and the globalPb \mbox{%DIFAUXCMD
+\cite{arbelaez2011}
+}%DIFAUXCMD
+generate edge maps,
+which represent edges in the level of pixels. 
+The tensor voting \mbox{%DIFAUXCMD
+\cite{moreno2014}
+}%DIFAUXCMD
+and the LSD method \mbox{%DIFAUXCMD
+\cite{von2008}
+}%DIFAUXCMD
+detect line segments in images. 
+These representations provide discrete information about pixels and edges, 
+which is not sufficient for shape detection or object recognition. 
+Moreover, these methods usually involve complicated computation, 
+which is difficult to be implemented with neural circuits for real-time computer vision tasks. 
+The proposed hypercolumn-array follows the structure of the neural system, 
+which is efficient and works seamlessly with the succeeding component for shape-based object recognition.
+}
+
+\DIFaddend \subsection{Shape- or contour-based object recognition}
 
 Shape- or contour-based object recognition research has a long history. 
 In the early stage, chamfer matching \cite{borgefors1988,shotton2005,thayananthan2003,opelt2006} 
-was a frequently-used method that converted an original image into a depth image, 
+was a frequently-used method that \DIFdelbegin \DIFdel{converted }\DIFdelend \DIFaddbegin \DIFadd{transformed }\DIFaddend an original image into a \DIFdelbegin \DIFdel{depth image}\DIFdelend \DIFaddbegin \DIFadd{distance map}\DIFaddend , 
 and searched for the point with the best match. 
 This method demonstrated a certain adaptability. 
 As an additional aid, an image pyramid was designed to achieve scale invariance \cite{borgefors1988}. 
@@ -279,7 +332,7 @@ are shown in (b).}
 One of the most important discoveries in neurobiology is that a hypercolumn in the primary cortex can respond to a series of stimuli with continuously changing orientations. 
 As the discoverers, Hubel and Wiesel won the Nobel Prize in 1982. 
 We were therefore inspired to use this mechanism to obtain and represent segments of contour in an image. 
-After uploading an edge image to the aforementioned hypercolumn array, 
+\DIFdelbegin \DIFdel{After uploading }\DIFdelend \DIFaddbegin \DIFadd{When }\DIFaddend an edge image \DIFaddbegin \DIFadd{is presented }\DIFaddend to the aforementioned hypercolumn array, 
 in a certain receptive field, 
 some linearly-distributed pixels will activate a certain orientation chip of a hypercolumn. 
 This indicates that we can represent all contour information in an image by a set of active units (i.e., orientation chips). In mathematics, each unit represents a line vector. Therefore, the output of a hypercolumn array is no longer a group of discrete, isolated, and pixel-wise points, 
@@ -287,7 +340,7 @@ but some preliminarily-integrated short line segments that contain a wealth of g
 Thus, the hypercolumn array not only upgrades the representation level of an edge image, 
 but also reserves the original characteristic of pixel distribution in an edge image. 
 \figurename~\ref{fig:3to5} shows several examples of such representation.
-A simple triangle, an onion shape, and a contour of a car were uploaded to the hypercolumn array,
+A simple triangle, an onion shape, and a contour of a car were \DIFdelbegin \DIFdel{uploaded }\DIFdelend \DIFaddbegin \DIFadd{presented }\DIFaddend to the hypercolumn array,
 which generated a set of activated orientation chips.
 This is very similar to using sparse coding to represent an image.
 
@@ -373,7 +426,7 @@ This suggests the application of graphs to describe the topological distribution
 
 \subsection{The generation of a graph}
 
-We hope to represent a continuous contour by coordinating the information derived from multiple chips through the implementation of a graph. 
+We \DIFdelbegin \DIFdel{hope }\DIFdelend \DIFaddbegin \DIFadd{wish }\DIFaddend to represent a continuous contour by coordinating the information derived from multiple chips through the implementation of a graph. 
 Therefore, the best manner of defining a graph for a hypercolumn-array is to set the chips as the nodes of the graph, 
 and establish the edges between those nodes (i.e., chips) that might be successively joined together to represent a slightly longer line or curve. 
 Because all 19 chips in a given hypercolumn share a completely coincident receptive field, 
@@ -383,8 +436,8 @@ Therefore, no edges can be established between these independent nodes.
 Only those chips with neighboring or partially overlapping receptive fields might be coordinated to represent a contour that passes through multiple receptive fields. 
 Links are assigned between these possibly coordinated nodes that usually belong to separate but adjacent hypercolumns. 
 The present description defines a basic graph of chip nodes, i.e., an orientation chip graph. 
-Once an image has been uploaded, 
-some nodes of this graph will be activated. 
+\DIFdelbegin \DIFdel{Once an image has been uploaded, 
+some }\DIFdelend \DIFaddbegin \DIFadd{Some }\DIFaddend nodes of this graph will be activated \DIFaddbegin \DIFadd{when an image is presented to the hypercolumn array}\DIFaddend . 
 Most importantly, the orientation chip graph provides a structural data form for subsequent geometrical or topological analysis, as illustrated in \figurename~\ref{fig:8}.
 
 \begin{figure}[!t]
@@ -523,7 +576,7 @@ Therefore, object recognition can be realized by matching long routes with a tem
 In this phase of the process, the number of long routes is greatly reduced.
 The succeeding object recognition process is thus an operation involving a small set of curves,
 which is inevitably more efficient than an operation involving a large set of pixels.
-  
+
 \begin{figure}[!t]
 \centering
 \includegraphics[width=0.4\linewidth]{images/fig11.pdf}
@@ -553,62 +606,151 @@ In \cite{arkin1991}, a type of turning function has been proposed to represent p
 but this method is very sensitive to small zigzag or burr noise.
 It is not suitable for incomplete contours or contours mixed with the background. 
 
-Intuitively, the most direct method of comparing two curves is to evaluate the degree to which they are mutually overlapping, 
-which is similar to solving an optimization problem, i.e., 
-finding the best-matched interval for two curves. 
-This is perhaps the most thorough method because it matches curves based upon their overall geometrical tendencies rather than local numerical features. 
-Furthermore, this method can flexibly adapt to curve variances of length, position, and posture. 
-We therefore designed a curve similarity measurement algorithm based on evaluating the degree of overlap between two curves. 
+\DIFdelbegin \DIFdel{Intuitively, the most direct method of comparing two curves is to evaluate the degree to which they are mutually overlapping, 
+which is similar to solving an optimization problem, i.
+e., 
+finding the best-matched interval for two curves.
+This is perhaps the most thorough methodbecause it matches curves based upon their overall geometrical tendencies rather than local numerical features. 
+Furthermore, this method can flexibly adapt to curve variances of length, position, and posture.
+We therefore designed a curve similarity measurement algorithm based on evaluating the degree of overlap between two curves}\DIFdelend \DIFaddbegin \DIFadd{In this paper, the curve similarity is measured with a machine learning approach based on 
+the extreme learning machine (ELM) \mbox{%DIFAUXCMD
+\cite{huang2006}
+}%DIFAUXCMD
+.
+The extreme learning machine is a kind of feed-forward neural network for classification or regression
+with a single layer of hidden nodes.
+It is different from the traditional back-propagation network in that 
+the ELM is learned with least-squares fitting method, which is fast and produces good generalization performance.
+In this paper, we use ELM to measure the similarity of a route compared with certain templates.
+We represent routes in high dimensional vectors.
+To cope with high dimensional data, we propose a novel ELM model based on the non-linear embedding technique
+for dimensionality reduction, which is referred to as non-linear embedding ELM (NLE-ELM)}\DIFaddend .
 
-Here, we are concerned with two classes of curves. 
-The first class, denoted as TempClass, derives from the shape template of an object category. 
-The second class of curve, denoted as RouteClass, derives from routes. 
-Our task is to determine whether any RouteClass curve coincides with a TempClass curve. 
+\DIFdelbegin \DIFdel{Here, we are concerned with two classes of curves. 
+The first class, denoted as TempClass, derives from the shape template of an object category.
+The second class of curve, denoted as RouteClass, derives from routes.
+Our task is to determine whether any RouteClass curve coincides with a TempClass curve.
 The degree of coincidence represents their similarity. 
 A partial match should be allowed because a RouteClass curve might include not only an object contour, 
-but also a noise curve in the background. 
-Therefore, the interval that maximizes the similarity is the object of optimization. 
-Furthermore, rotation and scale transformations are other factors that can alter an object's contour. 
-All these factors therefore make the process of seeking the best match between a template curve and a route curve an optimization process. 
-\figurename~\ref{fig:12} illustrates our idea, and the algorithm is given as follows.
-Algorithm 5.1 finds the optimized interval of partial match between two curves.
+but also a noise curve in the background.
+Therefore, the interval that maximizes the similarity is the object of optimization.
+Furthermore, rotation and scale transformations are other factors that can alter an object 's contour.
+All these factors therefore make the process of seeking the best match between a template curve and a route curve an optimization process.
+}%DIFDELCMD < \figurename%%%
+\DIFdel{~\ref{fig:12} illustrates our idea, and the algorithm is given as follows.
+Algorithm 5.1 finds the optimized interval of partial match between two curves.  
 It is a genetic algorithm that minimizes the dissimilarity (or distance) 
 between part of the RouteClass curve and the TempClass curve.
+}%DIFDELCMD < 
 
-\begin{figure}[!t]
+%DIFDELCMD < %%%
+\DIFdelend \begin{figure}[!t]
 \centering
-\includegraphics[width=0.7\linewidth]{images/fig12.pdf}
-\caption{An example of a similarity measurement of two curves.}
-\label{fig:12}
+\DIFdelbeginFL %DIFDELCMD < \includegraphics[width=0.7\linewidth]{images/fig12.pdf}
+%DIFDELCMD < %%%
+%DIFDELCMD < \caption{%
+{%DIFAUXCMD
+\DIFdelFL{An example of a similarity measurement of two curves.}}
+%DIFAUXCMD
+\DIFdelendFL \DIFaddbeginFL \includegraphics[width=0.9\linewidth]{images/fig12.jpg}
+\caption{\DIFaddFL{Representing routes with vectors.
+The routes in the images are transformed into vectors plotted below the images.}}
+\DIFaddendFL \label{fig:12}
 \end{figure}
 
-\begin{myalgorithm}{Algorithm 5.1 Route-Distance($r,t$)}
+\DIFaddbegin \DIFadd{The routes are represented with vectors which are provided as input to the NLE-ELM algorithm.
+By definition, a route is intrinsically a sequence of activated orientation chips.
+Therefore, it is straight-forward to represent a route with a vector $\boldsymbol{v}=(v_1,v_2,\cdots,v_n)^T$.
+Each element of $\boldsymbol{v}$ is the orientation of an activated chip in the route.
+Examples of the vectors are shown in }\figurename\DIFadd{~\ref{fig:12}.
+In each image, two routes around the contour of the apple logo are chosen to be represented into vectors of orientation.
+}
+
+\DIFadd{We train the NLE-ELM model to recognize routes from a number $M$ of object categories.
+The input of the ELM is route vectors.
+For each route vector, the desired output is a binary indicator vector, $\boldsymbol{t}=(t_1,t_2,\cdots,t_M)^T$,
+where $t_i=1$ indicates the route belongs to the $i$-th object category.  
+For each object category, positive routes are chosen from the training samples within the ground-truth bounding boxes,
+and negative ones are chosen from the background.
+The training data is generated from these routes.
+The ELM is a single-hidden-layer feedforward neural network and the output function is defined in the following equation\mbox{%DIFAUXCMD
+\cite{miche2010,huang2006}
+}%DIFAUXCMD
+.
+}
+\begin{equation}
+f(\boldsymbol{v})=\sum_{i=1}^L \beta_i h_i(\boldsymbol{v})=\boldsymbol{h}(\boldsymbol{v})\boldsymbol{\beta},
+\end{equation}
+\DIFadd{where $\boldsymbol{h}(\boldsymbol{v})=\left[h_1(\boldsymbol{v}),h_2(\boldsymbol{v}),\cdots,h_L(\boldsymbol{v})\right]$
+is the output of $L$ units in the hidden layer,
+and $\boldsymbol\beta=(\beta_1,\beta_2,\cdots,\beta_L)^T$ is the connection weight between the output layer and the $L$ units of the hidden layer.
+The connection weight between the input layer and the hidden layer consists of random values.
+The NLE-ELM algorithm optimizes $\boldsymbol\beta$ by minimizing the training error, the norm of the weight, and a non-linear regularization term,
+}\begin{equation}
+\label{equ:elm}
+\begin{split}
+\min_{\boldsymbol\beta}\left\{\frac{1}{2}\sum_{i=1}^n||\boldsymbol{h}(v)\boldsymbol\beta-\boldsymbol{t}||^2+\frac{1}{2}||\boldsymbol\beta||^2\right.\\
+\left.+\frac{\mu}{2}\left(||\boldsymbol{H'\beta'-T}||^2+\gamma_g\mathrm{tr}(\boldsymbol{\beta'^T\beta'})\right)\right\},
+\end{split}
+\end{equation}
+\DIFadd{where $n$ is the number of training samples, 
+$\mu$ and $\gamma_g$ are regularization parameters,
+and $\boldsymbol{H}$ and $\boldsymbol{T}$ are the input and output in the matrix form.
+$\boldsymbol{H'\beta'}$ denotes that original data is firstly mapped into ELM high-dimensional feature space using activation functions, 
+then transformed into the low-dimensional representation of data from high-dimensional feature space.
+This is where the non-linear dimensionality reduction is achieved.
+The optimization problem in (\ref{equ:elm}) has the following solution.
+}\begin{equation}\DIFadd{
+\boldsymbol\beta^{*}=\boldsymbol{H}^T\left(\boldsymbol{I}_n+\boldsymbol{HH^T}+\mu\boldsymbol{HH^T L_H}\right)^{-1}\boldsymbol{T},
+}\end{equation}
+\DIFadd{where $\boldsymbol{L_H}=\boldsymbol{I}_n-\boldsymbol{H'H'^T}(\gamma_g\boldsymbol{I}_n+\boldsymbol{H'H'^T})^{-1}$.
+}
+
+\DIFadd{Given the aforementioned route representation and NLE-ELM model,
+we can measure the similarity between a route from the test image and a route from a template.
+The algorithm is listed in Algorithm 5.1.
+}
+
+\DIFaddend \begin{myalgorithm}{Algorithm 5.1 Route-Distance($r,t$)}
 \begin{algorithmic}[1]
-\REQUIRE $r$ is RouteClass curve and $t$ is TempClass curve.
-\STATE rotate $r$ and $t$ so that their most extended direction is along the $x$-axis
-\STATE sample $t$ uniformly to $N$ points $P_t=\{(x_i,y_i)|i=1,\cdots,N\}$
-\STATE randomly initialize $M$ subintervals of $[0,length(r)]$
-\REPEAT
-  \FOR{each subinterval $[p,q]$}
-    \STATE sample $r$ in $[p,q]$ to $N$ points $P_r=\{(x'_i,y'_i)\}$
-    \STATE calculate dissimilarity $d(P_t,P_r)$ by solving least-squares
-  \ENDFOR
-  \STATE remove 2 subintervals with maximal dissimilarity
-  \STATE add 2 subintervals by shrinking and extending the one with minimal dissimilarity
-\UNTIL{the minimal dissimilarity is steady}
-\RETURN the minimal dissimilarity
-\end{algorithmic}
+\REQUIRE \DIFdelbegin \DIFdel{$r$ is RouteClass curve and $t$ is TempClass curve.
+}%DIFDELCMD < \STATE %%%
+\DIFdel{rotate }\DIFdelend $r$ and $t$ \DIFdelbegin \DIFdel{so that their most extended direction is along the $x$-axis
+}\DIFdelend \DIFaddbegin \DIFadd{are two routes.
+}\DIFaddend \STATE \DIFdelbegin \DIFdel{sample $t$ uniformly to $N$ points $P_t=\{(x_i,y_i)|i=1,\cdots,N\}$
+}\DIFdelend \DIFaddbegin \DIFadd{$\boldsymbol{v_r,v_t}\leftarrow$ vector representation of the routes
+}\DIFaddend \STATE \DIFdelbegin \DIFdel{randomly initialize $M$ subintervals of $[0,length(r)]$
+}%DIFDELCMD < \REPEAT
+%DIFDELCMD <   \FOR{each subinterval $[p,q]$}
+%DIFDELCMD <     %%%
+\DIFdelend \DIFaddbegin \DIFadd{Let $f$ denote the output function of the NLE-ELM model
+}\DIFaddend \STATE \DIFdelbegin \DIFdel{sample $r$ in $[p,q]$ to $N$ points $P_r=\{(x'_i,y'_i)\}$
+    }\DIFdelend \DIFaddbegin \DIFadd{$f(\boldsymbol{v_r})=\boldsymbol{h}(\boldsymbol{v_r})\boldsymbol\beta^{*}$
+}\DIFaddend \STATE \DIFdelbegin \DIFdel{calculate dissimilarity $d(P_t,P_r)$ by solving least-squares
+  }%DIFDELCMD < \ENDFOR
+%DIFDELCMD <   \STATE %%%
+\DIFdel{remove 2 subintervals with maximal dissimilarity
+  }%DIFDELCMD < \STATE %%%
+\DIFdel{add 2 subintervals by shrinking and extending the one with minimal dissimilarity
+}%DIFDELCMD < \UNTIL{the minimal dissimilarity is steady}
+%DIFDELCMD < \RETURN %%%
+\DIFdel{the minimal dissimilarity
+}\DIFdelend \DIFaddbegin \DIFadd{$f(\boldsymbol{v_t})=\boldsymbol{h}(\boldsymbol{v_t})\boldsymbol\beta^{*}$
+}\RETURN \DIFadd{$||f(\boldsymbol{v_r})-f(\boldsymbol{v_t})||$
+}\DIFaddend \end{algorithmic}
 \end{myalgorithm}
 
-At the beginning of this algorithm, we rotate a curve and make its most extended direction coincide with the positive $x$-axis. 
-The purpose of this step is to accommodate the posture diversity of curves. 
-Interpolation is used to adjust the scale of a curve, to accommodate the scale diversity of curves. 
-The dissimilarity measure $d$ is calculated by solving a least-squares problem between two point sequences,
-\begin{equation}
+\DIFdelbegin \DIFdel{At the beginning of this algorithm, we rotate a curve and make its most extended direction coincide with the positive $x$-axis.
+The purpose of this step is to accommodate the posture diversity of curves.
+Interpolation is used to adjust the scale of a curve,
+to accommodate the scale diversity of curves.
+The dissimilarity measure $d$ is calculated by solving a least-squares problem between two point sequences, 
+}\begin{displaymath}\DIFdel{
 d(P_t,P_r)=\min_{\Delta x,\Delta y,k}\sum_{i=1}^{N}(kx_i+\Delta x-x'_i)^2+(ky_i+\Delta y-y'_i)^2,
-\end{equation}
-where $P_t,P_r$ is the sequences of sampling points on the template curve and route curve respectively.
-\figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
+}\end{displaymath}
+%DIFAUXCMD
+\DIFdel{where $P_t,P_r$ is the sequences of sampling points on the template curve and route curve respectively.
+}\DIFdelend \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
 in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
 A subjective evaluation of the figure indicates that $B$ and $A$ are more alike than $C$ and $A$. 
 Although $B$ has noise, its overall shape is more similar to $A$. 
@@ -641,7 +783,9 @@ This middle-level integration can greatly improve the compactness of image repre
 and, simultaneously, create a smaller searching space. 
 For instance, as shown in \figurename~\ref{fig:14}, based on 40 apple images in the ETHZ dataset, 
 we respectively count the number of pixels in their edge images, the number of short line segments after hypercolumn array representation, and the number of routes after graph decomposition. 
-We can see that the degree of image compactness is steadily improved, and the searching space defined by routes has been greatly reduced.
+\DIFaddbegin \DIFadd{The number of routes is exponentially less than the number of line segments and edge pixels.
+}\DIFaddend We can see that the degree of image compactness is steadily improved, 
+and the searching space defined by routes has been greatly reduced. 
 
 \begin{figure}[!t]
 \centering
@@ -736,9 +880,13 @@ $\{T_1,\cdots,T_P\}$. Each partition is a set of template segments.
 \end{algorithmic}
 \end{myalgorithm}
 
-\section{Evolution Of A Two-dimensional Template}
+\DIFdelbegin \section{\DIFdel{Evolution Of A Two-dimensional Template}}
+%DIFAUXCMD
+\addtocounter{section}{-1}%DIFAUXCMD
+%DIFDELCMD < 
 
-In previous sections, we addressed the method of object recognition using a shape template. 
+%DIFDELCMD < %%%
+\DIFdel{In previous sections, we addressed the method of object recognition using a shape template. 
 However, the posture of an object is continuously changing in a natural environment, 
 and all possible object postures cannot be matched to a unique template. 
 This reveals a problem regarding multiple prototypes. 
@@ -750,57 +898,67 @@ and with all possible physical orientations,
 or we can have a three-dimensional (3D) digital model of a giraffe that defines all physical rotation functions, 
 but the burden of obtaining such a model is far too great. 
 We would hope to derive a new template according to a limited number of ready-made two-dimensional (2D) templates that would be adaptable to variations in the viewing angle or the giraffe's posture.
+}%DIFDELCMD < 
 
-\subsection{Variation of viewing angles}
+%DIFDELCMD < %%%
+\subsection{\DIFdel{Variation of viewing angles}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=0.6\linewidth]{images/fig17.pdf}
-\caption{A coordinate system where a 3D object is projected upon a 2D plane.}
-\label{fig:17}
-\end{figure}
+%DIFDELCMD < \begin{figure}[!t]
+%DIFDELCMD < \centering
+%DIFDELCMD < \includegraphics[width=0.6\linewidth]{images/fig17.pdf}
+%DIFDELCMD < %%%
+%DIFDELCMD < \caption{%
+{%DIFAUXCMD
+\DIFdel{A coordinate system where a 3D object is projected upon a 2D plane.}}
+%DIFAUXCMD
+%DIFDELCMD < \label{fig:17}
+%DIFDELCMD < \end{figure}
+%DIFDELCMD < 
 
-A 2D template is the image of a 3D object projected onto a 2D plane. 
-Based on computer graphic theory, we build a coordinate system in \figurename~\ref{fig:17}, 
+%DIFDELCMD < %%%
+\DIFdel{A 2D template is the image of a 3D object projected onto a 2D plane. 
+Based on computer graphic theory, we build a coordinate system in }%DIFDELCMD < \figurename%%%
+\DIFdel{~\ref{fig:17}, 
 where $E(0,0,e_z)$ is the viewpoint, $O$ is the origin, $XOY$ is the imaging plane, 
 and a giraffe is found in the direction of the negative $y$-axis.
 If $P(x_i,y_i,z_i)$ is a point on that giraffe, 
 then its projective point on the imaging plane is
-\begin{equation}
+}\begin{displaymath}\DIFdel{
 x_i^{pre}=\frac{e_z x_i}{-z_i+e_z}, y_i^{pre}=\frac{e_z y_i}{-z_i+e_z}, z_i^{pre}=0.
 \label{eqn:2}
-\end{equation}
-We use the subscript `pre' to denote the projective points of the original template before any transformations.
+}\end{displaymath}
+%DIFAUXCMD
+\DIFdel{We use the subscript `pre' to denote the projective points of the original template before any transformations.
 The subscript `post' denotes the projective points of the transformed template.
+}%DIFDELCMD < 
 
-To obtain a transformed template viewed from a different angle,
+%DIFDELCMD < %%%
+\DIFdel{To obtain a transformed template viewed from a different angle,
 we rotate the 2D template of giraffe about the $y$-axis.
 If the giraffe rotates $\theta$ degree, which is equivalent to a change in viewing angle, 
 then the new coordinate of $P$ is given as follows. 
-\begin{equation}
+}\begin{displaymath}\DIFdel{
 P^{rotated}=(x_i \cos\theta+z_i \sin\theta,y_i,-x_i \sin\theta+z_i \cos\theta). 
-\end{equation}
+}\end{displaymath}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-Then, the projective point of $P^{rotated}$ on the imaging plane is as follows.
-\begin{eqnarray}
-x_i^{post}&=&\frac{e_z(x_i \cos\theta+z_i \sin\theta)}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber\\
-y_i^{post}&=&\frac{e_z y_i}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber\\
-z_i^{post}&=&0.
+%DIFDELCMD < %%%
+\DIFdel{Then, the projective point of $P^{rotated}$ on the imaging plane is as follows.
+}\begin{align*}\DIFdel{
+x_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i \cos\theta+z_i \sin\theta)}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber}\\
+\DIFdel{y_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z y_i}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber}\\
+\DIFdel{z_i^{post}}&\DIFdel{=}&\DIFdel{0.
 \label{eqn:4}
-\end{eqnarray}
+}\end{align*}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-The projective points of the rotated template form the second 2D template.
-From (\ref{eqn:2}) and (\ref{eqn:4}), we obtain the following.
-\begin{eqnarray}
-\frac{x_i^{post}}{x_i^{pre}}&=&\frac{x_i \cos\theta+z_i \sin\theta}{x_i \sin\theta-z_i \cos\theta+e_z}
-\cdot\frac{-z_i+e_z}{x_i} \nonumber\\
-\frac{y_i^{post}}{y_i^{pre}}&=&\frac{-z_i+e_z}{x_i \sin\theta-z_i \cos\theta+e_z} \nonumber\\
-\frac{x_i^{post}}{y_i^{post}}
-&=&\left(\cos\theta+\frac{z_i}{x_i}\sin\theta\right)\cdot\frac{x_i^{pre}}{y_i^{pre}}.
-\label{eqn:5}
-\end{eqnarray}
-
-At present, 
+%DIFDELCMD < %%%
+\DIFdel{At present, 
 we have a 2D image of the giraffe from which we cannot know the accurate parameters of the perspective projection. 
 We must therefore derive another 2D image based upon the known image. 
 From (\ref{eqn:5}), we can see that it is not necessary to know these parameters when we derive a new image based on an old angle of view by shifting to a new angle of view. 
@@ -816,14 +974,20 @@ In consideration for the object rotating about the $y$-axis, we have $y_i^{post}
 and, finally, we can obtain $x_i^{post}$. 
 This process realizes the derivation of a new 2D appearance of an object from its current 2D status without knowing the explicit perspective parameters. 
 Of course, this is subject to the experiential knowledge of an observer on assessing the cotangent value of one-half of the horizontal visual angle and the variation of the visual angle.
+}%DIFDELCMD < 
 
-\subsection{Variation of postures}
+%DIFDELCMD < %%%
+\subsection{\DIFdel{Variation of postures}}
+%DIFAUXCMD
+\addtocounter{subsection}{-1}%DIFAUXCMD
+%DIFDELCMD < 
 
-Another frequent factor that can change the contour of a giraffe's 2D projection is the variation of its physical posture. 
+%DIFDELCMD < %%%
+\DIFdel{Another frequent factor that can change the contour of a giraffe's 2D projection is the variation of its physical posture. 
 A posture rotation can be expressed by some points of a contour rotating $\theta$ degree about a line $L$, 
 where $L$ is defined by a point $Q$ and a unit vector $\mathbf{u}=(u_1,u_2,u_3)$. 
 In computer graphic theory, this transform is performed by a matrix $Rot(\mathbf{u},\theta)=$
-\begin{equation}
+}\begin{displaymath}\DIFdel{
 \left(
 \begin{array}{ccc}
  c+\bar{c}u_1^2 
@@ -837,41 +1001,56 @@ In computer graphic theory, this transform is performed by a matrix $Rot(\mathbf
 & c+\bar{c}u_3^2
 \end{array}\right),
 \label{eqn:6}
-\end{equation} 
-where $s=\sin\theta$,$c=\cos\theta$, and $\bar{c}=1-\cos\theta$.
+}\end{displaymath} 
+%DIFAUXCMD
+\DIFdel{where $s=\sin\theta$,$c=\cos\theta$, and $\bar{c}=1-\cos\theta$.
+}%DIFDELCMD < 
 
-As an example, we suppose that a giraffe's neck has a rotational axis parallel to the $z$-axis; 
+%DIFDELCMD < %%%
+\DIFdel{As an example, we suppose that a giraffe's neck has a rotational axis parallel to the $z$-axis; 
 thus, $\mathbf{u} = (0,0,1)$. 
 This rotation will change the coordinates of the giraffe's head and neck as follows.
-\begin{equation}
+}\begin{displaymath}\DIFdel{
 (x_i^{neck},y_i^{neck},z_i^{neck},1)=(x_i,y_i,z_i,1)\cdot Rot((0,0,1),\theta).
 \label{eqn:7}
-\end{equation}
+}\end{displaymath}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-From equation (\ref{eqn:6}) and (\ref{eqn:7}), we get
-\begin{eqnarray}
-x_i^{neck}&=&x_i\cos\theta-y_i\sin\theta\nonumber\\
-y_i^{neck}&=&x_i\sin\theta+y_i\cos\theta\nonumber\\
-z_i^{neck}&=&z_i.
-\end{eqnarray}
+%DIFDELCMD < %%%
+\DIFdel{From equation (\ref{eqn:6}) and (\ref{eqn:7}), we get
+}\begin{align*}\DIFdel{
+x_i^{neck}}&\DIFdel{=}&\DIFdel{x_i\cos\theta-y_i\sin\theta\nonumber}\\
+\DIFdel{y_i^{neck}}&\DIFdel{=}&\DIFdel{x_i\sin\theta+y_i\cos\theta\nonumber}\\
+\DIFdel{z_i^{neck}}&\DIFdel{=}&\DIFdel{z_i.
+}\end{align*}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-The projective point of the bended neck is as follows.
-\begin{eqnarray}
-x_i^{post}&=&\frac{e_z(x_i\cos\theta-y_i\sin\theta)}{-z_i+e_z}, \nonumber\\
-y_i^{post}&=&\frac{e_z(x_i\sin\theta+y_i\cos\theta)}{-z_i+e_z}, \nonumber\\
-z_i^{post}&=&0.
+%DIFDELCMD < %%%
+\DIFdel{The projective point of the bended neck is as follows.
+}\begin{align*}\DIFdel{
+x_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i\cos\theta-y_i\sin\theta)}{-z_i+e_z}, \nonumber}\\
+\DIFdel{y_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i\sin\theta+y_i\cos\theta)}{-z_i+e_z}, \nonumber}\\
+\DIFdel{z_i^{post}}&\DIFdel{=}&\DIFdel{0.
 \label{eqn:9}
-\end{eqnarray}
+}\end{align*}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-Comparing (\ref{eqn:9}) with the projective points of the original template in (\ref{eqn:2}),
+%DIFDELCMD < %%%
+\DIFdel{Comparing (\ref{eqn:9}) with the projective points of the original template in (\ref{eqn:2}),
 we obtain the following.
-\begin{equation}
+}\begin{displaymath}\DIFdel{
 \frac{x_i^{post}}{x_i^{pre}}=\cos\theta-\frac{y_i}{x_i}\sin\theta,
 \frac{y_i^{post}}{y_i^{pre}}=\cos\theta+\frac{x_i}{y_i}\sin\theta
 \label{eqn:10}
-\end{equation}
+}\end{displaymath}
+%DIFAUXCMD
+%DIFDELCMD < 
 
-In (\ref{eqn:10}), $\theta$ is assessed by the observer, 
+%DIFDELCMD < %%%
+\DIFdel{In (\ref{eqn:10}), $\theta$ is assessed by the observer, 
 and $\frac{y_i}{x_i}$ is obtained from the original posture of the object. 
 The right-hand side of (\ref{eqn:10}) is actually the product of the tangent of one-half of the horizontal visual angle and the cotangent of one-half of the vertical visual angle. 
 These are determined by the aforementioned physiological mechanism in the posterior parietal cortex, 
@@ -879,15 +1058,19 @@ and these are right our visual experiences.
 Because $x_i^{pre}$ and $y_i^{pre}$ are known, $x_i^{post}$ and $y_i^{post}$ can be estimated. 
 In a similar fashion, we can derive the local changes of the 2D image caused by other posture rotations. 
 A complex posture rotation will be decomposed into several simple rotations about various axes.
+}%DIFDELCMD < 
 
-From the proposed method based on the 2D appearance of an object, 
+%DIFDELCMD < %%%
+\DIFdel{From the proposed method based on the 2D appearance of an object, 
 the knowledge of its 3D structure, and the perspective projection formulas, 
 a new 2D appearance can be derived. 
 This method will be used to derive a new 2D template of an object based on an existing 2D template. 
 A prototype database is used to store these templates, 
 which improve the generalization ability of the proposed shape-based object recognition method.
+}%DIFDELCMD < 
 
-\section{Experimental Results}
+%DIFDELCMD < %%%
+\DIFdelend \section{Experimental Results}
 
 \subsection{Image representation test}
 
@@ -930,65 +1113,119 @@ from which we observe that an image has been reduced to a small number of routes
 
 \subsection{Object detection test}
 
-The most common method of evaluating object detection performance is through the use of the DR-FPPI curve, 
-where DR represents the detection rate, and FPPI is the false positives per image. 
-Generally, a small FPPI value can better reflect the performance of an algorithm because the DR can attain a high value provided the FPPI is loosened. 
-Therefore, we prefer a smaller FPPI value such as 0.3 or 0.4. 
-\tablename~\ref{tab:1} lists a comparison of DR values obtained by our method and several state-of-the-art methods 
-\cite{ferrari2010,ferrari2008} for FPPI values of 0.2 and 0.4 with images obtained from the ETHZ dataset. 
-\tablename~\ref{tab:1} indicates that the performance of our method is either the best or very nearly the best for all images and FPPR values considered.
- 
+\DIFdelbegin \DIFdel{The most common method of evaluating object detection performance is through the use of the DR-FPPI curve, 
+where DR represents the detection rate, 
+and FPPI is the false positives per image.Generally, a small FPPI value can better reflect the performance of an algorithm because the DR can attain a high value provided the FPPI is loosened.
+Therefore,
+we prefer a smaller FPPI value such as 0.3 or 0.4. 
+}%DIFDELCMD < \tablename%%%
+\DIFdel{~\ref{tab:1} lists a comparison of DR values obtained by our method and several }\DIFdelend \DIFaddbegin \DIFadd{We test the proposed method on the ETHZ dataset and the Weizzman horse dataset for validation.
+PASCAL criteria are used for the purpose of detection evaluation, 
+i.e., if the detected bounding-box and the ground truth bounding-box intersect over 50\%}{} \DIFadd{of the union of them, 
+a detection is counted as correct.
+The proposed model is tested on the }\DIFaddend state-of-the-art \DIFdelbegin \DIFdel{methods 
+\mbox{%DIFAUXCMD
+\cite{ferrari2010,ferrari2008}
+}%DIFAUXCMD
+for FPPI values of 0.2 and 0.4 with images obtained from the ETHZ dataset}\DIFdelend \DIFaddbegin \DIFadd{methods 
+\mbox{%DIFAUXCMD
+\cite{lu2009,felzenszwalb2007,maji2009,srinivasan2010,wang2012,lin2012}
+}%DIFAUXCMD
+,
+we plot the precision-recall (PR) curves in }\figurename\DIFadd{~\ref{fig:17} 
+and report the average precision (AP) in }\tablename\DIFadd{~\ref{tab:1}}\DIFaddend .
+\tablename~\ref{tab:1} indicates that the performance of our method is either the best or very nearly the best for all \DIFdelbegin \DIFdel{images and FPPR values considered}\DIFdelend \DIFaddbegin \DIFadd{image categories}\DIFaddend .
+
 \begin{table}[!t]
 \renewcommand{\arraystretch}{1.3}
-\caption{Comparison of the detection rate for FPPI 0.2/0.4}
+\caption{Comparison of \DIFdelbeginFL \DIFdelFL{the detection rate for FPPI 0.2/0.4}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{average precision (AP) on ETHZ Shape classes}\DIFaddendFL }
 \label{tab:1}
 \centering
 \scriptsize
-\begin{tabular}{l|lllll}
+\DIFdelbeginFL %DIFDELCMD < \begin{tabular}{l|lllll}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \begin{tabular}{l|llllll}
+\DIFaddendFL \hline
+& Apple & Bottle & Giraffe & Mug & Swan \DIFaddbeginFL & \DIFaddFL{Average }\DIFaddendFL \\
 \hline
-& Apple & Bottle & Giraffe & Mug & Swan \\
-\hline
-Our method
-& \textbf{0.80}/0.83
-& 0.78/0.91
-& \textbf{0.77/0.80}
-& 0.75/\textbf{0.88}
-& \textbf{0.75/0.81}\\
-$\text{Hough only}_\text{(Pascal)}$
-& 0.18/0.29
-& 0.48/0.56
-& 0.16/0.35
-& 0.20/0.36
-& 0.29/0.46\\
-$\text{Full system}_\text{(Pascal)}$
-& 0.74/\textbf{0.84}
-& 0.69/0.82
-& 0.34/0.45
-& 0.66/0.79
-& 0.53/0.70\\
-$\text{Full system}_\text{(20\% IoU)}$
-& -/-
-& 0.72/0.83
-& 0.47/0.59
-& 0.72/0.84
-& 0.63/0.75\\
-$\text{Ferrari08}_\text{(Pascal)}$
-& 0.38/0.60
-& \textbf{0.84/0.94}
-& 0.43/0.51
-& 0.65/0.78
-& 0.41/0.54\\
-$\text{Ferrari08}_\text{(20\% IoU)}$
-& 0.55/0.85
-& 0.82/0.90
-& 0.73/0.79
-& \textbf{0.78}/0.81
-& 0.47/0.64\\
-\hline
+Our method  & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
+\DIFdelFL{/0.83
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.875 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.78/0.91
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.963 }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.77/0.80}}
+%DIFAUXCMD
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.859 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.75/}\textbf{\DIFdelFL{0.88}}
+%DIFAUXCMD
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.906 }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.75/0.81}}%DIFAUXCMD
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.972 }& \DIFaddFL{0.915 }\DIFaddendFL \\
+\DIFdelbeginFL \DIFdelFL{$\text{Hough only}_\text{(Pascal)}$
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Lu et al.\mbox{%DIFAUXCMD
+\cite{lu2009}
+}%DIFAUXCMD
+}\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.18/0.29
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.844     }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.48/0.56
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.641 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.16/0.35
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.617 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.20/0.36
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.643 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.29/0.46}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.798 }& \DIFaddFL{0.709 }\DIFaddendFL \\
+\DIFdelbeginFL \DIFdelFL{$\text{Full system}_\text{(Pascal)}$
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Felz et al.\mbox{%DIFAUXCMD
+\cite{felzenszwalb2007}
+}%DIFAUXCMD
+}\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.74/}\textbf{\DIFdelFL{0.84}}
+%DIFAUXCMD
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.891   }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.69/0.82
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.950 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.34/0.45
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.608 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.66/0.79
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.721 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.53/0.70}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.391 }& \DIFaddFL{0.712 }\DIFaddendFL \\
+\DIFdelbeginFL \DIFdelFL{$\text{Full system}_\text{(20\% IoU)}$
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Maji et al.\mbox{%DIFAUXCMD
+\cite{maji2009}
+}%DIFAUXCMD
+}\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{-/-
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.869   }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.72/0.83
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.724 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.47/0.59
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.742 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.72/0.84
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.806 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.63/0.75}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.716 }& \DIFaddFL{0.771 }\DIFaddendFL \\
+\DIFdelbeginFL \DIFdelFL{$\text{Ferrari08}_\text{(Pascal)}$
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Srinivasan et al.\mbox{%DIFAUXCMD
+\cite{srinivasan2010}
+}%DIFAUXCMD
+}\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.38/0.60
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.845     }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.84/0.94}}
+%DIFAUXCMD
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.916 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.43/0.51
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.787 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.65/0.78
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.888 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.41/0.54}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.922 }& \DIFaddFL{0.872 }\DIFaddendFL \\
+\DIFdelbeginFL \DIFdelFL{$\text{Ferrari08}_\text{(20\% IoU)}$
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Wang et al.\mbox{%DIFAUXCMD
+\cite{wang2012}
+}%DIFAUXCMD
+}\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.55/0.85
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.866   }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.82/0.90
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.975 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.73/0.79
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.832 }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.78}}%DIFAUXCMD
+\DIFdelFL{/0.81
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.843 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.47/0.64}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.828 }& \DIFaddFL{0.869 }\DIFaddendFL \\
+\DIFaddbeginFL \DIFaddFL{Lin et al.\mbox{%DIFAUXCMD
+\cite{lin2012}
+}%DIFAUXCMD
+}& \DIFaddFL{0.909   }& \DIFaddFL{0.898 }& \DIFaddFL{0.811 }& \DIFaddFL{0.893 }& \DIFaddFL{0.964 }& \DIFaddFL{0.895 }\\
+\DIFaddendFL \hline
 \end{tabular}
 \end{table}
 
-The Weizzman dataset of horse images is another popular dataset for object detection testing. 
+\DIFaddbegin \begin{figure}[!t]
+\centering
+\includegraphics[width=0.5\linewidth]{images/fig17a.png}\hfil
+\includegraphics[width=0.5\linewidth]{images/fig17b.png}\\
+\includegraphics[width=0.5\linewidth]{images/fig17c.png}\hfil
+\includegraphics[width=0.5\linewidth]{images/fig17d.png}\\
+\includegraphics[width=0.5\linewidth]{images/fig17e.png}\hfil
+\includegraphics[width=0.4\linewidth]{images/fig17f.png}
+\caption{\DIFaddFL{Precision/Recall curves of our method and compared methods on the ETHZ database.}}
+\label{fig:17}
+\end{figure}
+
+\DIFaddend The Weizzman dataset of horse images is another popular dataset for object detection testing. 
 \figurename~\ref{fig:21} presents our testing results on this dataset. 
 The three green arrowed curves represent the template segments, 
 the blue curves are the successfully matched contours, and the red boxes indicate the positions of horses.
@@ -1042,7 +1279,7 @@ This type of processing, under a clear top-down instruction, is active.
 The most significant advantage of this functionality is that it enables bidirectional, data-driven, 
 and concept-driven processing, and merges them together seamlessly. 
 This functionality greatly improves self-adaptability.
-  
+
 \figurename~\ref{fig:23} demonstrates how active processing is achieved. 
 In \figurename~\ref{fig:23}a, a suspected route is selected as the beginning of the search because it matches a part of the template well. 
 This segment is re-represented by a route, i.e., a sequence of nodes. 
@@ -1094,11 +1331,24 @@ The most significant aspect of this process is that the route of a graph provide
 
 Therefore, the present work provides the following four conclusions.
 
-(a) Perception always is real-time processing, so its efficiency is crucial for an algorithm's rationality evaluation. In this paper, we achieve the same performance using a relatively simple method, but our method is much more time-saving.
+(a) Perception always is real-time processing, so its efficiency is crucial for an algorithm's rationality evaluation. In this paper, we achieve the same performance using a relatively simple method, 
+but our method is much more time-saving. 
+\DIFaddbegin \DIFadd{From the engineering point of view,
+the hypercolumn array is a biologically inspired model which helps the design of bionic chips, 
+which allows fine-grained parallel computing with neural circuits and real-time processing could be possible.
+}\DIFaddend 
 
-(b) A biological visual system, especially that of a mammal, has been evolved by nature to be a highly optimized system. Feature-integration theory has been deeply studied in cognitive psychology. Physiological inspirations are indispensable for designing a practical vision system.
+(b) A biological visual system, especially that of a mammal, has been evolved by nature to be a highly optimized system.
+Feature-integration theory has been deeply studied in cognitive psychology. 
+Physiological inspirations are indispensable for designing a practical vision system\DIFaddbegin \DIFadd{.
+The hypercolumn array is different from traditional representations such as edge map.
+It utilizes a limited number of units, or computation resources, 
+to achieve a balance between the complexity of the model and the accuracy of the representation. 
+This optimized design is imitating the result of natural evolution}\DIFaddend .
 
-(c) Task-specific methods, for their diversities, are weak to mature vision theory. A necessary symbol for this theory is it has a unique architecture, whether in representation or in processing. For this sake, choosing geometrical structure and topological relation to represent and choosing shape match to achieve recognition are perhaps on the right track.
+(c) Task-specific methods, for their diversities, are weak to mature vision theory. 
+A necessary symbol for this theory is it has a unique architecture, whether in representation or in processing. 
+For this sake, choosing geometrical structure and topological relation to represent and choosing shape match to achieve recognition are perhaps on the right track.
 
 (d) The training set and appearance-based machine learning strategy for object detection under a natural environment can never exhaust all possible negative cases. Therefore, this strategy is really too expensive for its limited gain in generalization. The strategy of evidence accumulation and inference can avoid these costs.
 
