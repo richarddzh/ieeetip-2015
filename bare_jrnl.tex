@@ -566,17 +566,18 @@ but this method is not appropriate for measuring similarity between a partial co
 In \cite{arkin1991}, a type of turning function has been proposed to represent polygons and to measure their shapes, 
 but this method is very sensitive to small zigzag or burr noise.
 It is not suitable for incomplete contours or contours mixed with the background. 
+In \cite{wang1997}, the dynamic time warping (DTW) method has been adopted to curve alignment,
+but his method is not applicable to curves that can not be presented with one dimensional functions.
 
 In this paper, the curve similarity is measured with a machine learning approach based on 
-the extreme learning machine (ELM) \cite{huang2006}.
-The extreme learning machine is a kind of feed-forward neural network for classification or regression
-with a single layer of hidden nodes.
-It is different from the traditional back-propagation network in that 
-the ELM is learned with least-squares fitting method, which is fast and produces good generalization performance.
-In this paper, we use ELM to measure the similarity of a route compared with certain templates.
-We represent routes in high dimensional vectors.
-To cope with high dimensional data, we propose a novel ELM model based on the non-linear embedding technique
-for dimensionality reduction, which is referred to as non-linear embedding ELM (NLE-ELM).
+the non-linearly embedded extreme learning machine (NLE-ELM) \cite{liu2015}.
+The extreme learning machine (ELM) \cite{huang2006,tang2015,mohammed2011,huang2014}
+is a fast training algorithm for single hidden layer feedforward neural networks (SLFNNs).
+The NLE-ELM algorithm improves the performance on high-dimensional and sparse data.
+It is essentially a kind of self-embedding ELM, 
+where inner-layer ELM is used for dimensionality reduction 
+and outer-layer ELM is trained for classification or regression based on inner-layer ELM. 
+It inherits the merits of ELM, such as avoiding local optima, fast learning speed. 
 
 \begin{figure}[!t]
 \centering
@@ -593,55 +594,36 @@ Each element of $\boldsymbol{v}$ is the orientation of an activated chip in the 
 Examples of the vectors are shown in \figurename~\ref{fig:12}.
 In each image, two routes around the contour of the apple logo are chosen to be represented into vectors of orientation.
 
-We train the NLE-ELM model to recognize routes from a number $M$ of object categories.
-The input of the ELM is route vectors.
+We train an NLE-ELM model to recognize routes from a number $M$ of object categories.
 For each route vector, the desired output is a binary indicator vector, $\boldsymbol{t}=(t_1,t_2,\cdots,t_M)^T$,
 where $t_i=1$ indicates the route belongs to the $i$-th object category.  
 For each object category, positive routes are chosen from the training samples within the ground-truth bounding boxes,
 and negative ones are chosen from the background.
 The training data is generated from these routes.
-The ELM is a single-hidden-layer feedforward neural network and the output function is defined in the following equation\cite{miche2010,huang2006}.
-\begin{equation}
-f(\boldsymbol{v})=\sum_{i=1}^L \beta_i h_i(\boldsymbol{v})=\boldsymbol{h}(\boldsymbol{v})\boldsymbol{\beta},
-\end{equation}
-where $\boldsymbol{h}(\boldsymbol{v})=\left[h_1(\boldsymbol{v}),h_2(\boldsymbol{v}),\cdots,h_L(\boldsymbol{v})\right]$
-is the output of $L$ units in the hidden layer,
-and $\boldsymbol\beta=(\beta_1,\beta_2,\cdots,\beta_L)^T$ is the connection weight between the output layer and the $L$ units of the hidden layer.
-The connection weight between the input layer and the hidden layer consists of random values.
-The NLE-ELM algorithm optimizes $\boldsymbol\beta$ by minimizing the training error, the norm of the weight, and a non-linear regularization term,
-\begin{equation}
-\label{equ:elm}
-\begin{split}
-\min_{\boldsymbol\beta}\left\{\frac{1}{2}\sum_{i=1}^n||\boldsymbol{h}(v)\boldsymbol\beta-\boldsymbol{t}||^2+\frac{1}{2}||\boldsymbol\beta||^2\right.\\
-\left.+\frac{\mu}{2}\left(||\boldsymbol{H'\beta'-T}||^2+\gamma_g\mathrm{tr}(\boldsymbol{\beta'^T\beta'})\right)\right\},
-\end{split}
-\end{equation}
-where $n$ is the number of training samples, 
-$\mu$ and $\gamma_g$ are regularization parameters,
-and $\boldsymbol{H}$ and $\boldsymbol{T}$ are the input and output in the matrix form.
-$\boldsymbol{H'\beta'}$ denotes that original data is firstly mapped into ELM high-dimensional feature space using activation functions, 
-then transformed into the low-dimensional representation of data from high-dimensional feature space.
-This is where the non-linear dimensionality reduction is achieved.
-The optimization problem in (\ref{equ:elm}) has the following solution.
-\begin{equation}
-\boldsymbol\beta^{*}=\boldsymbol{H}^T\left(\boldsymbol{I}_n+\boldsymbol{HH^T}+\mu\boldsymbol{HH^T L_H}\right)^{-1}\boldsymbol{T},
-\end{equation}
-where $\boldsymbol{L_H}=\boldsymbol{I}_n-\boldsymbol{H'H'^T}(\gamma_g\boldsymbol{I}_n+\boldsymbol{H'H'^T})^{-1}$.
+
+\begin{myalgorithm}{Algorithm 5.1 Train-Route-Model($\boldsymbol{V,T}$)}
+\begin{algorithmic}[1]
+\REQUIRE $\boldsymbol{V}$ and $\boldsymbol{V}$ are the training data.
+$\boldsymbol{V}=(\boldsymbol{v}_1,\boldsymbol{v}_2,\cdots,\boldsymbol{v}_N)$
+consists of $N$ route vectors, and $\boldsymbol{T}=(\boldsymbol{t}_1,\boldsymbol{t}_2,\cdots,\boldsymbol{t}_N)$
+consists of the corresponding indicator vectors.
+$C,\gamma_g$ and $\mu$ are parameters of NLE-ELM model.
+\ENSURE the algorithm calculates the optimized output weight matrix $\boldsymbol\beta^{*}$
+of the NLE-ELM model.
+\STATE Initialize the hidden layer with random input weights
+\STATE Calculates the output of hidden layer $(\boldsymbol{H,H'})$
+\STATE Let $L$ denotes the number of units in hidden layer
+\IF {$L\le N$}
+  \STATE $\boldsymbol{L_H}=\boldsymbol{I}_N-\boldsymbol{H}'(\gamma_g\boldsymbol{I}_L+\boldsymbol{H'^T H'})^{-1}\boldsymbol{H'^T}$
+  \STATE $\boldsymbol\beta^{*}=\left(\frac{\boldsymbol{I}_L}{C}+\boldsymbol{H^T H}+\frac{\mu}{C}\boldsymbol{H^T L_H H}\right)^{-1}\boldsymbol{H^T H}$
+\ENDIF
+\RETURN $\boldsymbol\beta^{*}$
+\end{algorithmic}
+\end{myalgorithm}
 
 Given the aforementioned route representation and NLE-ELM model,
 we can measure the similarity between a route from the test image and a route from a template.
 The algorithm is listed in Algorithm 5.1.
-
-\begin{myalgorithm}{Algorithm 5.1 Route-Distance($r,t$)}
-\begin{algorithmic}[1]
-\REQUIRE $r$ and $t$ are two routes.
-\STATE $\boldsymbol{v_r,v_t}\leftarrow$ vector representation of the routes
-\STATE Let $f$ denote the output function of the NLE-ELM model
-\STATE $f(\boldsymbol{v_r})=\boldsymbol{h}(\boldsymbol{v_r})\boldsymbol\beta^{*}$
-\STATE $f(\boldsymbol{v_t})=\boldsymbol{h}(\boldsymbol{v_t})\boldsymbol\beta^{*}$
-\RETURN $||f(\boldsymbol{v_r})-f(\boldsymbol{v_t})||$
-\end{algorithmic}
-\end{myalgorithm}
 
 \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
 in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
