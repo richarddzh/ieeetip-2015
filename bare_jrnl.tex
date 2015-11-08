@@ -26,10 +26,12 @@ Its Application to Shape-based Object Detection}
 \author{Hui~Wei\thanks{Hui~Wei is with the School of Computer Science, 
 Laboratory of Cognitive Modeling and Algorithms, 
 Brain Science Research Center, Fudan University, Shanghai, China. 
-Corresponding author's email: weihui@fudan.edu.cn.}
-and~Zheng~Dong\thanks{Zheng~Dong is with the School of Computer Science, 
+Corresponding author's email: weihui@fudan.edu.cn.},
+Zheng~Dong\thanks{Zheng~Dong is with the School of Computer Science, 
 Laboratory of Cognitive Modeling and Algorithms, 
-Fudan University, Shanghai, China.}}
+Fudan University, Shanghai, China.},
+and~Bing~Liu\thanks{Bing~Liu is with the School of Computer Science and Technology,
+China University of Mining and Technology, Xuzhou, Jiangsu Province, China}}
 
 % The paper headers
 %\markboth{Journal of \LaTeX\ Class Files,~Vol.~13, No.~9, September~2014}%
@@ -600,6 +602,7 @@ where $t_i=1$ indicates the route belongs to the $i$-th object category.
 For each object category, positive routes are chosen from the training samples within the ground-truth bounding boxes,
 and negative ones are chosen from the background.
 The training data is generated from these routes.
+The training algorithm is listed in Algorithm 5.1.
 
 \begin{myalgorithm}{Algorithm 5.1 Train-Route-Model($\boldsymbol{V,T}$)}
 \begin{algorithmic}[1]
@@ -615,7 +618,10 @@ of the NLE-ELM model.
 \STATE Let $L$ denotes the number of units in hidden layer
 \IF {$L\le N$}
   \STATE $\boldsymbol{L_H}=\boldsymbol{I}_N-\boldsymbol{H}'(\gamma_g\boldsymbol{I}_L+\boldsymbol{H'^T H'})^{-1}\boldsymbol{H'^T}$
-  \STATE $\boldsymbol\beta^{*}=\left(\frac{\boldsymbol{I}_L}{C}+\boldsymbol{H^T H}+\frac{\mu}{C}\boldsymbol{H^T L_H H}\right)^{-1}\boldsymbol{H^T H}$
+  \STATE $\boldsymbol\beta^{*}=\left(\frac{\boldsymbol{I}_L}{C}+\boldsymbol{H^T H}+\frac{\mu}{C}\boldsymbol{H^T L_H H}\right)^{-1}\boldsymbol{H^T T}$
+\ELSE
+  \STATE $\boldsymbol{L_H}=\boldsymbol{I}_N-\boldsymbol{H'H^T}(\gamma_g\boldsymbol{I}_N+\boldsymbol{H'H'^T})^{-1}$
+  \STATE $\boldsymbol\beta^{*}=\boldsymbol{H^T}\left(\frac{\boldsymbol{I}_N}{C}+\boldsymbol{HH^T}+\frac{\mu}{C}\boldsymbol{HH^T L_H}\right)^{-1}\boldsymbol{T}$
 \ENDIF
 \RETURN $\boldsymbol\beta^{*}$
 \end{algorithmic}
@@ -623,7 +629,13 @@ of the NLE-ELM model.
 
 Given the aforementioned route representation and NLE-ELM model,
 we can measure the similarity between a route from the test image and a route from a template.
-The algorithm is listed in Algorithm 5.1.
+Let $r$ and $t$ denote two routes and $\boldsymbol{v}_r$ and $\boldsymbol{v}_t$ the vector representation of the routes.
+The output function of the NLE-ELM model is $f(\boldsymbol{v},\boldsymbol\beta^{*})$, 
+where $\boldsymbol\beta^{*}$ is obtained with Algorithm 5.1.
+The distance between routes $r$ and $t$ is defined as the Euclidean distance between the NLE-ELM output.
+\begin{equation}
+\text{Route-Distance}(r,t)=||f(\boldsymbol{v}_r,\boldsymbol\beta^{*})-f(\boldsymbol{v}_t,\boldsymbol\beta^{*})||.
+\end{equation}
 
 \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
 in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
@@ -798,7 +810,7 @@ from which we observe that an image has been reduced to a small number of routes
 
 \subsection{Object detection test}
 
-We test the proposed method on the ETHZ dataset and the Weizzman horse dataset for validation.
+We test the proposed method on the ETHZ dataset and the INRIA horse dataset for validation.
 PASCAL criteria are used for the purpose of detection evaluation, 
 i.e., if the detected bounding-box and the ground truth bounding-box intersect over 50\%{} of the union of them, 
 a detection is counted as correct.
@@ -818,13 +830,13 @@ and report the average precision (AP) in \tablename~\ref{tab:1}.
 \hline
 & Apple & Bottle & Giraffe & Mug & Swan & Average \\
 \hline
-Our method  & 0.875 & 0.963 & 0.859 & 0.906 & 0.972 & 0.915 \\
-Lu et al.\cite{lu2009}  & 0.844     & 0.641 & 0.617 & 0.643 & 0.798 & 0.709 \\
-Felz et al.\cite{felzenszwalb2007} & 0.891   & 0.950 & 0.608 & 0.721 & 0.391 & 0.712 \\
-Maji et al.\cite{maji2009}  & 0.869   & 0.724 & 0.742 & 0.806 & 0.716 & 0.771 \\
-Srinivasan et al.\cite{srinivasan2010}  & 0.845     & 0.916 & 0.787 & 0.888 & 0.922 & 0.872 \\
-Wang et al.\cite{wang2012} & 0.866   & 0.975 & 0.832 & 0.843 & 0.828 & 0.869 \\
-Lin et al.\cite{lin2012}  & 0.909   & 0.898 & 0.811 & 0.893 & 0.964 & 0.895 \\
+Our method              & 0.875                 & 0.963         &\textbf{0.859} &\textbf{0.906} &\textbf{0.972} &\textbf{0.915} \\
+Lu et al.\cite{lu2009}  & 0.844                 & 0.641         & 0.617         & 0.643         & 0.798         & 0.709 \\
+Felz et al.\cite{felzenszwalb2007} & 0.891      & 0.950         & 0.608         & 0.721         & 0.391         & 0.712 \\
+Maji et al.\cite{maji2009}  & 0.869             & 0.724         & 0.742         & 0.806         & 0.716         & 0.771 \\
+Srinivasan et al.\cite{srinivasan2010}  & 0.845 & 0.916         & 0.787         & 0.888         & 0.922         & 0.872 \\
+Wang et al.\cite{wang2012} & 0.866              &\textbf{0.975} & 0.832         & 0.843         & 0.828         & 0.869 \\
+Lin et al.\cite{lin2012}  &\textbf{0.909}       & 0.898         & 0.811         & 0.893         & 0.964         & 0.895 \\
 \hline
 \end{tabular}
 \end{table}
@@ -841,15 +853,19 @@ Lin et al.\cite{lin2012}  & 0.909   & 0.898 & 0.811 & 0.893 & 0.964 & 0.895 \\
 \label{fig:17}
 \end{figure}
 
-The Weizzman dataset of horse images is another popular dataset for object detection testing. 
-\figurename~\ref{fig:21} presents our testing results on this dataset. 
-The three green arrowed curves represent the template segments, 
-the blue curves are the successfully matched contours, and the red boxes indicate the positions of horses.
+The INRIA horses dataset is another popular dataset for object detection testing. 
+In this dataset, 50 positive examples and 50 negative examples are randomly selected for training. 
+The final trained model is tested on the remaining images.
+A few representative shape detection results generated by our method is shown in \figurename~\ref{fig:21a}. 
+Each image shows bounding boxes for one or more detections. 
+\figurename~\ref{fig:21b} presents the averaged false-positives per image (FPPI) vs. recall.
+Our method is comparable to the-state-of-art method \cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\linewidth]{images/fig21.jpg}
-\caption{Detection testing for the Weizzman horse dataset.}
+\subfloat[Representative detection results]{\includegraphics[width=0.95\linewidth]{images/fig21a.png}}\\
+\subfloat[FPPI-Recall compared with \cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}]{\includegraphics[width=0.75\linewidth]{images/fig21b.png}}
+\caption{Detection testing for the INRIA horses dataset.}
 \label{fig:21}
 \end{figure}
 
@@ -967,6 +983,15 @@ For this sake, choosing geometrical structure and topological relation to repres
 
 (d) The training set and appearance-based machine learning strategy for object detection under a natural environment can never exhaust all possible negative cases. Therefore, this strategy is really too expensive for its limited gain in generalization. The strategy of evidence accumulation and inference can avoid these costs.
 
+In this paper, we simulate one of the functions of hypercolumns in primary visual cortex,
+which is extracting contour features from the visual stimuli.
+Other functions of the hypercolumns can be added in the near future.
+These functions involve the color column and the ocular dominance column, which provide color and depth features.
+With the hypercolumn model, these features can be integrated in the same computation unit.
+By exploring the degree of sufficiency and necessity of these various features for image processing, 
+we can achieve a balance between the complexity of the model and the overall performance. 
+This helps us to understand how the visual cortex works.
+It also helps us to find engineering implementation of image understanding algorithms based on multiple clues.
 
 %\appendices
 %\section{Proof of the First Zonklar Equation}
