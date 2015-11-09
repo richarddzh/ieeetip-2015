@@ -1,7 +1,7 @@
 \documentclass[journal]{IEEEtran}
 %DIF LATEXDIFF DIFFERENCE FILE
 %DIF DEL bare_jrnl_old.tex   Fri Oct 30 16:56:42 2015
-%DIF ADD bare_jrnl.tex       Fri Oct 30 16:56:22 2015
+%DIF ADD bare_jrnl.tex       Mon Nov  9 09:18:34 2015
 
 %\usepackage{ifpdf}
 \usepackage{cite}
@@ -48,10 +48,12 @@ Its Application to Shape-based Object Detection}
 \author{Hui~Wei\thanks{Hui~Wei is with the School of Computer Science, 
 Laboratory of Cognitive Modeling and Algorithms, 
 Brain Science Research Center, Fudan University, Shanghai, China. 
-Corresponding author's email: weihui@fudan.edu.cn.}
-and~Zheng~Dong\thanks{Zheng~Dong is with the School of Computer Science, 
+Corresponding author's email: weihui@fudan.edu.cn.}\DIFdelbegin \DIFdel{and~}\DIFdelend \DIFaddbegin \DIFadd{,
+}\DIFaddend Zheng~Dong\thanks{Zheng~Dong is with the School of Computer Science, 
 Laboratory of Cognitive Modeling and Algorithms, 
-Fudan University, Shanghai, China.}}
+Fudan University, Shanghai, China.}\DIFaddbegin \DIFadd{,
+and~Bing~Liu}\thanks{Bing~Liu is with the School of Computer Science and Technology,
+China University of Mining and Technology, Xuzhou, Jiangsu Province, China}\DIFaddend }
 
 % The paper headers
 %\markboth{Journal of \LaTeX\ Class Files,~Vol.~13, No.~9, September~2014}%
@@ -605,26 +607,33 @@ but this method is not appropriate for measuring similarity between a partial co
 In \cite{arkin1991}, a type of turning function has been proposed to represent polygons and to measure their shapes, 
 but this method is very sensitive to small zigzag or burr noise.
 It is not suitable for incomplete contours or contours mixed with the background. 
+\DIFaddbegin \DIFadd{In \mbox{%DIFAUXCMD
+\cite{wang1997}
+}%DIFAUXCMD
+, the dynamic time warping (DTW) method has been adopted to curve alignment,
+but his method is not applicable to curves that can not be presented with one dimensional functions.
+}\DIFaddend 
 
-\DIFdelbegin \DIFdel{Intuitively, the most direct method of comparing two curves is to evaluate the degree to which they are mutually overlapping, 
+\DIFdelbegin \DIFdel{Intuitively, the most direct method of comparing two curves is to evaluate the degree to which they are mutually overlapping,
 which is similar to solving an optimization problem, i.
-e., 
-finding the best-matched interval for two curves.
-This is perhaps the most thorough methodbecause it matches curves based upon their overall geometrical tendencies rather than local numerical features. 
-Furthermore, this method can flexibly adapt to curve variances of length, position, and posture.
+e., finding the best-matched interval for two curves.
+This is perhaps the most thorough method because it matches curves based upon their overall geometrical tendencies rather than local numerical features.
+Furthermore, this method can flexibly adapt to curve variances of length, 
+position, and posture. 
 We therefore designed a curve similarity measurement algorithm based on evaluating the degree of overlap between two curves}\DIFdelend \DIFaddbegin \DIFadd{In this paper, the curve similarity is measured with a machine learning approach based on 
-the extreme learning machine (ELM) \mbox{%DIFAUXCMD
-\cite{huang2006}
+the non-linearly embedded extreme learning machine (NLE-ELM) \mbox{%DIFAUXCMD
+\cite{liu2015}
 }%DIFAUXCMD
 .
-The extreme learning machine is a kind of feed-forward neural network for classification or regression
-with a single layer of hidden nodes.
-It is different from the traditional back-propagation network in that 
-the ELM is learned with least-squares fitting method, which is fast and produces good generalization performance.
-In this paper, we use ELM to measure the similarity of a route compared with certain templates.
-We represent routes in high dimensional vectors.
-To cope with high dimensional data, we propose a novel ELM model based on the non-linear embedding technique
-for dimensionality reduction, which is referred to as non-linear embedding ELM (NLE-ELM)}\DIFaddend .
+The extreme learning machine (ELM) \mbox{%DIFAUXCMD
+\cite{huang2006,tang2015,mohammed2011,huang2014}
+}%DIFAUXCMD
+is a fast training algorithm for single hidden layer feedforward neural networks (SLFNNs).
+The NLE-ELM algorithm improves the performance on high-dimensional and sparse data.
+It is essentially a kind of self-embedding ELM, 
+where inner-layer ELM is used for dimensionality reduction 
+and outer-layer ELM is trained for classification or regression based on inner-layer ELM. 
+It inherits the merits of ELM, such as avoiding local optima, fast learning speed}\DIFaddend . 
 
 \DIFdelbegin \DIFdel{Here, we are concerned with two classes of curves. 
 The first class, denoted as TempClass, derives from the shape template of an object category.
@@ -634,11 +643,11 @@ The degree of coincidence represents their similarity.
 A partial match should be allowed because a RouteClass curve might include not only an object contour, 
 but also a noise curve in the background.
 Therefore, the interval that maximizes the similarity is the object of optimization.
-Furthermore, rotation and scale transformations are other factors that can alter an object 's contour.
-All these factors therefore make the process of seeking the best match between a template curve and a route curve an optimization process.
+Furthermore, rotation and scale transformations are other factors that can alter an object's contour.
+All these factors therefore make the process of seeking the best match between a template curve and a route curve an optimization process.  
 }%DIFDELCMD < \figurename%%%
 \DIFdel{~\ref{fig:12} illustrates our idea, and the algorithm is given as follows.
-Algorithm 5.1 finds the optimized interval of partial match between two curves.  
+Algorithm 5.1 finds the optimized interval of partial match between two curves.
 It is a genetic algorithm that minimizes the dissimilarity (or distance) 
 between part of the RouteClass curve and the TempClass curve.
 }%DIFDELCMD < 
@@ -658,7 +667,9 @@ The routes in the images are transformed into vectors plotted below the images.}
 \DIFaddendFL \label{fig:12}
 \end{figure}
 
-\DIFaddbegin \DIFadd{The routes are represented with vectors which are provided as input to the NLE-ELM algorithm.
+\DIFdelbegin %DIFDELCMD < \begin{myalgorithm}{Algorithm 5.1 Route-Distance($r,t$)}
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{The routes are represented with vectors which are provided as input to the NLE-ELM algorithm.
 By definition, a route is intrinsically a sequence of activated orientation chips.
 Therefore, it is straight-forward to represent a route with a vector $\boldsymbol{v}=(v_1,v_2,\cdots,v_n)^T$.
 Each element of $\boldsymbol{v}$ is the orientation of an activated chip in the route.
@@ -666,91 +677,78 @@ Examples of the vectors are shown in }\figurename\DIFadd{~\ref{fig:12}.
 In each image, two routes around the contour of the apple logo are chosen to be represented into vectors of orientation.
 }
 
-\DIFadd{We train the NLE-ELM model to recognize routes from a number $M$ of object categories.
-The input of the ELM is route vectors.
+\DIFadd{We train an NLE-ELM model to recognize routes from a number $M$ of object categories.
 For each route vector, the desired output is a binary indicator vector, $\boldsymbol{t}=(t_1,t_2,\cdots,t_M)^T$,
 where $t_i=1$ indicates the route belongs to the $i$-th object category.  
 For each object category, positive routes are chosen from the training samples within the ground-truth bounding boxes,
 and negative ones are chosen from the background.
 The training data is generated from these routes.
-The ELM is a single-hidden-layer feedforward neural network and the output function is defined in the following equation\mbox{%DIFAUXCMD
-\cite{miche2010,huang2006}
-}%DIFAUXCMD
-.
-}
-\begin{equation}
-f(\boldsymbol{v})=\sum_{i=1}^L \beta_i h_i(\boldsymbol{v})=\boldsymbol{h}(\boldsymbol{v})\boldsymbol{\beta},
-\end{equation}
-\DIFadd{where $\boldsymbol{h}(\boldsymbol{v})=\left[h_1(\boldsymbol{v}),h_2(\boldsymbol{v}),\cdots,h_L(\boldsymbol{v})\right]$
-is the output of $L$ units in the hidden layer,
-and $\boldsymbol\beta=(\beta_1,\beta_2,\cdots,\beta_L)^T$ is the connection weight between the output layer and the $L$ units of the hidden layer.
-The connection weight between the input layer and the hidden layer consists of random values.
-The NLE-ELM algorithm optimizes $\boldsymbol\beta$ by minimizing the training error, the norm of the weight, and a non-linear regularization term,
-}\begin{equation}
-\label{equ:elm}
-\begin{split}
-\min_{\boldsymbol\beta}\left\{\frac{1}{2}\sum_{i=1}^n||\boldsymbol{h}(v)\boldsymbol\beta-\boldsymbol{t}||^2+\frac{1}{2}||\boldsymbol\beta||^2\right.\\
-\left.+\frac{\mu}{2}\left(||\boldsymbol{H'\beta'-T}||^2+\gamma_g\mathrm{tr}(\boldsymbol{\beta'^T\beta'})\right)\right\},
-\end{split}
-\end{equation}
-\DIFadd{where $n$ is the number of training samples, 
-$\mu$ and $\gamma_g$ are regularization parameters,
-and $\boldsymbol{H}$ and $\boldsymbol{T}$ are the input and output in the matrix form.
-$\boldsymbol{H'\beta'}$ denotes that original data is firstly mapped into ELM high-dimensional feature space using activation functions, 
-then transformed into the low-dimensional representation of data from high-dimensional feature space.
-This is where the non-linear dimensionality reduction is achieved.
-The optimization problem in (\ref{equ:elm}) has the following solution.
-}\begin{equation}\DIFadd{
-\boldsymbol\beta^{*}=\boldsymbol{H}^T\left(\boldsymbol{I}_n+\boldsymbol{HH^T}+\mu\boldsymbol{HH^T L_H}\right)^{-1}\boldsymbol{T},
-}\end{equation}
-\DIFadd{where $\boldsymbol{L_H}=\boldsymbol{I}_n-\boldsymbol{H'H'^T}(\gamma_g\boldsymbol{I}_n+\boldsymbol{H'H'^T})^{-1}$.
+The training algorithm is listed in Algorithm 5.1.
 }
 
-\DIFadd{Given the aforementioned route representation and NLE-ELM model,
-we can measure the similarity between a route from the test image and a route from a template.
-The algorithm is listed in Algorithm 5.1.
-}
-
-\DIFaddend \begin{myalgorithm}{Algorithm 5.1 Route-Distance($r,t$)}
-\begin{algorithmic}[1]
+\begin{myalgorithm}{Algorithm 5.1 Train-Route-Model($\boldsymbol{V,T}$)}
+\DIFaddend \begin{algorithmic}[1]
 \REQUIRE \DIFdelbegin \DIFdel{$r$ is RouteClass curve and $t$ is TempClass curve.
 }%DIFDELCMD < \STATE %%%
-\DIFdel{rotate }\DIFdelend $r$ and $t$ \DIFdelbegin \DIFdel{so that their most extended direction is along the $x$-axis
-}\DIFdelend \DIFaddbegin \DIFadd{are two routes.
-}\DIFaddend \STATE \DIFdelbegin \DIFdel{sample $t$ uniformly to $N$ points $P_t=\{(x_i,y_i)|i=1,\cdots,N\}$
-}\DIFdelend \DIFaddbegin \DIFadd{$\boldsymbol{v_r,v_t}\leftarrow$ vector representation of the routes
+\DIFdel{rotate $r$ }\DIFdelend \DIFaddbegin \DIFadd{$\boldsymbol{V}$ }\DIFaddend and \DIFdelbegin \DIFdel{$t$ so that their most extended direction is along the $x$-axis
+}%DIFDELCMD < \STATE %%%
+\DIFdel{sample $t$ uniformly to }\DIFdelend \DIFaddbegin \DIFadd{$\boldsymbol{V}$ are the training data.
+$\boldsymbol{V}=(\boldsymbol{v}_1,\boldsymbol{v}_2,\cdots,\boldsymbol{v}_N)$
+consists of }\DIFaddend $N$ \DIFdelbegin \DIFdel{points $P_t=\{(x_i,y_i)|i=1,\cdots,N\}$
+}\DIFdelend \DIFaddbegin \DIFadd{route vectors, and $\boldsymbol{T}=(\boldsymbol{t}_1,\boldsymbol{t}_2,\cdots,\boldsymbol{t}_N)$
+consists of the corresponding indicator vectors.
+$C,\gamma_g$ and $\mu$ are parameters of NLE-ELM model.
+}\ENSURE \DIFadd{the algorithm calculates the optimized output weight matrix $\boldsymbol\beta^{*}$
+of the NLE-ELM model.
 }\DIFaddend \STATE \DIFdelbegin \DIFdel{randomly initialize $M$ subintervals of $[0,length(r)]$
 }%DIFDELCMD < \REPEAT
 %DIFDELCMD <   \FOR{each subinterval $[p,q]$}
 %DIFDELCMD <     %%%
-\DIFdelend \DIFaddbegin \DIFadd{Let $f$ denote the output function of the NLE-ELM model
+\DIFdelend \DIFaddbegin \DIFadd{Initialize the hidden layer with random input weights
 }\DIFaddend \STATE \DIFdelbegin \DIFdel{sample $r$ in $[p,q]$ to $N$ points $P_r=\{(x'_i,y'_i)\}$
-    }\DIFdelend \DIFaddbegin \DIFadd{$f(\boldsymbol{v_r})=\boldsymbol{h}(\boldsymbol{v_r})\boldsymbol\beta^{*}$
+    }\DIFdelend \DIFaddbegin \DIFadd{Calculates the output of hidden layer $(\boldsymbol{H,H'})$
 }\DIFaddend \STATE \DIFdelbegin \DIFdel{calculate dissimilarity $d(P_t,P_r)$ by solving least-squares
   }%DIFDELCMD < \ENDFOR
-%DIFDELCMD <   \STATE %%%
-\DIFdel{remove 2 subintervals with maximal dissimilarity
-  }%DIFDELCMD < \STATE %%%
-\DIFdel{add 2 subintervals by shrinking and extending the one with minimal dissimilarity
+%DIFDELCMD <   %%%
+\DIFdelend \DIFaddbegin \DIFadd{Let $L$ denotes the number of units in hidden layer
+}\IF {\DIFadd{$L\le N$}}
+  \DIFaddend \STATE \DIFdelbegin \DIFdel{remove 2 subintervals with maximal dissimilarity
+  }\DIFdelend \DIFaddbegin \DIFadd{$\boldsymbol{L_H}=\boldsymbol{I}_N-\boldsymbol{H}'(\gamma_g\boldsymbol{I}_L+\boldsymbol{H'^T H'})^{-1}\boldsymbol{H'^T}$
+  }\DIFaddend \STATE \DIFdelbegin \DIFdel{add 2 subintervals by shrinking and extending the one with minimal dissimilarity
 }%DIFDELCMD < \UNTIL{the minimal dissimilarity is steady}
-%DIFDELCMD < \RETURN %%%
-\DIFdel{the minimal dissimilarity
-}\DIFdelend \DIFaddbegin \DIFadd{$f(\boldsymbol{v_t})=\boldsymbol{h}(\boldsymbol{v_t})\boldsymbol\beta^{*}$
-}\RETURN \DIFadd{$||f(\boldsymbol{v_r})-f(\boldsymbol{v_t})||$
+%DIFDELCMD < %%%
+\DIFdelend \DIFaddbegin \DIFadd{$\boldsymbol\beta^{*}=\left(\frac{\boldsymbol{I}_L}{C}+\boldsymbol{H^T H}+\frac{\mu}{C}\boldsymbol{H^T L_H H}\right)^{-1}\boldsymbol{H^T T}$
+}\ELSE
+  \STATE \DIFadd{$\boldsymbol{L_H}=\boldsymbol{I}_N-\boldsymbol{H'H^T}(\gamma_g\boldsymbol{I}_N+\boldsymbol{H'H'^T})^{-1}$
+  }\STATE \DIFadd{$\boldsymbol\beta^{*}=\boldsymbol{H^T}\left(\frac{\boldsymbol{I}_N}{C}+\boldsymbol{HH^T}+\frac{\mu}{C}\boldsymbol{HH^T L_H}\right)^{-1}\boldsymbol{T}$
+}\ENDIF
+\DIFaddend \RETURN \DIFdelbegin \DIFdel{the minimal dissimilarity
+}\DIFdelend \DIFaddbegin \DIFadd{$\boldsymbol\beta^{*}$
 }\DIFaddend \end{algorithmic}
 \end{myalgorithm}
 
-\DIFdelbegin \DIFdel{At the beginning of this algorithm, we rotate a curve and make its most extended direction coincide with the positive $x$-axis.
-The purpose of this step is to accommodate the posture diversity of curves.
-Interpolation is used to adjust the scale of a curve,
+\DIFdelbegin \DIFdel{At the beginning of this algorithm,
+we rotate a curve and make its most extended direction coincide with the positive $x$-axis.
+The purpose of this step is to accommodate the posture diversity of curves. 
+Interpolation is used to adjust the scale of a curve, 
 to accommodate the scale diversity of curves.
-The dissimilarity measure $d$ is calculated by solving a least-squares problem between two point sequences, 
+The dissimilarity measure $d$ is calculated by solving a least-squares problem between two point sequences,
 }\begin{displaymath}\DIFdel{
 d(P_t,P_r)=\min_{\Delta x,\Delta y,k}\sum_{i=1}^{N}(kx_i+\Delta x-x'_i)^2+(ky_i+\Delta y-y'_i)^2,
 }\end{displaymath}
 %DIFAUXCMD
-\DIFdel{where $P_t,P_r$ is the sequences of sampling points on the template curve and route curve respectively.
-}\DIFdelend \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
+\DIFdel{where $P_t,P_r$ is }\DIFdelend \DIFaddbegin \DIFadd{Given the aforementioned route representation and NLE-ELM model,
+we can measure the similarity between a route from the test image and a route from a template.
+Let $r$ and $t$ denote two routes and $\boldsymbol{v}_r$ and $\boldsymbol{v}_t$ the vector representation of the routes.
+The output function of }\DIFaddend the \DIFdelbegin \DIFdel{sequences of sampling points on the template curve and route curve respectively.
+}\DIFdelend \DIFaddbegin \DIFadd{NLE-ELM model is $f(\boldsymbol{v},\boldsymbol\beta^{*})$, 
+where $\boldsymbol\beta^{*}$ is obtained with Algorithm 5.1.
+The distance between routes $r$ and $t$ is defined as the Euclidean distance between the NLE-ELM output.
+}\begin{equation}\DIFadd{
+\text{Route-Distance}(r,t)=||f(\boldsymbol{v}_r,\boldsymbol\beta^{*})-f(\boldsymbol{v}_t,\boldsymbol\beta^{*})||.
+}\end{equation}
+
+\DIFaddend \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
 in which $A$ is a template, $B$ is a curve with small zigzag noise, and $C$ is a smooth curve. 
 A subjective evaluation of the figure indicates that $B$ and $A$ are more alike than $C$ and $A$. 
 Although $B$ has noise, its overall shape is more similar to $A$. 
@@ -1119,7 +1117,7 @@ and FPPI is the false positives per image.Generally, a small FPPI value can bett
 Therefore,
 we prefer a smaller FPPI value such as 0.3 or 0.4. 
 }%DIFDELCMD < \tablename%%%
-\DIFdel{~\ref{tab:1} lists a comparison of DR values obtained by our method and several }\DIFdelend \DIFaddbegin \DIFadd{We test the proposed method on the ETHZ dataset and the Weizzman horse dataset for validation.
+\DIFdel{~\ref{tab:1} lists a comparison of DR values obtained by our method and several }\DIFdelend \DIFaddbegin \DIFadd{We test the proposed method on the ETHZ dataset and the INRIA horse dataset for validation.
 PASCAL criteria are used for the purpose of detection evaluation, 
 i.e., if the detected bounding-box and the ground truth bounding-box intersect over 50\%}{} \DIFadd{of the union of them, 
 a detection is counted as correct.
@@ -1136,7 +1134,7 @@ we plot the precision-recall (PR) curves in }\figurename\DIFadd{~\ref{fig:17}
 and report the average precision (AP) in }\tablename\DIFadd{~\ref{tab:1}}\DIFaddend .
 \tablename~\ref{tab:1} indicates that the performance of our method is either the best or very nearly the best for all \DIFdelbegin \DIFdel{images and FPPR values considered}\DIFdelend \DIFaddbegin \DIFadd{image categories}\DIFaddend .
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \renewcommand{\arraystretch}{1.3}
 \caption{Comparison of \DIFdelbeginFL \DIFdelFL{the detection rate for FPPI 0.2/0.4}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{average precision (AP) on ETHZ Shape classes}\DIFaddendFL }
 \label{tab:1}
@@ -1148,72 +1146,67 @@ and report the average precision (AP) in }\tablename\DIFadd{~\ref{tab:1}}\DIFadd
 \DIFaddendFL \hline
 & Apple & Bottle & Giraffe & Mug & Swan \DIFaddbeginFL & \DIFaddFL{Average }\DIFaddendFL \\
 \hline
-Our method  & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
+Our method              & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
 \DIFdelFL{/0.83
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.875 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.78/0.91
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.963 }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.77/0.80}}
-%DIFAUXCMD
-\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.859 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.75/}\textbf{\DIFdelFL{0.88}}
-%DIFAUXCMD
-\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.906 }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.75/0.81}}%DIFAUXCMD
-\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.972 }& \DIFaddFL{0.915 }\DIFaddendFL \\
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.875                 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.78/0.91
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.963         }\DIFaddendFL &\textbf{\DIFdelbeginFL \DIFdelFL{0.77/0.80}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.859}\DIFaddendFL } &\DIFdelbeginFL \DIFdelFL{0.75/}\DIFdelendFL \textbf{\DIFdelbeginFL \DIFdelFL{0.88}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.906}\DIFaddendFL } &\textbf{\DIFdelbeginFL \DIFdelFL{0.75/0.81}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.972}\DIFaddendFL } \DIFaddbeginFL &\textbf{\DIFaddFL{0.915}} \DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Hough only}_\text{(Pascal)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Lu et al.\mbox{%DIFAUXCMD
 \cite{lu2009}
 }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.18/0.29
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.844     }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.48/0.56
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.641 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.16/0.35
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.617 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.20/0.36
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.643 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.29/0.46}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.798 }& \DIFaddFL{0.709 }\DIFaddendFL \\
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.844                 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.48/0.56
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.641         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.16/0.35
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.617         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.20/0.36
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.643         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.29/0.46}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.798         }& \DIFaddFL{0.709 }\DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Full system}_\text{(Pascal)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Felz et al.\mbox{%DIFAUXCMD
 \cite{felzenszwalb2007}
 }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.74/}\textbf{\DIFdelFL{0.84}}
 %DIFAUXCMD
-\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.891   }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.69/0.82
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.950 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.34/0.45
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.608 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.66/0.79
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.721 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.53/0.70}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.391 }& \DIFaddFL{0.712 }\DIFaddendFL \\
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.891      }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.69/0.82
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.950         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.34/0.45
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.608         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.66/0.79
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.721         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.53/0.70}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.391         }& \DIFaddFL{0.712 }\DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Full system}_\text{(20\% IoU)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Maji et al.\mbox{%DIFAUXCMD
 \cite{maji2009}
 }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{-/-
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.869   }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.72/0.83
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.724 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.47/0.59
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.742 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.72/0.84
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.806 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.63/0.75}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.716 }& \DIFaddFL{0.771 }\DIFaddendFL \\
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.869             }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.72/0.83
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.724         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.47/0.59
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.742         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.72/0.84
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.806         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.63/0.75}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.716         }& \DIFaddFL{0.771 }\DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Ferrari08}_\text{(Pascal)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Srinivasan et al.\mbox{%DIFAUXCMD
 \cite{srinivasan2010}
 }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.38/0.60
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.845     }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.84/0.94}}
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.845 }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.84/0.94}}
 %DIFAUXCMD
-\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.916 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.43/0.51
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.787 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.65/0.78
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.888 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.41/0.54}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.922 }& \DIFaddFL{0.872 }\DIFaddendFL \\
+\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.916         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.43/0.51
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.787         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.65/0.78
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.888         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.41/0.54}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.922         }& \DIFaddFL{0.872 }\DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Ferrari08}_\text{(20\% IoU)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Wang et al.\mbox{%DIFAUXCMD
 \cite{wang2012}
 }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.55/0.85
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.866   }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.82/0.90
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.975 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.73/0.79
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.832 }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.78}}%DIFAUXCMD
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.866              }\DIFaddendFL &\DIFdelbeginFL \DIFdelFL{0.82/0.90
+}\DIFdelendFL \DIFaddbeginFL \textbf{\DIFaddFL{0.975}} \DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.73/0.79
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.832         }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.78}}%DIFAUXCMD
 \DIFdelFL{/0.81
-}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.843 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.47/0.64}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.828 }& \DIFaddFL{0.869 }\DIFaddendFL \\
+}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.843         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.47/0.64}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.828         }& \DIFaddFL{0.869 }\DIFaddendFL \\
 \DIFaddbeginFL \DIFaddFL{Lin et al.\mbox{%DIFAUXCMD
 \cite{lin2012}
 }%DIFAUXCMD
-}& \DIFaddFL{0.909   }& \DIFaddFL{0.898 }& \DIFaddFL{0.811 }& \DIFaddFL{0.893 }& \DIFaddFL{0.964 }& \DIFaddFL{0.895 }\\
+}&\textbf{\DIFaddFL{0.909}}       & \DIFaddFL{0.898         }& \DIFaddFL{0.811         }& \DIFaddFL{0.893         }& \DIFaddFL{0.964         }& \DIFaddFL{0.895 }\\
 \DIFaddendFL \hline
 \end{tabular}
-\end{table}
+\end{table*}
 
-\DIFaddbegin \begin{figure}[!t]
+\DIFdelbegin \DIFdel{The Weizzman dataset of horse images }\DIFdelend \DIFaddbegin \begin{figure}[!t]
 \centering
 \includegraphics[width=0.5\linewidth]{images/fig17a.png}\hfil
 \includegraphics[width=0.5\linewidth]{images/fig17b.png}\\
@@ -1225,15 +1218,30 @@ Our method  & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
 \label{fig:17}
 \end{figure}
 
-\DIFaddend The Weizzman dataset of horse images is another popular dataset for object detection testing. 
-\figurename~\ref{fig:21} presents our testing results on this dataset. 
+\DIFadd{The INRIA horses dataset }\DIFaddend is another popular dataset for object detection testing. 
+\DIFaddbegin \DIFadd{In this dataset, 50 positive examples and 50 negative examples are randomly selected for training. 
+The final trained model is tested on the remaining images.
+A few representative shape detection results generated by our method is shown in }\DIFaddend \figurename\DIFdelbegin \DIFdel{~\ref{fig:21} presents our testing results on this dataset. 
 The three green arrowed curves represent the template segments, 
-the blue curves are the successfully matched contours, and the red boxes indicate the positions of horses.
+the blue curves are the successfully matched contours, and the red boxes indicate the positions of horses. }\DIFdelend \DIFaddbegin \DIFadd{~\ref{fig:21a}. 
+Each image shows bounding boxes for one or more detections. 
+}\figurename\DIFadd{~\ref{fig:21b} presents the averaged false-positives per image (FPPI) vs. recall.
+Our method is comparable to the-state-of-art method \mbox{%DIFAUXCMD
+\cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}
+}%DIFAUXCMD
+.
+}\DIFaddend 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.95\linewidth]{images/fig21.jpg}
-\caption{Detection testing for the Weizzman horse dataset.}
+\DIFdelbeginFL %DIFDELCMD < \includegraphics[width=0.95\linewidth]{images/fig21.jpg}
+%DIFDELCMD < %%%
+\DIFdelendFL \DIFaddbeginFL \subfloat[Representative detection results]{\includegraphics[width=0.95\linewidth]{images/fig21a.png}}\\
+\subfloat[FPPI-Recall compared with \mbox{%DIFAUXCMD
+\cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}
+}%DIFAUXCMD
+]{\includegraphics[width=0.75\linewidth]{images/fig21b.png}}
+\DIFaddendFL \caption{Detection testing for the \DIFdelbeginFL \DIFdelFL{Weizzman horse }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{INRIA horses }\DIFaddendFL dataset.}
 \label{fig:21}
 \end{figure}
 
@@ -1340,18 +1348,29 @@ which allows fine-grained parallel computing with neural circuits and real-time 
 
 (b) A biological visual system, especially that of a mammal, has been evolved by nature to be a highly optimized system.
 Feature-integration theory has been deeply studied in cognitive psychology. 
-Physiological inspirations are indispensable for designing a practical vision system\DIFaddbegin \DIFadd{.
-The hypercolumn array is different from traditional representations such as edge map.
+Physiological inspirations are indispensable for designing a practical vision system.
+\DIFaddbegin \DIFadd{The hypercolumn array is different from traditional representations such as edge map.
 It utilizes a limited number of units, or computation resources, 
 to achieve a balance between the complexity of the model and the accuracy of the representation. 
-This optimized design is imitating the result of natural evolution}\DIFaddend .
+This optimized design is imitating the result of natural evolution.
+}\DIFaddend 
 
 (c) Task-specific methods, for their diversities, are weak to mature vision theory. 
 A necessary symbol for this theory is it has a unique architecture, whether in representation or in processing. 
 For this sake, choosing geometrical structure and topological relation to represent and choosing shape match to achieve recognition are perhaps on the right track.
 
-(d) The training set and appearance-based machine learning strategy for object detection under a natural environment can never exhaust all possible negative cases. Therefore, this strategy is really too expensive for its limited gain in generalization. The strategy of evidence accumulation and inference can avoid these costs.
+(d) The training set and appearance-based machine learning strategy for object detection under a natural environment can never exhaust all possible negative cases. Therefore, this strategy is really too expensive for its limited gain in generalization. The strategy of evidence accumulation and inference can avoid these costs\DIFaddbegin \DIFadd{.
+}
 
+\DIFadd{In this paper, we simulate one of the functions of hypercolumns in primary visual cortex,
+which is extracting contour features from the visual stimuli.
+Other functions of the hypercolumns can be added in the near future.
+These functions involve the color column and the ocular dominance column, which provide color and depth features.
+With the hypercolumn model, these features can be integrated in the same computation unit.
+By exploring the degree of sufficiency and necessity of these various features for image processing, 
+we can achieve a balance between the complexity of the model and the overall performance. 
+This helps us to understand how the visual cortex works.
+It also helps us to find engineering implementation of image understanding algorithms based on multiple clues}\DIFaddend .
 
 %\appendices
 %\section{Proof of the First Zonklar Equation}
