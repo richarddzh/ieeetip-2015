@@ -1,7 +1,7 @@
 \documentclass[journal]{IEEEtran}
 %DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL bare_jrnl_old.tex   Fri Oct 30 16:56:42 2015
-%DIF ADD bare_jrnl.tex       Mon Nov  9 09:18:34 2015
+%DIF DEL bare_jrnl_old.tex   Sat Nov  7 21:09:09 2015
+%DIF ADD bare_jrnl.tex       Thu Nov 19 10:43:51 2015
 
 %\usepackage{ifpdf}
 \usepackage{cite}
@@ -186,23 +186,18 @@ The function is carried out by the orientation columns in V1,
 which is simulated with the hypercolumn array in the proposed model. 
 Many computational methods in image processing also achieve similar edge detection function
 \mbox{%DIFAUXCMD
-\cite{canny1986,arbelaez2011,moreno2014}
-}%DIFAUXCMD
+\cite{canny1986,arbelaez2011,moreno2014}}%DIFAUXCMD
 .
 Canny detector \mbox{%DIFAUXCMD
-\cite{canny1986}
-}%DIFAUXCMD
+\cite{canny1986} }%DIFAUXCMD
 and the globalPb \mbox{%DIFAUXCMD
-\cite{arbelaez2011}
-}%DIFAUXCMD
+\cite{arbelaez2011} }%DIFAUXCMD
 generate edge maps,
 which represent edges in the level of pixels. 
 The tensor voting \mbox{%DIFAUXCMD
-\cite{moreno2014}
-}%DIFAUXCMD
+\cite{moreno2014} }%DIFAUXCMD
 and the LSD method \mbox{%DIFAUXCMD
-\cite{von2008}
-}%DIFAUXCMD
+\cite{von2008} }%DIFAUXCMD
 detect line segments in images. 
 These representations provide discrete information about pixels and edges, 
 which is not sufficient for shape detection or object recognition. 
@@ -608,8 +603,7 @@ In \cite{arkin1991}, a type of turning function has been proposed to represent p
 but this method is very sensitive to small zigzag or burr noise.
 It is not suitable for incomplete contours or contours mixed with the background. 
 \DIFaddbegin \DIFadd{In \mbox{%DIFAUXCMD
-\cite{wang1997}
-}%DIFAUXCMD
+\cite{wang1997}}%DIFAUXCMD
 , the dynamic time warping (DTW) method has been adopted to curve alignment,
 but his method is not applicable to curves that can not be presented with one dimensional functions.
 }\DIFaddend 
@@ -622,8 +616,7 @@ Furthermore, this method can flexibly adapt to curve variances of length,
 position, and posture. 
 We therefore designed a curve similarity measurement algorithm based on evaluating the degree of overlap between two curves}\DIFdelend \DIFaddbegin \DIFadd{In this paper, the curve similarity is measured with a machine learning approach based on 
 the non-linearly embedded extreme learning machine (NLE-ELM) \mbox{%DIFAUXCMD
-\cite{liu2015}
-}%DIFAUXCMD
+\cite{liu2015}}%DIFAUXCMD
 .
 The extreme learning machine (ELM) \mbox{%DIFAUXCMD
 \cite{huang2006,tang2015,mohammed2011,huang2014}
@@ -733,8 +726,8 @@ The purpose of this step is to accommodate the posture diversity of curves.
 Interpolation is used to adjust the scale of a curve, 
 to accommodate the scale diversity of curves.
 The dissimilarity measure $d$ is calculated by solving a least-squares problem between two point sequences,
-}\begin{displaymath}\DIFdel{
-d(P_t,P_r)=\min_{\Delta x,\Delta y,k}\sum_{i=1}^{N}(kx_i+\Delta x-x'_i)^2+(ky_i+\Delta y-y'_i)^2,
+}\begin{displaymath}
+\DIFdel{d(P_t,P_r)=\min_{\Delta x,\Delta y,k}\sum_{i=1}^{N}(kx_i+\Delta x-x'_i)^2+(ky_i+\Delta y-y'_i)^2,
 }\end{displaymath}
 %DIFAUXCMD
 \DIFdel{where $P_t,P_r$ is }\DIFdelend \DIFaddbegin \DIFadd{Given the aforementioned route representation and NLE-ELM model,
@@ -744,8 +737,8 @@ The output function of }\DIFaddend the \DIFdelbegin \DIFdel{sequences of samplin
 }\DIFdelend \DIFaddbegin \DIFadd{NLE-ELM model is $f(\boldsymbol{v},\boldsymbol\beta^{*})$, 
 where $\boldsymbol\beta^{*}$ is obtained with Algorithm 5.1.
 The distance between routes $r$ and $t$ is defined as the Euclidean distance between the NLE-ELM output.
-}\begin{equation}\DIFadd{
-\text{Route-Distance}(r,t)=||f(\boldsymbol{v}_r,\boldsymbol\beta^{*})-f(\boldsymbol{v}_t,\boldsymbol\beta^{*})||.
+}\begin{equation}
+\DIFadd{\text{Route-Distance}(r,t)=||f(\boldsymbol{v}_r,\boldsymbol\beta^{*})-f(\boldsymbol{v}_t,\boldsymbol\beta^{*})||.
 }\end{equation}
 
 \DIFaddend \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
@@ -910,7 +903,7 @@ We would hope to derive a new template according to a limited number of ready-ma
 %DIFDELCMD < %%%
 %DIFDELCMD < \caption{%
 {%DIFAUXCMD
-\DIFdel{A coordinate system where a 3D object is projected upon a 2D plane.}}
+\DIFdelFL{A coordinate system where a 3D object is projected upon a 2D plane.}}
 %DIFAUXCMD
 %DIFDELCMD < \label{fig:17}
 %DIFDELCMD < \end{figure}
@@ -924,8 +917,8 @@ where $E(0,0,e_z)$ is the viewpoint, $O$ is the origin, $XOY$ is the imaging pla
 and a giraffe is found in the direction of the negative $y$-axis.
 If $P(x_i,y_i,z_i)$ is a point on that giraffe, 
 then its projective point on the imaging plane is
-}\begin{displaymath}\DIFdel{
-x_i^{pre}=\frac{e_z x_i}{-z_i+e_z}, y_i^{pre}=\frac{e_z y_i}{-z_i+e_z}, z_i^{pre}=0.
+}\begin{displaymath}
+\DIFdel{x_i^{pre}=\frac{e_z x_i}{-z_i+e_z}, y_i^{pre}=\frac{e_z y_i}{-z_i+e_z}, z_i^{pre}=0.
 \label{eqn:2}
 }\end{displaymath}
 %DIFAUXCMD
@@ -938,20 +931,27 @@ The subscript `post' denotes the projective points of the transformed template.
 we rotate the 2D template of giraffe about the $y$-axis.
 If the giraffe rotates $\theta$ degree, which is equivalent to a change in viewing angle, 
 then the new coordinate of $P$ is given as follows. 
-}\begin{displaymath}\DIFdel{
-P^{rotated}=(x_i \cos\theta+z_i \sin\theta,y_i,-x_i \sin\theta+z_i \cos\theta). 
+}\begin{displaymath}
+\DIFdel{P^{rotated}=(x_i \cos\theta+z_i \sin\theta,y_i,-x_i \sin\theta+z_i \cos\theta). 
 }\end{displaymath}
 %DIFAUXCMD
 %DIFDELCMD < 
 
 %DIFDELCMD < %%%
 \DIFdel{Then, the projective point of $P^{rotated}$ on the imaging plane is as follows.
-}\begin{align*}\DIFdel{
-x_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i \cos\theta+z_i \sin\theta)}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber}\\
+}\begin{align*}
+\DIFdel{x_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i \cos\theta+z_i \sin\theta)}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber}\\
 \DIFdel{y_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z y_i}{x_i \sin\theta-z_i \cos\theta+e_z}, \nonumber}\\
 \DIFdel{z_i^{post}}&\DIFdel{=}&\DIFdel{0.
 \label{eqn:4}
 }\end{align*}
+%DIFAUXCMD
+%DIFDELCMD < 
+
+%DIFDELCMD < %%%
+\DIFdel{The projective points of the rotated template form the second 2D template.
+From (\ref{eqn:2}) and (\ref{eqn:4}), we obtain the following.
+}
 %DIFAUXCMD
 %DIFDELCMD < 
 
@@ -985,8 +985,8 @@ Of course, this is subject to the experiential knowledge of an observer on asses
 A posture rotation can be expressed by some points of a contour rotating $\theta$ degree about a line $L$, 
 where $L$ is defined by a point $Q$ and a unit vector $\mathbf{u}=(u_1,u_2,u_3)$. 
 In computer graphic theory, this transform is performed by a matrix $Rot(\mathbf{u},\theta)=$
-}\begin{displaymath}\DIFdel{
-\left(
+}\begin{displaymath}
+\DIFdel{\left(
 \begin{array}{ccc}
  c+\bar{c}u_1^2 
 & \bar{c}u_1 u_2+u_3 s 
@@ -1008,8 +1008,8 @@ In computer graphic theory, this transform is performed by a matrix $Rot(\mathbf
 \DIFdel{As an example, we suppose that a giraffe's neck has a rotational axis parallel to the $z$-axis; 
 thus, $\mathbf{u} = (0,0,1)$. 
 This rotation will change the coordinates of the giraffe's head and neck as follows.
-}\begin{displaymath}\DIFdel{
-(x_i^{neck},y_i^{neck},z_i^{neck},1)=(x_i,y_i,z_i,1)\cdot Rot((0,0,1),\theta).
+}\begin{displaymath}
+\DIFdel{(x_i^{neck},y_i^{neck},z_i^{neck},1)=(x_i,y_i,z_i,1)\cdot Rot((0,0,1),\theta).
 \label{eqn:7}
 }\end{displaymath}
 %DIFAUXCMD
@@ -1017,8 +1017,8 @@ This rotation will change the coordinates of the giraffe's head and neck as foll
 
 %DIFDELCMD < %%%
 \DIFdel{From equation (\ref{eqn:6}) and (\ref{eqn:7}), we get
-}\begin{align*}\DIFdel{
-x_i^{neck}}&\DIFdel{=}&\DIFdel{x_i\cos\theta-y_i\sin\theta\nonumber}\\
+}\begin{align*}
+\DIFdel{x_i^{neck}}&\DIFdel{=}&\DIFdel{x_i\cos\theta-y_i\sin\theta\nonumber}\\
 \DIFdel{y_i^{neck}}&\DIFdel{=}&\DIFdel{x_i\sin\theta+y_i\cos\theta\nonumber}\\
 \DIFdel{z_i^{neck}}&\DIFdel{=}&\DIFdel{z_i.
 }\end{align*}
@@ -1027,8 +1027,8 @@ x_i^{neck}}&\DIFdel{=}&\DIFdel{x_i\cos\theta-y_i\sin\theta\nonumber}\\
 
 %DIFDELCMD < %%%
 \DIFdel{The projective point of the bended neck is as follows.
-}\begin{align*}\DIFdel{
-x_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i\cos\theta-y_i\sin\theta)}{-z_i+e_z}, \nonumber}\\
+}\begin{align*}
+\DIFdel{x_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i\cos\theta-y_i\sin\theta)}{-z_i+e_z}, \nonumber}\\
 \DIFdel{y_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i\sin\theta+y_i\cos\theta)}{-z_i+e_z}, \nonumber}\\
 \DIFdel{z_i^{post}}&\DIFdel{=}&\DIFdel{0.
 \label{eqn:9}
@@ -1039,8 +1039,8 @@ x_i^{post}}&\DIFdel{=}&\DIFdel{\frac{e_z(x_i\cos\theta-y_i\sin\theta)}{-z_i+e_z}
 %DIFDELCMD < %%%
 \DIFdel{Comparing (\ref{eqn:9}) with the projective points of the original template in (\ref{eqn:2}),
 we obtain the following.
-}\begin{displaymath}\DIFdel{
-\frac{x_i^{post}}{x_i^{pre}}=\cos\theta-\frac{y_i}{x_i}\sin\theta,
+}\begin{displaymath}
+\DIFdel{\frac{x_i^{post}}{x_i^{pre}}=\cos\theta-\frac{y_i}{x_i}\sin\theta,
 \frac{y_i^{post}}{y_i^{pre}}=\cos\theta+\frac{x_i}{y_i}\sin\theta
 \label{eqn:10}
 }\end{displaymath}
@@ -1123,18 +1123,16 @@ i.e., if the detected bounding-box and the ground truth bounding-box intersect o
 a detection is counted as correct.
 The proposed model is tested on the }\DIFaddend state-of-the-art \DIFdelbegin \DIFdel{methods 
 \mbox{%DIFAUXCMD
-\cite{ferrari2010,ferrari2008}
-}%DIFAUXCMD
+\cite{ferrari2010,ferrari2008} }%DIFAUXCMD
 for FPPI values of 0.2 and 0.4 with images obtained from the ETHZ dataset}\DIFdelend \DIFaddbegin \DIFadd{methods 
 \mbox{%DIFAUXCMD
-\cite{lu2009,felzenszwalb2007,maji2009,srinivasan2010,wang2012,lin2012}
-}%DIFAUXCMD
+\cite{lu2009,felzenszwalb2007,maji2009,srinivasan2010,wang2012,lin2012}}%DIFAUXCMD
 ,
 we plot the precision-recall (PR) curves in }\figurename\DIFadd{~\ref{fig:17} 
 and report the average precision (AP) in }\tablename\DIFadd{~\ref{tab:1}}\DIFaddend .
 \tablename~\ref{tab:1} indicates that the performance of our method is either the best or very nearly the best for all \DIFdelbegin \DIFdel{images and FPPR values considered}\DIFdelend \DIFaddbegin \DIFadd{image categories}\DIFaddend .
 
-\begin{table*}[!t]
+\begin{table}[!t]
 \renewcommand{\arraystretch}{1.3}
 \caption{Comparison of \DIFdelbeginFL \DIFdelFL{the detection rate for FPPI 0.2/0.4}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{average precision (AP) on ETHZ Shape classes}\DIFaddendFL }
 \label{tab:1}
@@ -1152,8 +1150,7 @@ Our method              & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.963         }\DIFaddendFL &\textbf{\DIFdelbeginFL \DIFdelFL{0.77/0.80}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.859}\DIFaddendFL } &\DIFdelbeginFL \DIFdelFL{0.75/}\DIFdelendFL \textbf{\DIFdelbeginFL \DIFdelFL{0.88}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.906}\DIFaddendFL } &\textbf{\DIFdelbeginFL \DIFdelFL{0.75/0.81}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.972}\DIFaddendFL } \DIFaddbeginFL &\textbf{\DIFaddFL{0.915}} \DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Hough only}_\text{(Pascal)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Lu et al.\mbox{%DIFAUXCMD
-\cite{lu2009}
-}%DIFAUXCMD
+\cite{lu2009}  }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.18/0.29
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.844                 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.48/0.56
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.641         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.16/0.35
@@ -1161,8 +1158,7 @@ Our method              & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.643         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.29/0.46}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.798         }& \DIFaddFL{0.709 }\DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Full system}_\text{(Pascal)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Felz et al.\mbox{%DIFAUXCMD
-\cite{felzenszwalb2007}
-}%DIFAUXCMD
+\cite{felzenszwalb2007} }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.74/}\textbf{\DIFdelFL{0.84}}
 %DIFAUXCMD
 \DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.891      }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.69/0.82
@@ -1171,8 +1167,7 @@ Our method              & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.721         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.53/0.70}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.391         }& \DIFaddFL{0.712 }\DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Full system}_\text{(20\% IoU)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Maji et al.\mbox{%DIFAUXCMD
-\cite{maji2009}
-}%DIFAUXCMD
+\cite{maji2009}  }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{-/-
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.869             }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.72/0.83
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.724         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.47/0.59
@@ -1180,8 +1175,7 @@ Our method              & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.806         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.63/0.75}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.716         }& \DIFaddFL{0.771 }\DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Ferrari08}_\text{(Pascal)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Srinivasan et al.\mbox{%DIFAUXCMD
-\cite{srinivasan2010}
-}%DIFAUXCMD
+\cite{srinivasan2010}  }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.38/0.60
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.845 }\DIFaddendFL & \DIFdelbeginFL \textbf{\DIFdelFL{0.84/0.94}}
 %DIFAUXCMD
@@ -1190,8 +1184,7 @@ Our method              & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.888         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.41/0.54}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.922         }& \DIFaddFL{0.872 }\DIFaddendFL \\
 \DIFdelbeginFL \DIFdelFL{$\text{Ferrari08}_\text{(20\% IoU)}$
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{Wang et al.\mbox{%DIFAUXCMD
-\cite{wang2012}
-}%DIFAUXCMD
+\cite{wang2012} }%DIFAUXCMD
 }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.55/0.85
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.866              }\DIFaddendFL &\DIFdelbeginFL \DIFdelFL{0.82/0.90
 }\DIFdelendFL \DIFaddbeginFL \textbf{\DIFaddFL{0.975}} \DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.73/0.79
@@ -1199,12 +1192,11 @@ Our method              & \DIFdelbeginFL \textbf{\DIFdelFL{0.80}}%DIFAUXCMD
 \DIFdelFL{/0.81
 }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.843         }\DIFaddendFL & \DIFdelbeginFL \DIFdelFL{0.47/0.64}\DIFdelendFL \DIFaddbeginFL \DIFaddFL{0.828         }& \DIFaddFL{0.869 }\DIFaddendFL \\
 \DIFaddbeginFL \DIFaddFL{Lin et al.\mbox{%DIFAUXCMD
-\cite{lin2012}
-}%DIFAUXCMD
+\cite{lin2012}  }%DIFAUXCMD
 }&\textbf{\DIFaddFL{0.909}}       & \DIFaddFL{0.898         }& \DIFaddFL{0.811         }& \DIFaddFL{0.893         }& \DIFaddFL{0.964         }& \DIFaddFL{0.895 }\\
 \DIFaddendFL \hline
 \end{tabular}
-\end{table*}
+\end{table}
 
 \DIFdelbegin \DIFdel{The Weizzman dataset of horse images }\DIFdelend \DIFaddbegin \begin{figure}[!t]
 \centering
@@ -1227,8 +1219,7 @@ the blue curves are the successfully matched contours, and the red boxes indicat
 Each image shows bounding boxes for one or more detections. 
 }\figurename\DIFadd{~\ref{fig:21b} presents the averaged false-positives per image (FPPI) vs. recall.
 Our method is comparable to the-state-of-art method \mbox{%DIFAUXCMD
-\cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}
-}%DIFAUXCMD
+\cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}}%DIFAUXCMD
 .
 }\DIFaddend 
 
@@ -1237,10 +1228,7 @@ Our method is comparable to the-state-of-art method \mbox{%DIFAUXCMD
 \DIFdelbeginFL %DIFDELCMD < \includegraphics[width=0.95\linewidth]{images/fig21.jpg}
 %DIFDELCMD < %%%
 \DIFdelendFL \DIFaddbeginFL \subfloat[Representative detection results]{\includegraphics[width=0.95\linewidth]{images/fig21a.png}}\\
-\subfloat[FPPI-Recall compared with \mbox{%DIFAUXCMD
-\cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}
-}%DIFAUXCMD
-]{\includegraphics[width=0.75\linewidth]{images/fig21b.png}}
+\subfloat[FPPI-Recall compared with \cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}]{\includegraphics[width=0.75\linewidth]{images/fig21b.png}}
 \DIFaddendFL \caption{Detection testing for the \DIFdelbeginFL \DIFdelFL{Weizzman horse }\DIFdelendFL \DIFaddbeginFL \DIFaddFL{INRIA horses }\DIFaddendFL dataset.}
 \label{fig:21}
 \end{figure}
@@ -1254,16 +1242,44 @@ like the proposed method, utilizes contour segments as the feature of interest.
 Based again on the ETHZ dataset, we collected the time costs of the two methods.
 \figurename~\ref{fig:22} shows the time comparisons for each category, 
 i.e., giraffe, apple logo, swan, bottle, and mug. 
-We can see that our method is much less time consuming than the other method, 
+\DIFaddbegin \DIFadd{In }\tablename\DIFadd{~\ref{tab:2}, the comparison of time cost is shown with detailed statistics.
+Both of the methods are implemented with MATLAB and run on the same Lenovo PC (with Intel i5 CPU, 4GB RAM).
+}\DIFaddend We can see that our method is much less time consuming than the other method, 
 which requires exhaustive searching.
 
-\begin{figure*}[!t]
+\DIFaddbegin \begin{table}[!t]
+\renewcommand{\arraystretch}{1.3}
+\caption{\DIFaddFL{Comparison of time cost in minutes per image}}
+\label{tab:2}
 \centering
-\subfloat[Giraffes in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22a.jpg}}\hfil%
-\subfloat[Apple logos in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22b.jpg}}\hfil%
-\subfloat[Swans in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22c.jpg}}\\%
-\subfloat[Bottles in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22d.jpg}}\hfil%
-\subfloat[Mugs in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22e.jpg}}%
+\scriptsize
+\begin{tabular}{l|lllll}
+\hline
+\DIFaddFL{Category }& \DIFaddFL{Apple }& \DIFaddFL{Bottle }& \DIFaddFL{Giraffe }& \DIFaddFL{Mug }& \DIFaddFL{Swan }\\
+\hline
+\DIFaddFL{Our method (mean)}& \DIFaddFL{0.76 }& \DIFaddFL{5.34 }& \DIFaddFL{5.37 }& \DIFaddFL{6.27 }& \DIFaddFL{4.50 }\\
+\DIFaddFL{Our method (min)}& \DIFaddFL{0.01 }& \DIFaddFL{0.01 }& \DIFaddFL{0.02 }& \DIFaddFL{1.63 }& \DIFaddFL{0.84 }\\
+\DIFaddFL{Our method (max)}& \DIFaddFL{2.4 }& \DIFaddFL{13.0 }& \DIFaddFL{17.7 }& \DIFaddFL{15.6 }& \DIFaddFL{10.8 }\\
+\hline
+\DIFaddFL{Ma et al (mean)}& \DIFaddFL{67.1 }& \DIFaddFL{52.5 }& \DIFaddFL{59.2 }& \DIFaddFL{36.5 }& \DIFaddFL{38.6 }\\
+\DIFaddFL{Ma et al (min)}& \DIFaddFL{27.3 }& \DIFaddFL{23.1 }& \DIFaddFL{15.9 }& \DIFaddFL{24.4 }& \DIFaddFL{22.3 }\\
+\DIFaddFL{Ma et al (max)}& \DIFaddFL{151.8 }& \DIFaddFL{165.5 }& \DIFaddFL{251.4 }& \DIFaddFL{42.0 }& \DIFaddFL{60.4 }\\
+\hline
+\end{tabular}
+\end{table}
+
+\DIFaddend \begin{figure*}[!t]
+\centering
+\DIFdelbeginFL %DIFDELCMD < \subfloat[Giraffes in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22a.jpg}}%%%
+\DIFdelendFL \DIFaddbeginFL \subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22a.eps}}\DIFaddendFL \hfil%
+\DIFdelbeginFL %DIFDELCMD < \subfloat[Apple logos in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22b.jpg}}%%%
+\DIFdelendFL \DIFaddbeginFL \subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22b.eps}}\DIFaddendFL \hfil%
+\DIFdelbeginFL %DIFDELCMD < \subfloat[Swans in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22c.jpg}}%%%
+\DIFdelendFL \DIFaddbeginFL \subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22c.eps}}\DIFaddendFL \\%
+\DIFdelbeginFL %DIFDELCMD < \subfloat[Bottles in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22d.jpg}}%%%
+\DIFdelendFL \DIFaddbeginFL \subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22d.eps}}\DIFaddendFL \hfil%
+\DIFdelbeginFL %DIFDELCMD < \subfloat[Mugs in ETHZ]{\includegraphics[width=0.33\linewidth]{images/fig22e.jpg}}%%%
+\DIFdelendFL \DIFaddbeginFL \subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22e.eps}}\DIFaddendFL %
 \caption{Time-cost comparison between our method and \cite{ma2011}}
 \label{fig:22}
 \end{figure*}

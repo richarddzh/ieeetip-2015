@@ -3,5 +3,7 @@
 *.log
 *.blg
 bare_jrnl.pdf
+diff.pdf
 *.DS_Store
+*converted*.pdf
 
