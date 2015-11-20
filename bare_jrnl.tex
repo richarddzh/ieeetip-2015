@@ -1,16 +1,8 @@
 \documentclass[journal]{IEEEtran}
 
-%\usepackage{ifpdf}
-\usepackage{cite}
 \usepackage{graphicx}
-\usepackage[cmex10]{amsmath}
 \usepackage{algorithmic}
-%\usepackage{array}
 \usepackage[caption=false,font=footnotesize]{subfig}
-%\usepackage{fixltx2e}
-%\usepackage{stfloats}
-%\usepackage{dblfloatfix}
-\usepackage{url}
 \hyphenation{op-tical net-works semi-conduc-tor}
 
 %% wrap algorithm in a figure environment without caption and number.
@@ -281,7 +273,7 @@ which plays the roles of extraction and representation of the orientation featur
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.8\linewidth]{images/fig2.pdf}
+\includegraphics[width=0.8\linewidth]{images/fig2.png}
 \caption{Seven neighboring hypercolumns and their receptive fields in a visual field. 
 (a) A segment of contour in a visual field. 
 (b) The purple rounded region is covered by seven square receptive fields, 
@@ -310,9 +302,9 @@ This is very similar to using sparse coding to represent an image.
 
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.25\linewidth]{images/fig3.pdf}\hfil%
-\includegraphics[width=0.25\linewidth]{images/fig4.pdf}\hfil%
-\includegraphics[width=0.25\linewidth]{images/fig5.pdf}
+\includegraphics[width=0.25\linewidth]{images/fig3.png}\hfil%
+\includegraphics[width=0.25\linewidth]{images/fig4.png}\hfil%
+\includegraphics[width=0.25\linewidth]{images/fig5.png}
 \caption{Examples of hypercolumn-array representation.
 (a) Some orientation chips (black points at the right) are activated by a simple triangle.
 The topological feature of the triangle is preserved by the set of active orientation chips.
@@ -337,7 +329,7 @@ This approximation can reflect the distribution of pixels in a receptive field, 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.45\linewidth]{images/fig6.pdf}
+\includegraphics[width=0.45\linewidth]{images/fig6.png}
 \caption{Orientation chips can approximately represent stimulus. 
 (a) A real stimulus in a receptive field might be a small curve. 
 (b) An orientation chip with the closest built-in orientation preference is activated. 
@@ -427,7 +419,7 @@ Therefore, a route-searching algorithm is required.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.5\linewidth]{images/fig9.pdf}
+\includegraphics[width=0.5\linewidth]{images/fig9.png}
 \caption{A segment of an object's contour might be a route of a chip graph. 
 The top is a sequence of chips linked together by a route; 
 the middle is the original stimulus that activated the above route; 
@@ -462,15 +454,15 @@ Larger weights indicate stronger collinearity between chip nodes.
 
 \begin{figure}[!t]
 \centering
-\subfloat[$w=e^{-\max\{0,0\}}=1$]{\includegraphics[width=0.45\linewidth]{images/fig10a.pdf}%
+\subfloat[$w=e^{-\max\{0,0\}}=1$]{\includegraphics[width=0.45\linewidth]{images/fig10a.png}%
 \label{fig:10a}}
 \hfil
-\subfloat[$w=e^{-\max\{0,15\lambda\}}=0.11$]{\includegraphics[width=0.45\linewidth]{images/fig10b.pdf}%
+\subfloat[$w=e^{-\max\{0,15\lambda\}}=0.11$]{\includegraphics[width=0.45\linewidth]{images/fig10b.png}%
 \label{fig:10b}}\\
-\subfloat[$w=e^{-\max\{3,0\}}=0.05$]{\includegraphics[width=0.45\linewidth]{images/fig10c.pdf}%
+\subfloat[$w=e^{-\max\{3,0\}}=0.05$]{\includegraphics[width=0.45\linewidth]{images/fig10c.png}%
 \label{fig:10c}}
 \hfil
-\subfloat[$w=e^{-\max\{0,35\lambda\}}=0.01$]{\includegraphics[width=0.45\linewidth]{images/fig10d.pdf}%
+\subfloat[$w=e^{-\max\{0,35\lambda\}}=0.01$]{\includegraphics[width=0.45\linewidth]{images/fig10d.png}%
 \label{fig:10d}}
 \caption{Setting the edge weight between two orientation chips. 
 A larger value indicates a tighter or more collinear connection.
@@ -542,7 +534,7 @@ which is inevitably more efficient than an operation involving a large set of pi
   
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.4\linewidth]{images/fig11.pdf}
+\includegraphics[width=0.4\linewidth]{images/fig11.png}
 \caption{After conducting Algorithms 4.1 and 4.2, 
 the contour of an object (at left) can be denoted by several routes (at right).}
 \label{fig:11}
@@ -591,50 +583,50 @@ The routes in the images are transformed into vectors plotted below the images.}
 
 The routes are represented with vectors which are provided as input to the NLE-ELM algorithm.
 By definition, a route is intrinsically a sequence of activated orientation chips.
-Therefore, it is straight-forward to represent a route with a vector $\boldsymbol{v}=(v_1,v_2,\cdots,v_n)^T$.
-Each element of $\boldsymbol{v}$ is the orientation of an activated chip in the route.
+Therefore, it is straight-forward to represent a route with a vector $\mathbf{v}=(v_1,v_2,\cdots,v_n)^\top$.
+Each element of $\mathbf{v}$ is the orientation of an activated chip in the route.
 Examples of the vectors are shown in \figurename~\ref{fig:12}.
 In each image, two routes around the contour of the apple logo are chosen to be represented into vectors of orientation.
 
 We train an NLE-ELM model to recognize routes from a number $M$ of object categories.
-For each route vector, the desired output is a binary indicator vector, $\boldsymbol{t}=(t_1,t_2,\cdots,t_M)^T$,
+For each route vector, the desired output is a binary indicator vector, $\mathbf{t}=(t_1,t_2,\cdots,t_M)^\top$,
 where $t_i=1$ indicates the route belongs to the $i$-th object category.  
 For each object category, positive routes are chosen from the training samples within the ground-truth bounding boxes,
 and negative ones are chosen from the background.
 The training data is generated from these routes.
 The training algorithm is listed in Algorithm 5.1.
 
-\begin{myalgorithm}{Algorithm 5.1 Train-Route-Model($\boldsymbol{V,T}$)}
+\begin{myalgorithm}{Algorithm 5.1 Train-Route-Model($\mathbf{V,T}$)}
 \begin{algorithmic}[1]
-\REQUIRE $\boldsymbol{V}$ and $\boldsymbol{V}$ are the training data.
-$\boldsymbol{V}=(\boldsymbol{v}_1,\boldsymbol{v}_2,\cdots,\boldsymbol{v}_N)$
-consists of $N$ route vectors, and $\boldsymbol{T}=(\boldsymbol{t}_1,\boldsymbol{t}_2,\cdots,\boldsymbol{t}_N)$
+\REQUIRE $\mathbf{V}$ and $\mathbf{T}$ are the training data.
+$\mathbf{V}=(\mathbf{v}_1,\mathbf{v}_2,\cdots,\mathbf{v}_N)$
+consists of $N$ route vectors, and $\mathbf{T}=(\mathbf{t}_1,\mathbf{t}_2,\cdots,\mathbf{t}_N)$
 consists of the corresponding indicator vectors.
 $C,\gamma_g$ and $\mu$ are parameters of NLE-ELM model.
-\ENSURE the algorithm calculates the optimized output weight matrix $\boldsymbol\beta^{*}$
+\ENSURE the algorithm calculates the optimized output weight matrix $\mathbf\beta^{*}$
 of the NLE-ELM model.
 \STATE Initialize the hidden layer with random input weights
-\STATE Calculates the output of hidden layer $(\boldsymbol{H,H'})$
+\STATE Calculates the output of hidden layer $(\mathbf{H,H'})$
 \STATE Let $L$ denotes the number of units in hidden layer
 \IF {$L\le N$}
-  \STATE $\boldsymbol{L_H}=\boldsymbol{I}_N-\boldsymbol{H}'(\gamma_g\boldsymbol{I}_L+\boldsymbol{H'^T H'})^{-1}\boldsymbol{H'^T}$
-  \STATE $\boldsymbol\beta^{*}=\left(\frac{\boldsymbol{I}_L}{C}+\boldsymbol{H^T H}+\frac{\mu}{C}\boldsymbol{H^T L_H H}\right)^{-1}\boldsymbol{H^T T}$
+  \STATE $\mathbf{L_H}=\mathbf{I}_N-\mathbf{H}'(\gamma_g\mathbf{I}_L+\mathbf{H'^\top H'})^{-1}\mathbf{H'^\top}$
+  \STATE $\mathbf\beta^{*}=\left(\frac{\mathbf{I}_L}{C}+\mathbf{H^\top H}+\frac{\mu}{C}\mathbf{H^\top L_H H}\right)^{-1}\mathbf{H^\top T}$
 \ELSE
-  \STATE $\boldsymbol{L_H}=\boldsymbol{I}_N-\boldsymbol{H'H^T}(\gamma_g\boldsymbol{I}_N+\boldsymbol{H'H'^T})^{-1}$
-  \STATE $\boldsymbol\beta^{*}=\boldsymbol{H^T}\left(\frac{\boldsymbol{I}_N}{C}+\boldsymbol{HH^T}+\frac{\mu}{C}\boldsymbol{HH^T L_H}\right)^{-1}\boldsymbol{T}$
+  \STATE $\mathbf{L_H}=\mathbf{I}_N-\mathbf{H'H^\top}(\gamma_g\mathbf{I}_N+\mathbf{H'H'^\top})^{-1}$
+  \STATE $\mathbf\beta^{*}=\mathbf{H^\top}\left(\frac{\mathbf{I}_N}{C}+\mathbf{HH^\top}+\frac{\mu}{C}\mathbf{HH^\top L_H}\right)^{-1}\mathbf{T}$
 \ENDIF
-\RETURN $\boldsymbol\beta^{*}$
+\RETURN $\mathbf\beta^{*}$
 \end{algorithmic}
 \end{myalgorithm}
 
 Given the aforementioned route representation and NLE-ELM model,
 we can measure the similarity between a route from the test image and a route from a template.
-Let $r$ and $t$ denote two routes and $\boldsymbol{v}_r$ and $\boldsymbol{v}_t$ the vector representation of the routes.
-The output function of the NLE-ELM model is $f(\boldsymbol{v},\boldsymbol\beta^{*})$, 
-where $\boldsymbol\beta^{*}$ is obtained with Algorithm 5.1.
+Let $r$ and $t$ denote two routes and $\mathbf{v}_r$ and $\mathbf{v}_t$ the vector representation of the routes.
+The output function of the NLE-ELM model is $f(\mathbf{v},\mathbf\beta^{*})$, 
+where $\mathbf\beta^{*}$ is obtained with Algorithm 5.1.
 The distance between routes $r$ and $t$ is defined as the Euclidean distance between the NLE-ELM output.
 \begin{equation}
-\text{Route-Distance}(r,t)=||f(\boldsymbol{v}_r,\boldsymbol\beta^{*})-f(\boldsymbol{v}_t,\boldsymbol\beta^{*})||.
+\mathrm{RouteDistance}(r,t)=||f(\mathbf{v}_r,\mathbf\beta^{*})-f(\mathbf{v}_t,\mathbf\beta^{*})||.
 \end{equation}
 
 \figurename~\ref{fig:13} presents an example of a similarity comparison between two curves,
@@ -646,7 +638,7 @@ The basic principle underlying our algorithm is that the holistic tendency in a 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.6\linewidth]{images/fig13.pdf}
+\includegraphics[width=0.6\linewidth]{images/fig13.png}
 \caption{An example of a curve comparison based on a holistic strategy.}
 \label{fig:13}
 \end{figure}
@@ -706,7 +698,7 @@ We can use one set for template matching, and the other set for cross validation
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=0.7\linewidth]{images/fig16.pdf}
+\includegraphics[width=0.7\linewidth]{images/fig16.png}
 \caption{Two independent template partitions provide cross-verification.}
 \label{fig:16}
 \end{figure}
@@ -739,7 +731,7 @@ $\{T_1,\cdots,T_P\}$. Each partition is a set of template segments.
 \ENDFOR
 \FOR {each $T_p\in T$}
   \FOR {each $r\in R$ and $t\in T_p$}
-    \STATE let $D[r][t]\leftarrow\text{Route-Distance}(r,t)$
+    \STATE let $D[r][t]\leftarrow\mathrm{RouteDistance}(r,t)$
   \ENDFOR
   \FOR {each $r\in R$}
     \STATE let $D[r]\leftarrow\min_t D[r][t]$ and $t[r]\leftarrow\arg\min_t D[r][t]$
@@ -863,8 +855,8 @@ Our method is comparable to the-state-of-art method \cite{luo2010,jurie2004,ferr
 
 \begin{figure}[!t]
 \centering
-\subfloat[Representative detection results]{\includegraphics[width=0.95\linewidth]{images/fig21a.png}}\\
-\subfloat[FPPI-Recall compared with \cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}]{\includegraphics[width=0.75\linewidth]{images/fig21b.png}}
+\subfloat[Representative detection results]{\includegraphics[width=0.95\linewidth]{images/fig21a.png}\label{fig:21a}}\\
+\subfloat[FPPI-Recall compared with \cite{luo2010,jurie2004,ferrari2007,yarlagadda2010,lin2012}]{\includegraphics[width=0.75\linewidth]{images/fig21b.png}\label{fig:21b}}
 \caption{Detection testing for the INRIA horses dataset.}
 \label{fig:21}
 \end{figure}
@@ -906,11 +898,11 @@ Ma et al (max)& 151.8 & 165.5 & 251.4 & 42.0 & 60.4 \\
 
 \begin{figure*}[!t]
 \centering
-\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22a.eps}}\hfil%
-\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22b.eps}}\hfil%
-\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22c.eps}}\\%
-\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22d.eps}}\hfil%
-\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22e.eps}}%
+\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22a.png}}\hfil%
+\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22b.png}}\hfil%
+\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22c.png}}\\%
+\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22d.png}}\hfil%
+\subfloat[]{\includegraphics[width=0.33\linewidth]{images/fig22e.png}}%
 \caption{Time-cost comparison between our method and \cite{ma2011}}
 \label{fig:22}
 \end{figure*}
